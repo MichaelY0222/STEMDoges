@@ -1,0 +1,29 @@
+/* pages/events/piday/trophywall/trophywall.wxss */
+.title{
+  font-size: 50rpx;
+  font-weight: 600;
+  text-align: center;
+}
+.subtitle{
+  font-size: 40rpx;
+  font-weight: 500;
+  margin-top:100rpx;
+  margin-left:30rpx;
+}
+.line {
+  width: 95%;
+  margin: 0 auto;
+  height: 5rpx;
+  background-color: black;
+}
+.arrange{
+  width:98rpx;
+  height:98rpx;
+  border-radius: 50rpx;
+  background-color: #dddddd;
+  margin-left: 20rpx;
+  margin-top:30rpx;
+  display: inline-block;
+  text-align: center;
+  line-height: 98rpx;
+}

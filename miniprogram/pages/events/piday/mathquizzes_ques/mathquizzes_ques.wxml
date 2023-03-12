@@ -1,0 +1,54 @@
+<!--pages/events/piday/mathquizzes_ques/mathquizzes_ques.wxml-->
+<view wx:if="{{answers[number]['status']==3}}" > <!-- IF THE USER SUBMITTED ALREADY-->
+  <view class="title" style="background-color:{{'#ff797b'}}">
+    <view style="padding-top:30px;padding-bottom:20px;" >Wrong</view>
+  </view>
+  <view class="image">
+      <image src="{{questions[number-1]['question']}}"></image>
+  </view>
+  <view>
+    <view wx:for="{{answers[number]['my_answer']}}" class="result" >
+      <view class="question">
+        <view>{{index}}=</view>
+        <view wx-if="{{item == questions[number-1]['answer'][index]}}" style="color: blue;">{{item}}</view>
+        <view wx-if="{{item != questions[number-1]['answer'][index]}}" style="color: red;">{{item}}</view>
+      </view>
+    </view>
+  </view>
+  <view bindtap="try_again" style="position:fixed;bottom:0;;width:40%;left:30%;font-size: 60rpx;font-weight: 500;">try again</view>
+</view>
+
+<view wx:if="{{answers[number]['status']==2}}" > <!-- IF THE USER SUBMITTED ALREADY-->
+  <view class="title" style="background-color:{{'#ddf9bf'}}">
+    <view style="padding-top:30px;padding-bottom:20px;">Correct</view>
+  </view>
+  <view class="image">
+    <image lazy-load src="{{questions[number-1]['question']}} "  bindload='onLazyLoad'></image>
+  </view>
+  <view class="place">  
+    <view style="margin-left: 60rpx;  font-weight:500;  font-size: 55rpx;margin-bottom:20rpx">correct answer:</view>
+    <view wx:for="{{questions[number-1]['answer']}}" class = "result" >
+      <view>{{index}}={{item}}</view>
+    </view>
+  </view>
+</view>
+
+<view wx:elif="{{answers[number]['status']==1}}"> <!-- IF THE USER HAS NOT FINISHED-->
+    <view class="questionArea">
+      <view class="subjectTitle">
+        <view>#{{number}}</view>
+      </view>
+    </view>
+    <view class="image">
+      <image src="{{questions[number-1]['question']}}"></image>
+    </view>
+    <form bindsubmit="submitInfo">
+      <view wx:for="{{questions[number-1]['answer']}}" class = "result">
+        <view class = "question">
+          <view>{{index}}=</view>
+          <input  id="inputAnswer" class="inputArea" name="{{index}}" />
+        </view>
+       </view>
+      <button style="position:fixed;bottom:0;;width:40%;left:30%;font-size: 60rpx;font-weight: 500;" form-type="submit" >Submit</button>
+    </form>
+</view>

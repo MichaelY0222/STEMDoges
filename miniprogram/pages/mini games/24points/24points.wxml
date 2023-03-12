@@ -1,0 +1,34 @@
+<!--miniprogram/pages/questions/24points/24points.wxml-->
+<view class="header">
+  <text class="title">24点</text>
+  <view class="info">
+    <view class="timer">剩余时间: {{timerDisplay}}</view>
+    <view class="score">得分: {{score}}</view>
+    <button class="skip" size="mini" bindtap="skip"><image src="skip.svg" class="skipImg"/></button>
+  </view>
+</view>
+
+<view class="cardsWrapper">
+  <view wx:for="{{2}}" wx:for-index="idx" class="cardContainer">
+    <view wx:for="{{[2*idx, 2*idx+1]}}" wx:for-item="cardIdx" class="cards" bindtap="selectNumber" data-index="{{cardIdx}}">
+      <text class="cardText" style="color: {{symbolColors[symbols[cardIdx]]}}">{{displayValues[cards[cardIdx]]}}</text>
+      <image class="symbol" src="symbol-{{symbols[cardIdx]}}.png"></image>
+    </view>
+  </view>
+  <input placeholder="输入表达式" disabled="true" value="{{expression}}" class="expression {{error}}"></input>
+</view>
+
+<view class="controls">
+  <view style="width: calc(100% - 30px); max-width: 500px; margin: 0px auto; transform: translate(-5px, 0);">
+    <button wx:for="{{cards}}" wx:for-item="card" wx:for-index="num" class="numberChoice {{used[num]}}" disabled="{{used[num]}}" data-index="{{num}}" bindtap="selectNumber">{{card}}</button>
+  </view>
+  <view style="width: calc(100% - 30px); max-width: 500px; margin: 10px auto 20px auto; transform: translate(-5px, 0);">
+    <button size="mini" wx:for="{{operations}}" wx:for-item="op" wx:for-index="opIdx" class="operationChoice" data-index="{{opIdx}}" bindtap="selectOperation">{{op}}</button>
+  </view>
+  <view class="buttonWrapper">
+    <button size="mini" bindtap="clear" class="clearButton"><image src="delete.png" class="delete"></image></button>
+    <button bindtap="submit" class="inlineButton">提交</button>
+  </view>
+
+</view>
+

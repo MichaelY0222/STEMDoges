@@ -1,0 +1,15 @@
+<!--miniprogram/pages/questions/mentalMath/mentalMath.wxml-->
+<view class="header">
+  <text class="title">速算</text>
+  <view class="info">
+    <view class="timer"><text class="label">剩余时间:</text>{{timerDisplay}}</view>
+    <view class="score"><text class="label1">得分:</text>{{score}}</view>
+  </view>
+</view>
+
+<view class="content">
+  <view class="expression">{{exp}}</view>
+  <form class="inputWrapper" bindsubmit="submitInput">
+    <input placeholder="输入答案" name="ans" type="digit" class="{{error}} input" placeholder-class="placeholder" focus="{{inputFocus}}" bindinput="submitInput" hold-keyboard="true" value="{{inputVal}}"></input>
+  </form>
+</view>

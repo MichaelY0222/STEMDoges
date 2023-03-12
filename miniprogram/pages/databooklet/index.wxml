@@ -1,0 +1,7 @@
+<!--miniprogram/pages/bitday/index.wxml-->  
+<scroll-view scroll-y style="height:100vh">
+  <view  class="eventHeader" bindtap="redirect" data-link="general/index" >General</view>
+  <view  class="eventHeader" bindtap="redirect" data-link="IB/index">IB Data Booklet</view>
+  <view  class="eventHeader" bindtap="redirect" data-link="AP/index">AP Data booklet</view>
+  <view style="height:50px"></view>
+</scroll-view>

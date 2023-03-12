@@ -1,0 +1,229 @@
+<!--miniprogram/pages/bitday/index.wxml-->  
+<scroll-view scroll-y style="height:100vh">
+  <image bindtap="scanQRCode" src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/bitday/scan_code.jpg" class = "eventHeader">
+  </image>
+  <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/bitday/scavenger.jpg" class="eventHeader"  bindtap="showPopup" data-popupNum="4">Scavenger Hunt</image>
+  <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/bitday/leaderboard.jpg"view class="eventHeader" bindtap="redirect" data-Qnum="1" data-link="../bitday/leader board/index" data-Qnum="0">Leader Board</image>
+  <!--
+ <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/bitday/programming.jpg" class="eventHeader" bindtap="showPopup" data-popupNum="2">Programming Questions</image>
+  <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/bitday/trivia.jpg" class="eventHeader" bindtap="showPopup" data-popupNum="1"> Trivia</image>
+  <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/bitday/schedule.jpg" class="eventHeader" bindtap="showPopup" data-popupNum="3">Schedule</image>
+  -->
+ 
+  <view wx:if="{{isAdmin}}" class="eventHeader"  bindtap="showPopup" data-popupNum="5">admin</view>
+  <view style="height:50px"></view>
+</scroll-view>
+
+
+<!-- info input area 
+<view wx:if="{{showPopup[0]}}" class="overlay" ></view>
+<view wx:if="{{showPopup[0]}}" class="mini popup" >
+  <form bindsubmit="submitInfo" class="answerInputBox">
+    <input  style="margin-top:40%" id="inputAnswer" class="inputArea" placeholder="Name" name="name" />
+    <input  id="inputAnswer" class="inputArea" placeholder="Class" name="class" />
+    <input  id="inputAnswer" class="inputArea" placeholder="Grade" name="grade" />
+    <button class="submit" style="position:absolute;bottom:0px;width:40%;left:30%" form-type="submit" >Continue</button>
+  </form>
+</view>
+-->
+
+<!-- info trivia area -->
+<view wx:if="{{showPopup[1]}}" class="overlay" bindtap="hidePopup"></view>
+<view wx:if="{{showPopup[1]}}" class="mini popup" >
+  <text bindtap="hidePopup" class="closePopup">X</text>
+  <text class="eventTitle">Trivia</text>
+  <view wx:if="{{dayNum>=1}}" bindtap="redirect" data-Qnum="1" data-link="../bitday/trivia/index" class="eventHeader" style="height:50px; background-color:{{colors[1]}}"><view style="margin-top:15px;">10/18</view></view>
+  <view wx:else class="eventHeader" style="height:50px"><view style="margin-top:15px;">10/18</view></view>
+
+  <view wx:if="{{dayNum>=2}}" bindtap="redirect" data-Qnum="2" data-link="../bitday/trivia/index" class="eventHeader" style="height:50px; background-color:{{colors[1]}}"><view style="margin-top:15px;">10/19</view></view>
+  <view wx:else class="eventHeader" style="height:50px"><view style="margin-top:15px;">10/19</view></view>
+
+  <view wx:if="{{dayNum>=3}}" bindtap="redirect" data-Qnum="3" data-link="../bitday/trivia/index" class="eventHeader" style="height:50px; background-color:{{colors[1]}}"><view style="margin-top:15px;">10/20</view></view>
+  <view wx:else class="eventHeader" style="height:50px"><view style="margin-top:15px;">10/20</view></view>
+</view>
+
+
+<!-- programming questions area -->
+<view wx:if="{{showPopup[2]}}" class="overlay" bindtap="hidePopup"></view>
+<view wx:if="{{showPopup[2]}}" style="text-align: left" class="regular popup" >
+  <text bindtap="hidePopup" class="closePopup">X</text>
+  <!-- <view class="questionsDone">0/9</view> -->
+  <view>
+  <view  style="margin-top:70px">
+    <view class="date">10/18</view>
+    <view class="bar'"></view>
+
+    <view wx:if="{{dayNum>=1}}" bindtap="redirect" data-Qnum="1" data-link="../bitday/programming questions/index" class="questionItem" style="margin-left:10%"><view class="questoinItemNumber">1</view></view>
+    <view wx:else class="questionItem" style="margin-left:10%;background-color:{{colors[0]}}"><view class="questoinItemNumber">1</view></view>
+
+    <view wx:if="{{dayNum>=1}}" bindtap="redirect" data-Qnum="2" data-link="../bitday/programming questions/index" class="questionItem"><view class="questoinItemNumber">2</view></view>
+    <view wx:else class="questionItem" style="background-color:{{colors[0]}}"><view class="questoinItemNumber">2</view></view>
+
+    <view wx:if="{{dayNum>=1}}" bindtap="redirect" data-Qnum="3" data-link="../bitday/programming questions/index" class="questionItem"><view class="questoinItemNumber">3</view></view>
+    <view wx:else class="questionItem" style="background-color:{{colors[0]}}"><view class="questoinItemNumber">3</view></view>
+  </view>
+  
+  <view>
+    <view class="date">10/19</view>
+    <view class="bar'"></view>
+
+    <view wx:if="{{dayNum>=2}}" bindtap="redirect" data-Qnum="4" data-link="../bitday/programming questions/index" class="questionItem" style="margin-left:10%"><view class="questoinItemNumber">4</view></view>
+    <view wx:else class="questionItem" style="margin-left:10%;background-color:{{colors[0]}}"><view class="questoinItemNumber">4</view></view>
+    
+    <view wx:if="{{dayNum>=2}}" bindtap="redirect" data-Qnum="5" data-link="../bitday/programming questions/index" class="questionItem"><view class="questoinItemNumber">5</view></view>
+    <view wx:else class="questionItem" style="background-color:{{colors[0]}}"><view class="questoinItemNumber">5</view></view>
+    
+    <view wx:if="{{dayNum>=2}}" bindtap="redirect" data-Qnum="6" data-link="../bitday/programming questions/index" class="questionItem"><view class="questoinItemNumber">6</view></view>
+    <view wx:else class="questionItem" style="background-color:{{colors[0]}}"><view class="questoinItemNumber">6</view></view>
+  </view>
+
+  <view>
+    <view class="date">10/20</view>
+    <view class="bar'"></view>
+    <view wx:if="{{dayNum>=3}}" bindtap="redirect" data-Qnum="7" data-link="../bitday/programming questions/index" class="questionItem" style="margin-left:10%"><view class="questoinItemNumber">7</view></view>
+    <view wx:else class="questionItem" style="margin-left:10%;background-color:{{colors[0]}}"><view class="questoinItemNumber">7</view></view>
+
+    <view wx:if="{{dayNum>=3}}" bindtap="redirect" data-Qnum="8" data-link="../bitday/programming questions/index" class="questionItem"><view class="questoinItemNumber">8</view></view>
+    <view wx:else class="questionItem" style="background-color:{{colors[0]}}"><view class="questoinItemNumber">8</view></view>
+
+    <view wx:if="{{dayNum>=3}}" bindtap="redirect" data-Qnum="9" data-link="../bitday/programming questions/index" class="questionItem"><view class="questoinItemNumber">9</view></view>
+    <view wx:else class="questionItem" style="background-color:{{colors[0]}}"><view class="questoinItemNumber">9</view></view>
+  </view>
+  </view>
+</view>
+<!-- Schedule area -->
+<view wx:if="{{showPopup[3]}}" class="overlay" bindtap="hidePopup"></view>
+<scroll-view scroll-y wx:if="{{showPopup[3]}}" style="text-align: left" class="regular popup">
+  <text bindtap="hidePopup" class="closePopup">X</text>
+  <view>
+  <view style="margin-top:50px;">
+    <view class="date">10/18</view>
+    <view class="bar'"></view>
+    <view class="scheduleItem" style="margin-top:10px; font-weight:bold">GT Racing Demo</view>
+    <view class="scheduleItem">12:30-13:00: in front of ZTB</view>
+
+    <view class="scheduleItem" style="margin-top:10px;font-weight:bold">Coding Competition</view>
+    <view class="scheduleItem">12:30-13:00: ZTB Recording Room</view>
+  </view>
+  
+  <view>
+    <view class="date">10/19</view>
+    <view class="bar'"></view>
+    
+    <view class="scheduleItem" style="margin-top:10px;font-weight:bold">Along with the Giants - A Journey to The IOI (PA)</view>
+    <view class="scheduleItem">12:30-13:00: ZTB Recording Room</view>
+  </view>
+  </view>
+
+  <view>
+    <view class="date">10/20</view>
+    <view class="bar'"></view>
+    <view class="scheduleItem" style="margin-top:10px;font-weight:bold">Webscraping & Data Prcessing with Python (PA)</view>
+    <view class="scheduleItem">12:30-13:00: ZTB 111</view>
+
+    <view class="scheduleItem" style="margin-top:10px;font-weight:bold">Game Development With Unity (PA)</view>
+    <view class="scheduleItem">12:30-13:00: ZTB 113</view>
+  </view>
+
+  <view>
+    <view class="date">10/21</view>
+    <view class="bar'"></view>
+    <view class="scheduleItem" style="margin-top:10px;font-weight:bold">Computer Science Trivia Finals (CS)</view>
+    <view class="scheduleItem">12:30-13:00: ZTB B1 Lecture Hall</view>
+  </view>
+
+  <view style="margin-bottom:30px">
+    <view class="date">10/18 - 10/21</view>
+    <view class="bar'"></view>
+    <view class="scheduleItem" style="margin-top:10px;font-weight:bold">Computer Science Questions Scavenger Hunt (CS)</view>
+    <view class="scheduleItem">All Day: ZTB, XMT</view>
+
+    <view class="scheduleItem" style="margin-top:10px;font-weight:bold">Programming Game (CS)</view>
+    <view class="scheduleItem">All Day: Mini Program</view>
+
+    <view class="scheduleItem" style="margin-top:10px;font-weight:bold">Pixel Board (CS)</view>
+    <view class="scheduleItem">All Day: infront of ZTB</view>
+  </view>
+</scroll-view>
+
+<!-- scavenger hunt area -->
+<view wx:if="{{showPopup[4]}}" class="overlay" bindtap="hidePopup"></view>
+<scroll-view scroll-y wx:if="{{showPopup[4]}}" style="text-align: left" class="regular popup" >
+  <text bindtap="hidePopup" class="closePopup" style="font-size: 20px;">x</text>
+  <!-- <view class="questionsDone">0/30</view> -->
+  <view style="margin-top:50px; margin-left:5%; width:90%;">
+    <view style = "text-align: center;">
+      <text style="font-size: 20px; font-weight: 600;">You have collected
+       {{scanned}} /30 </text>
+    </view>
+    <view wx:for="{{QRCodes}}"  class="questionItem" wx:for-index="i" style="background-color:{{colors[ScavProgress[i]]}}">
+      <view wx:if="{{ScavProgress[i]>0}}" bindtap="redirect" data-Qnum="{{i+1}}" data-link="../bitday/scavenger hunt/index" class="questoinItemNumber"  >{{i+1}}</view>
+      <view wx:else class="questoinItemNumber"  >{{i+1}}</view>
+    </view>
+  </view>
+</scroll-view>
+
+<!-- admin area -->
+<view wx:if="{{showPopup[5]}}" class="overlay" bindtap="hidePopup"></view>
+<view wx:if="{{showPopup[5]}}" style="text-align: left" class="regular popup" >
+  <text bindtap="hidePopup" class="closePopup">X</text>
+  <text bindtap="deleteQuestion" class="closePopup" style="right:35px">🗑</text>
+  <view style="text-align:center">
+    <view class="topWeekNum" bindtap="lookAtPrevType">{{'<--'}}</view>
+    <text class="topWeekNum">{{types[typeIdx]}}</text>
+    <view class="topWeekNum" bindtap="lookAtNextType">--></view>
+  </view>
+  <scroll-view class="chooseQuestionsArea" style="width:calc(90vw - 80px)" scroll-x>
+    <view class="chooseQuestionsArea" style="width:calc(50px * {{weeklyQuestions.length}})">
+      <view wx:for="{{questions}}" wx:for-item="question" wx:for-index="i"  class="questionItem2" style="background-color:{{i==curQuestion?colors[1]:'#858587'}} "   bindtap="changeQ" data-num="{{i}}">
+        <text>{{i+1}}</text>
+      </view>
+      <view class="questionItem2" bindtap="addQ" >
+            <text>+</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <scroll-view class="questionArea" scroll-y>
+  
+    <form bindsubmit="submitQuestion" style="width:100%">
+      
+      <view class="changingQuestion"  >
+        <textarea wx:if="{{questions[curQuestion].question != null}}" maxlength="-1" style="width:100%;"  name="question"  id="inputAnswer" placeholder="enter your question..." value="{{questions[curQuestion].question}}"> </textarea>
+        <textarea wx:else maxlength="-1" style="width:100%;"  name="question"  id="inputAnswer" placeholder="enter your question..." > </textarea>
+      </view>
+      <view wx:if="{{typeIdx == 0}}">
+        <view wx:for="{{blocks}}" wx:for-index="i">
+          <view class="blockArea">
+            <textarea maxlength="-1" name="{{'englishBlock' + i}}" style="width:100%;" id="englishBlock" placeholder="enter English" value="{{blocks[i][0]}}"> </textarea>
+          </view>
+          <view class="blockArea">
+            <textarea maxlength="-1" name="{{'pythonBlock' + i}}" style="width:100%;" id="pythonBlock" placeholder="enter python" value="{{blocks[i][1]}}"> </textarea>
+          </view>
+        </view>
+        <view bindtap="addBlock" class="addBlockArea">
+        add block
+        </view>
+        <input class="inputArea" placeholder="correct order" name="order" />
+      </view>
+      <view wx:else class="mcqAnswers" >
+        <input name="choice1" style="background-color:{{colors[2]}} ;" value="{{questions[curQuestion].choice1}}" placeholder="enter choice..." class="mcqChoice"/>
+        <input name="choice2" style="background-color:{{colors[3]}} ;" value="{{questions[curQuestion].choice2}}" placeholder="enter choice..." class="mcqChoice"/>
+        <input name="choice3" style="background-color:{{colors[4]}} ;" value="{{questions[curQuestion].choice3}}" placeholder="enter choice..." class="mcqChoice"/>
+        <input name="choice4" style="background-color:{{colors[5]}} ;" value="{{questions[curQuestion].choice4}}" placeholder="enter choice..." class="mcqChoice"/>
+      
+        <view bindtap="chooseCorrectAnswer" data-choice="1" class="selectChoice" style="bottom:155px; color:{{correctChoice== 1?colors[1]:black}}">✓</view>
+        <view bindtap="chooseCorrectAnswer" data-choice="2" class="selectChoice" style="bottom:105px; color:{{correctChoice == 2?colors[1]:black}}">✓</view>
+        <view bindtap="chooseCorrectAnswer" data-choice="3"  class="selectChoice" style="bottom:55px; color:{{correctChoice == 3?colors[1]:black}}">✓</view>
+        <view bindtap="chooseCorrectAnswer" data-choice="4" class="selectChoice" style="bottom:5px;color:{{correctChoice== 4?colors[1]:black}}">✓</view>
+      </view>
+
+      <view class="answerInput answerText" style="background-color:orange">
+        <textarea maxlength="-1" name="answerSteps" style="width:100%;" id="answerSteps" placeholder="enter the steps" value="{{questions[curQuestion].steps}}"> </textarea>
+      </view>
+      <button class="submitChanges" style="width: 40%;" form-type="submit" >SUBMIT</button>
+    </form>
+  </scroll-view>
+</view>
+
+

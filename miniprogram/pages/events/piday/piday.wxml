@@ -1,0 +1,12 @@
+<!--pages/events/piday/piday.wxml-->
+<scroll-view scroll-y style="height:100vh">
+<!--trophywall
+<image bindtap="trophywall" src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/bitday/scan_code.jpg" class = "eventHeader"> </image>
+-->
+<view bindtap="trophywall" class = "eventHeader">Trophywall</view>
+<!--mathquizzes
+  <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/bitday/scavenger.jpg" class="eventHeader"  bindtap="mathquizzes" ></image>
+-->
+<view bindtap="mathquizzes" class="eventHeader">Math Quizzes</view>
+  <view style="height:50px"></view>
+</scroll-view>

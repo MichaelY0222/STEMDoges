@@ -1,0 +1,64 @@
+<!--miniprogram/pages/bitday/programming questions/index.wxml-->
+<my-component id='confetti' duration="8000">
+  </my-component>
+<view wx:if="{{finished == true}}" > <!-- IF THE USER SUBMITTED ALREADY-->
+  
+  <view class="title" style="background-color:{{correct?'#ddf9bf':'#ff797b'}}">
+    <view style="padding-top:30px;padding-bottom:20px;" wx:if="{{correct}}">Correct</view>
+    <view style="padding-top:30px;padding-bottom:20px;" wx:else>Wrong</view>
+  </view>
+  <view class="questionArea">
+      <view class="questionText">
+        <text>
+          {{questions[curQuestion].question}}
+        </text>
+        correct order:
+        </view>
+        <view wx:if="{{!pythonView}}" bindtap="changeView" class="changeView">View In Python</view>
+        <view wx:else bindtap="changeView" class="changeView">View In English</view>
+
+    </view>
+    <view  wx:for="{{questions[curQuestion].blocks}}" wx:for-index="i" class=".answerChoice" style="background-color:{{colors[2]}};width:85%">
+      <text wx:if="{{pythonView}}" style="font-size:15px" class="centerText answerChoiceText" >{{questions[curQuestion].blocks[questions[curQuestion].order[i]][1]}}</text>
+      <text wx:else style="font-size:15px" class="centerText answerChoiceText" >{{questions[curQuestion].blocks[questions[curQuestion].order[i]][0]}}</text>
+    </view>   
+    <view style="width:100%; text-align:center; margin-top:20px; margin-bottom:50px">
+      <view>explaination:</view>
+      <text>{{questions[curQuestion].steps}}</text>
+    </view>
+    <!-- <view style="width:100%;height:50px">
+    </view> -->
+    <!-- <view class="footer">
+      <view class="footerText" bindtap="redirect" >next</view>
+    </view> -->
+</view>
+<view wx:elif="{{notFinished==true}}">
+  <scroll-view class="weeklyQ" scroll-y> <!-- IF THE USER HAS NOT FINISHED-->
+    <view class="questionArea">
+      <view class="subjectTitle">
+        <view>#{{curQuestion+1}}</view>
+      </view>
+      <view wx:if="{{!pythonView}}" bindtap="changeView" class="changeView">View In Python</view>
+      <view wx:else bindtap="changeView" class="changeView">View In English</view>
+      <view class="questionText">
+        <text>
+          {{questions[curQuestion].question}}
+          </text>
+        </view>
+    </view>
+
+    <view class="answerArea">
+        <view wx:for="{{order}}" wx:for-index="i" class=".answerChoice" style="background-color:{{colors[2]}}">
+          <text wx:if="{{pythonView}}" class="centerText answerChoiceText" >{{questions[curQuestion].blocks[order[i]][1]}}</text>
+          <text wx:else class="centerText answerChoiceText" >{{questions[curQuestion].blocks[order[i]][0]}}</text>
+          <view wx:if="{{i>0}}" bindtap="movedown" data-num="{{i}}" class="positionButton" style="margin-top:-20px">up</view>
+          <view wx:if="{{i<order.length-1}}" bindtap="moveup" data-num="{{i}}" class="positionButton" style="margin-top:20px">down</view>
+        </view> 
+    </view>
+  </scroll-view>
+  <view class="footer">
+    <view class="footerText" bindtap="goToNextQ" >submit</view>
+  </view>
+  
+</view>
+

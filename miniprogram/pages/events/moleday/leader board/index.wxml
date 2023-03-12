@@ -1,0 +1,10 @@
+<!--miniprogram/pages/bitday/leader board/index.wxml-->
+<view class="yourRank">Your Rank: {{rank}}</view>
+<view class="yourRank" style="margin-top:0px;">Your Points: {{user.moledayPoints}}</view>
+<scroll-view class="leaderboard" scroll-y>
+  <view wx:for="{{totalRanking}}" wx:for-item="user" wx:for-index="i"  class="userarea">
+  <view class="username" style="margin-top:{{i * 25 + 5}}px">{{i+1}}. {{user.userRealName}} {{user.userGrade}}({{user.userClass}}) </view> 
+  <!-- <view class="bar" wx:if="{{i!=0}}" style="margin-top:{{i * 25 + 5}}px"></view> -->
+  <view class="userpoints" style="margin-top:{{i * 25 + 5}}px">{{user.moledayPoints}}</view>
+  </view>
+</scroll-view>

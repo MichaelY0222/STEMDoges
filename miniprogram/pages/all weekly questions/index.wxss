@@ -1,0 +1,191 @@
+/* miniprogram/pages/all weekly questions/index.wxss */
+page {
+  background-color: #eeeeee;
+}
+
+.title{
+  margin-top: 20px;
+  width: 100%;
+  text-align: center;
+  font-weight: 600;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 30px;
+}
+
+.header{
+  width: 100%;
+  height: 80px;
+  background-color: white;
+}
+
+.weekItem{
+  height:50px;
+  margin-top: 5px;
+  width: 100%;
+  background-color: white;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.questionsRight{
+  position: absolute;
+  top: 40px;
+  font-size: 15px;
+  width: 100%; 
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.questionItem{
+  height:30px;
+  width:30px;
+  line-height: 30px;
+  background-color: #eeeeee;
+  text-align: center;
+  display: inline-block;
+  margin-left: 7px;
+  margin-right: 7px;
+  margin-top:10px;
+  font-size: 15px;
+  border-style: solid;
+  border-color: gray;
+  border-width: 1px;
+  border-radius: 15px;
+}
+.weekTitle{
+  position: absolute;
+  top: 14px;
+  font-size: 17px;
+  width: 100%; 
+}
+
+.questionArea{
+  width: 100%;
+}
+
+
+.questionImage{
+  margin-top:10px;
+  width: 250px;
+}
+
+.answerArea{
+  margin-top: 10px;
+  width: 100%;
+  background-color: #eeeeee;
+  min-height: 100px;
+  text-align: left;
+}
+
+.answerChoice{
+
+}
+
+.answerChoiceText{
+  margin-left: 10px;
+}
+
+.answerText{
+  margin-top: 20px;
+  margin-left: 5px;
+}
+
+
+
+.subjectTitle{
+  margin-top:-20px;
+  padding-top: 30px;
+  z-index: 2;
+  width: 100%;
+  min-height: 60px;
+  text-align: center;
+  font-size: 30px;
+  font-weight: 600;
+  background-color: #eeeeee;
+  border-radius: 30px;
+}
+
+
+.subjectImage{
+  width:200px;
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+
+
+.questionText{
+  width:90%;
+  margin-left:5%;
+  color:black;
+
+}
+
+
+.stars{
+  width: 100%;
+  text-align:center;
+  top:150px;
+  left:10%;
+  color:black;
+  font-family:Arial, Helvetica, sans-serif;
+  font-weight:500;
+  font-size: 20px;
+}
+
+.chooseQuestionsArea{
+  margin-left:5px;
+  margin-top:30px;
+  width:calc(100vw - 70px);
+  height:82px;
+  display: flex;
+}
+
+.weekCorrect{
+  position: absolute;
+  right:10px;
+  margin-top: 15px;
+}
+
+.weekNum{
+  position: absolute;
+  left:10px;
+  margin-top: 15px;
+}
+
+.weeksArea{
+  width: 90%;
+  margin-left: 5%;
+  height: calc(100vh - 50px);
+}
+
+.overlay {
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 90;
+}
+
+
+.popup{
+  background: white;
+  z-index: 91;
+  position: fixed;
+  height: 80%;
+  width: calc(100% - 50px);
+  min-width: 250px;
+  max-width: 500px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 30px;
+  text-align:center;
+}
+
+
+.closePopup {
+  width: 20px;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 20px;
+}

@@ -1,0 +1,30 @@
+<!--pages/events/piday/trophywall/trophywall.wxml-->
+<view class="title">You have won {{mathquizzes_level+tfpoints_level+logic_level}}/18</view>
+<view class="title">trophies, keep up!</view>
+
+<view class = "subtitle">24 points</view>
+<view class="line"></view>
+<view>
+  <view wx:for="{{level}}" class = "arrange" style="background-color:{{color[tfpoints_level-item+6]}}">
+    <view wx:if="{{tfpoints_level>=item}}">{{item}}</view>
+    <view wx:else>{{item}}</view>
+  </view>
+</view>
+
+<view  class = "subtitle">math quizzes</view>
+<view class="line"></view>
+<view>
+  <view wx:for="{{level}}" class = "arrange"  style="background-color:{{color[mathquizzes_level-item+6]}}">
+    <view wx:if="{{mathquizzes_level>=item}}">{{item}}</view>
+    <view wx:else>{{item}}</view>
+  </view>
+</view>
+
+<view  class = "subtitle">logic</view>
+<view class="line"></view>
+<view>
+  <view wx:for="{{level}}" class = "arrange"  style="background-color:{{color[logic_level-item+6]}}">
+    <view wx:if="{{logic_level>=item}}">{{item}}</view>
+    <view wx:else>{{item}}</view>
+  </view>
+</view>

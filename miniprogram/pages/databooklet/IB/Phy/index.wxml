@@ -1,0 +1,4 @@
+<!--miniprogram/pages/databooklet/IB/Chem/index.wxml-->
+<scroll-view scroll-y style="height:100vh">
+  <image wx:for="{{pages}}" class="pageImg" mode="widthFix" wx:for-index="i" src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/Data Booklets/IB/Phy/{{pages[i]}}.jpg" ></image>
+</scroll-view>

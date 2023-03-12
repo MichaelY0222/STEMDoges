@@ -1,0 +1,183 @@
+<!--miniprogram/pages/weekly questions/index.wxml-->
+<my-component id='confetti' duration="8000">
+  </my-component>
+<view wx:if="{{finished == true && viewQuestions == false}}" > <!-- IF THE USER SUBMITTED ALREADY-->
+  
+  <view class="title">CONGRATS</view>
+  <view class="title">YOU ARE DONE</view>
+  <scroll-view scroll-y class="questionsAnswered">
+      <scroll-view scroll-y wx:for="{{questions}}" wx:for-item="question" wx:for-index="i"  class="myAnswer" style="background-color:{{correct[i] == true?'#ddf9bf':'#ff797b'}}">
+        <text wx:if="{{question.isMC}}">
+          <text wx:if="{{myAnswers[i]==0}}">?</text>
+          <text wx:if="{{myAnswers[i]==1}}">your answer: {{question.choice1}}</text>
+          <text wx:if="{{myAnswers[i]==2}}">your answer: {{question.choice2}}</text>
+          <text wx:if="{{myAnswers[i]==3}}">your answer: {{question.choice3}}</text>
+          <text wx:if="{{myAnswers[i]==4}}">your answer: {{question.choice4}}</text>
+
+          <text wx:if="{{questions[i].answer==1}}">correct answer: {{question.choice1}}</text>
+          <text wx:if="{{questions[i].answer==2}}">correct answer: {{question.choice2}}</text>
+          <text wx:if="{{questions[i].answer==3}}">correct answer: {{question.choice3}}</text>
+          <text wx:if="{{questions[i].answer==4}}">correct answer: {{question.choice4}}</text>
+        </text>
+        <text wx:else>your answer: {{myAnswers[i]==0?'?' :myAnswers[i]}}
+        correct answer: {{questions[i].answer}}
+        </text>
+      </scroll-view>
+  </scroll-view>
+  <view style="bottom:20vh" class="bottomText">Questions Correct: {{numCorrect}}/{{questions.length}}</view>
+  <view style="bottom: 15vh" class="bottomText">Points: {{numPoints}}/{{pointsAvaliable}}</view>
+  <view style="left:10%" class="changeAnswersButton" bindtap="viewAnswers">
+    <text >View Answers</text>
+    </view>
+  <view style="right:10%" class="changeAnswersButton" bindtap="redirect" data-link="../home/index">
+  <text >Ok</text></view>
+</view>
+<view wx:elif="{{finished == true && viewQuestions == true}}" >  <!-- VIEW CORRECT ANSWERS -->
+  <scroll-view class="weeklyQ" scroll-y>
+    <view class="title" style="background-color:{{myAnswers[curQuestion]==questions[curQuestion].answer?'#ddf9bf':'#ff797b'}}">
+    <view style="padding-top:30px;padding-bottom:20px;" wx:if="{{myAnswers[curQuestion]==questions[curQuestion].answer}}">Correct</view>
+    <view style="padding-top:30px;padding-bottom:20px;" wx:else>Wrong</view>
+  </view>
+  
+  <view class="questionArea">
+  
+    <view class="stars">{{difficultyStars[curQuestion]}}\n</view>
+      <view class="questionText">
+        <text>
+          {{questions[curQuestion].chiQuestion}}
+          </text>
+        </view>
+    </view>
+  
+    <view wx:if="{{questions[curQuestion].isMC}}">
+      <view class="answerArea">
+          <view class=".answerChoice"  data-choice="1" style="background-color:{{colors[1]}}">
+            <text class="centerText answerChoiceText" >{{questions[curQuestion].choice1}}</text>
+          </view>
+          <view class=".answerChoice" data-choice="2" style="background-color:{{colors[2]}}">
+            <text class="centerText answerChoiceText">{{questions[curQuestion].choice2}}</text>
+          </view>
+          <view class=".answerChoice"  data-choice="3"style="background-color:{{colors[3]}}">
+            <text class="centerText answerChoiceText" >{{questions[curQuestion].choice3}}</text>
+          </view>
+          <view class=".answerChoice"  data-choice="4" style="background-color:{{colors[4]}}">
+            <text class="centerText answerChoiceText" >{{questions[curQuestion].choice4}}</text>
+          </view>
+      </view>
+
+      
+    <view style="text-align: center;margin-top:10px"> Correct Answer: </view>
+    <view style="text-align: center;">choice {{questions[curQuestion].answer}}</view>
+    <view style="text-align: center;margin-top:10px"> Your Answer: </view>
+    <view style="text-align: center;">choice {{myAnswers[curQuestion]}}</view>
+    <view style="text-align: center;margin-top:10px;"> Explaination: </view>
+    <view style="text-align: center;margin-bottom:150px">{{questions[curQuestion].steps}}</view>
+    </view>
+    <view wx:else>
+      <view style="text-align: center;margin-top:10px"> Correct Answer: </view>
+      <view style="text-align: center;">{{questions[curQuestion].answer}}</view>
+      <view style="text-align: center;margin-top:10px"> Your Answer: </view>
+      <view style="text-align: center;">{{myAnswers[curQuestion]}}</view>
+      <view style="text-align: center;margin-top:10px;"> Explaination: </view>
+      <view style="text-align: center;margin-bottom:150px">{{questions[curQuestion].steps}}</view>
+    </view>
+
+  <view class="footer">
+    <view wx:if="{{curQuestion!=0}}" class="footerText" bindtap="goToPrevQ" style="left:25px">back</view>
+    <view bindtap="showQuestions" class="footerText" style="left:45%">{{curQuestion+1}}/{{questions.length}}</view>
+    <view wx:if="{{curQuestion!=questions.length-1}}" class="footerText" bindtap="goToNextQ" style="right:25px;">next</view>
+    <view wx:else class="footerText" bindtap="goToNextQ" style="right:15px;">ok</view>
+  </view>
+  <view class="whiteOverlay" bindtap="hideQuestions" wx:if="{{showQ}}"></view>
+  <view class="showQuestionsArea" wx:if="{{showQ}}">
+    <view class="chooseQuestionsArea">
+    <view wx:for="{{questions}}" wx:for-item="question" wx:for-index="i" >
+        <view class="questionNumber" style="color:{{i==curQuestion?'#00aa00':'#bbbbbb'}}">{{i+1}}</view>
+        <view class=".questionItem" style="filter: brightness(80%); border-color:#00aa00; background-color:{{questions[i].isMC == true?colors[myAnswers[i]]:myAnswers[i]==0?colors[0]:colors[5]}};" wx:if="{{i==curQuestion}}" bindtap="changeQ" data-num="{{i}}">
+          <text class=".centerText">{{mySymbols[i]}}</text>
+        </view>
+        <view class=".questionItem" style="background-color:{{questions[i].isMC == true?colors[myAnswers[i]]:myAnswers[i]==0?colors[0]:colors[5]}}" wx:else bindtap="changeQ" data-num="{{i}}">
+          <text class=".centerText">{{mySymbols[i]}}</text>
+        </view>
+    </view>
+  </view>
+    <view bindtap="hideQuestions" class="footerText" style="left:45%">close</view>
+  </view>
+  </scroll-view>
+</view>
+<view wx:else>
+  <scroll-view class="weeklyQ" scroll-y> <!-- IF THE USER HAS NOT FINISHED-->
+    <!-- <view class="submitButton" bindtap="submitAllAnswers">
+        <text class="submitButtonText" style="font-size:15px">submit</text>
+      </view> -->
+
+    <!-- <view class="chooseQuestionsArea">
+      <view wx:for="{{questions}}" wx:for-item="question" wx:for-index="i" >
+          <view class=".questionItem" style="filter: brightness(80%); background-color:{{questions[i].isMC == true?colors[myAnswers[i]]:myAnswers[i]==0?colors[0]:colors[5]}};" wx:if="{{i==curQuestion}}" bindtap="changeQ" data-num="{{i}}">
+            <text class=".centerText">{{mySymbols[i]}}</text>
+          </view>
+          <view class=".questionItem" style="background-color:{{questions[i].isMC == true?colors[myAnswers[i]]:myAnswers[i]==0?colors[0]:colors[5]}}" wx:else bindtap="changeQ" data-num="{{i}}">
+            <text class=".centerText">{{mySymbols[i]}}</text>
+          </view>
+      </view>
+    </view> -->
+    <view class="questionArea">
+      <view class="subjectTitle" style=" background-color:{{questions[curQuestion].isMC == true?colors[myAnswers[curQuestion]]:myAnswers[curQuestion]==0?colors[0]:colors[5]}}">
+        <view>#{{curQuestion+1}} {{questions[curQuestion].subject}}</view>
+        <image class="subjectImage" wx:if="{{questions[curQuestion].titleImg!=null&&questions[curQuestion].titleImg!='null'}}" mode="widthFix"  src="{{questions[curQuestion].titleImg}}"/>
+      </view>
+      <view class="stars">{{difficultyStars[curQuestion]}}\n</view>
+      <view class="questionText">
+        <text>
+          {{questions[curQuestion].chiQuestion}}
+          </text>
+        </view>
+      <image class="questionImage" wx:if="{{questions[curQuestion].img!=null}}" mode="widthFix"  src="{{questions[curQuestion].img}}"/>
+    </view>
+
+    <view class="answerArea">
+      <view wx:if="{{questions[curQuestion].isMC == true}}">
+        <view class=".answerChoice" bindtap="selectAnswer"  data-choice="1" style="background-color:{{colors[1]}}">
+          <text class="centerText answerChoiceText" >{{questions[curQuestion].choice1}}</text>
+        </view>
+        <view class=".answerChoice" bindtap="selectAnswer"  data-choice="2" style="background-color:{{colors[2]}}">
+          <text class="centerText answerChoiceText">{{questions[curQuestion].choice2}}</text>
+        </view>
+        <view class=".answerChoice" bindtap="selectAnswer"  data-choice="3"style="background-color:{{colors[3]}}">
+          <text class="centerText answerChoiceText" >{{questions[curQuestion].choice3}}</text>
+        </view>
+        <view class=".answerChoice" bindtap="selectAnswer"  data-choice="4" style="background-color:{{colors[4]}}">
+          <text class="centerText answerChoiceText" >{{questions[curQuestion].choice4}}</text>
+        </view>
+      </view>
+      <view wx:else>
+        <form bindsubmit="submitAnswer" class="answerInputBox">
+          <input  id="inputAnswer" class="answerText" placeholder="enter your answer" name="textarea" value="{{myAnswers[curQuestion]==0?'':myAnswers[curQuestion]}}"/>
+          <button class="submit" form-type="submit" >SUBMIT</button>
+        </form>
+      </view>
+    </view>
+  </scroll-view>
+  <view class="footer">
+    <view wx:if="{{curQuestion!=0}}" class="footerText" bindtap="goToPrevQ" style="left:25px">back</view>
+    <view bindtap="showQuestions" class="footerText" style="left:45%">{{curQuestion+1}}/{{questions.length}}</view>
+    <view wx:if="{{curQuestion!=questions.length-1}}" class="footerText" bindtap="goToNextQ" style="right:25px;">skip</view>
+    <view wx:else class="footerText" bindtap="goToNextQ" style="right:15px;">submit</view>
+  </view>
+  <view class="whiteOverlay" bindtap="hideQuestions" wx:if="{{showQ}}"></view>
+  <view class="showQuestionsArea" wx:if="{{showQ}}">
+    <view class="chooseQuestionsArea">
+    <view wx:for="{{questions}}" wx:for-item="question" wx:for-index="i" >
+        <view class="questionNumber" style="color:{{i==curQuestion?'#00aa00':'#bbbbbb'}}">{{i+1}}</view>
+        <view class=".questionItem" style="filter: brightness(80%); border-color:#00aa00; background-color:{{questions[i].isMC == true?colors[myAnswers[i]]:myAnswers[i]==0?colors[0]:colors[5]}};" wx:if="{{i==curQuestion}}" bindtap="changeQ" data-num="{{i}}">
+          <text class=".centerText">{{mySymbols[i]}}</text>
+        </view>
+        <view class=".questionItem" style="background-color:{{questions[i].isMC == true?colors[myAnswers[i]]:myAnswers[i]==0?colors[0]:colors[5]}}" wx:else bindtap="changeQ" data-num="{{i}}">
+          <text class=".centerText">{{mySymbols[i]}}</text>
+        </view>
+    </view>
+  </view>
+    <view bindtap="hideQuestions" class="footerText" style="left:45%">close</view>
+  </view>
+</view>
+

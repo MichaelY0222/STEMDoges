@@ -1,0 +1,53 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/events/piday/piday",
+    "pages/events/piday/trophywall/trophywall",
+    "pages/events/piday/mathquizzes/mathquizzes",
+    "pages/events/piday/mathquizzes_ques/mathquizzes_ques",
+    "pages/weekly questions/index",
+    "pages/admin/index",
+    "pages/me/index",
+    "pages/weekly Q/index",
+    "pages/mini games/24points/24points",
+    "pages/mini games/riddle/riddle",
+    "pages/all weekly questions/index",
+    "pages/events/bitday/index",
+    "pages/events/bitday/leader board/index",
+    "pages/events/bitday/programming questions/index",
+    "pages/events/bitday/scavenger hunt/index",
+    "pages/events/bitday/trivia/index",
+    "pages/databooklet/index",
+    "pages/reviewGuides/index",
+    "pages/databooklet/IB/Chem/index"
+  ],
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarTitleText": "理工狗",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "color": "#000000",
+    "selectedColor": "#2A9D8F",
+    "borderStyle": "black",
+    "backgroundColor": "#ffffff",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "HOME",
+        "iconPath": "/images/home2.jpg",
+        "selectedIconPath": "/images/home2.jpg"
+      },
+      {
+        "pagePath": "pages/me/index",
+        "text": "ME",
+        "iconPath": "/images/me2.jpg",
+        "selectedIconPath": "/images/me2.jpg"
+      }
+    ]
+  },
+  "sitemapLocation": "sitemap.json",
+  "style": "v2"
+}

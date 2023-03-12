@@ -1,0 +1,30 @@
+<!--miniprogram/pages/bitday/index.wxml-->  
+<scroll-view scroll-y style="height:100vh"> 
+ <!--<image  class="eventHeader" bindtap="redirect"  data-link="../events/piday/piday" src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/bitday/cover.jpg"></image>--> 
+<view  class="eventHeader" bindtap="redirect"  data-link="../events/piday/piday" >Pi day</view>
+ 
+ <!--
+    <image  class="eventHeader" bindtap="redirect" data-link="../weekly Q/index" src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/weeklyQuestions/week{{weekNum}}/cover.jpg">Weekly Questions</image>
+    <div  class="eventHeaderSmall" bindtap="redirect" data-link="../reviewGuides/index">Mailbox</div>
+  
+    <div  class="eventHeaderSmall" bindtap="redirect" data-link="../reviewGuides/index" >Forum</div>
+ 
+    <image  class="eventHeader" bindtap="redirect" data-link="../databooklet/index" src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/homepage/data booklet.jpg" >Data Booklet</image>
+    <image  class="eventHeader" bindtap="redirect" data-link="../reviewGuides/index"src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/homepage/review guides.jpg" >Review Guides</image> 
+  -->
+  <view wx:if="{{isAdmin}}" bindtap="redirect" data-link="../admin/index" class="eventHeader">admin</view>
+  <view style="height:50px"></view>
+</scroll-view>
+
+<!-- info input area -->
+<view wx:if="{{showPopup[0]==0}}" class="overlay" ></view>
+<view wx:if="{{showPopup[0]==0}}" class="mini popup" >
+  <form bindsubmit="submitInfo" class="answerInputBox">
+    <input  style="margin-top:10%" id="inputAnswer" class="inputArea" placeholder="Name" name="name" />
+    <input  id="inputAnswer" class="inputArea" placeholder="Class" name="class" />
+    <input  id="inputAnswer" class="inputArea" placeholder="Grade" name="grade" />
+    <input  id="inputAnswer" class="inputArea" placeholder="Gnum" name="gnum" />
+    <button class="submit" style="position:absolute;bottom:0px;width:40%;left:30%" form-type="submit" >Continue</button>
+  </form>
+</view>
+

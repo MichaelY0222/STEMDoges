@@ -1,0 +1,5 @@
+<!--miniprogram/pages/me/index.wxml-->
+<view class="accountArea">
+  <image class="profilePicture" src="{{pfpUrl}}"></image>
+  <view class="nameArea">{{name}}</view>
+</view>

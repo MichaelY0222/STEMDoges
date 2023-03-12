@@ -1,0 +1,11 @@
+<!--miniprogram/pages/bitday/leader board/index.wxml-->
+<view class="yourRank">Your Rank: {{user[0]}}</view>
+<view class="yourRank" style="margin-top:0px;">Your Points: {{user[2]}}</view>
+<scroll-view class="leaderboard" scroll-y>
+  <view wx:for="{{users}}" wx:for-item="user" wx:for-index="i"  class="userarea">
+  <view class="username" style="margin-top:{{i * 25 + 5}}px">{{i+1}}. {{user[1]}} </view> 
+  <!-- <view class="bar" wx:if="{{i!=0}}" style="margin-top:{{i * 25 + 5}}px"></view> -->
+  <view class="userclass" style="margin-top:{{i * 25 + 5}}px">{{user[3]}}-{{user[4]}}</view>
+  <view class="userpoints" style="margin-top:{{i * 25 + 5}}px">{{user[2]}}</view>
+  </view>
+</scroll-view>

@@ -1,0 +1,31 @@
+<!--miniprogram/pages/questions/mathKnockout/mathKnockout.wxml-->
+<view class="header">
+  <view class="title">
+    <text class="bold">{{title}}</text>
+    <view class="info">
+      <view class="timer"><text class="label">剩余时间:</text>{{timerDisplay}}</view>
+    </view>
+  </view>
+</view>
+
+<view class="content">
+  <view class="question">
+    <view class="qEng">{{question["engQuestion"]}}</view>
+    <view class="qImg"><image style="{{imgWidth}}" mode="widthFix" src="{{img}}"/></view>
+  </view>
+  <view class="mcAns">
+    <view class="directions">Select one answer:</view>
+    <view wx:for="{{choices}}" wx:for-item="c" wx:for-index="idx" class="choice choice-{{idx}}" bindtap="choose" data-choice="{{idx}}">
+      <view class="bubble chosen-{{choiceDisplay[idx]}}"><view class="letter">{{['A', 'B', 'C', 'D'][idx]}}</view></view>
+      <view class="choiceText">{{c}}</view>
+    </view>
+  </view>
+  <view class="saAns"></view>
+</view>
+
+<view class="footer">
+  <view style="position: relative; width: 100%; height: 60px;">
+    <button class="submit disabled-{{disabled}} answered-{{!unNextable}}" size="mini" bindtap="submit">提交</button>
+    <button class="next disabled-{{unNextable}}" size="mini" bindtap="directNext"><image src="../../../images/next.svg" class="nextImg"/></button>
+  </view>
+</view>

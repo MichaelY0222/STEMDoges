@@ -1,0 +1,132 @@
+<!--miniprogram/pages/admin/index.wxml-->
+<text class="title">ADMIN</text>
+<view >
+  <view class="item" style="top:70px;left:5%">
+    <!-- WEEKLY QUESTIONS-->
+    <view class="itemTitle">Weekly Qs</view>
+
+    <view style="margin-top:10px">Week #{{weekNum}}</view>
+    <view >{{weeklyQuestions.length}}</view>
+    <view> questions</view>
+    <view>{{finishedWeekly}}</view>
+    <view> finished this week</view>
+    <view class="itemBtn" bindtap="showPopup" data-popupNum="0">Edit Questions</view>
+    <view class="itemBtn" bindtap="showPopup" data-popupNum="2">Auto Update</view>
+    <view class="itemBtn" bindtap="prevWeek" style="width:42.5%; margin-right:2.5%" > {{'<'}} </view>
+    <view class="itemBtn" bindtap="nextWeek" style="width:42.5%; margin-left:2.5%"  > {{'>'}}</view>
+  </view>
+  <view class="item" style="top:70px;right:5%">
+  <!-- USERS -->
+    <view  class="itemTitle">Users</view>
+
+    <view style="margin-top:10px">...</view>
+    <view>{{userNum}}</view>
+    <view>total users</view>
+
+    <view >{{admins.length}}</view>
+    <view> admins</view>
+
+    <view class="itemBtn" bindtap="showPopup" data-popupNum="1">Manage Admins</view>
+    <view class="itemBtn" bindtap="showPopup" >Manage Users</view>
+  </view>
+  <view class="item" style="top:380px;left:5%">
+  <!-- REVIEW GUIDES-->
+    <view  class="itemTitle">Review Guides</view>
+  </view>
+  <view class="item" style="top:380px;right:5%">
+  <!-- ARTICLES -->
+    <view  class="itemTitle">Articles</view>
+  </view>
+</view>
+
+<view class="overlay" bindtap="hidePopup" wx:if="{{showingPopup == true}}"></view>
+<view wx:if="{{popups[0] == true}}" class="questions popup" >
+  <text bindtap="hidePopup" class="closePopup">X</text>
+  <text bindtap="deleteQuestion" class="closePopup" style="right:35px">🗑</text>
+  <view style="text-align:center">
+    <view class="topWeekNum" bindtap="lookAtPrevWeek">{{'<--'}}</view>
+    <text class="topWeekNum">Week #{{lookingAtWeek}}</text>
+    <view class="topWeekNum" bindtap="lookAtNextWeek">--></view>
+  </view>
+  <scroll-view class="chooseQuestionsArea" style="width:calc(90vw - 80px)" scroll-x>
+    <view class="chooseQuestionsArea" style="width:calc(50px * {{weeklyQuestions.length}})">
+      <view wx:for="{{weeklyQuestions}}" wx:for-item="question" wx:for-index="i"  class=".questionItem" style="background-color:{{i==curQuestion?colors[0]:'#858587'}} "   bindtap="changeQ" data-num="{{i}}">
+        <text>{{i+1}}</text>
+      </view>
+      <view class=".questionItem" bindtap="addQ" >
+            <text>+</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <scroll-view class="questionArea" scroll-y>
+    <view bindtap="changeQuestionProperties" data-type="MCQ" class="changeTypeButton" style="background-color:{{weeklyQuestions[curQuestion].isMC == true?colors[0]:colors[1]}}" >MCQ</view>
+    <view bindtap="changeQuestionProperties" data-type="INPUT" class="changeTypeButton" style="background-color:{{weeklyQuestions[curQuestion].isMC != true?colors[0]:colors[1]}}">INPUT</view>
+    
+    <view bindtap="changeQuestionProperties" data-type="IMG" class="changeTypeButton" style="background-color:{{weeklyQuestions[curQuestion].img != null?colors[0]:colors[1]}}">IMG</view>
+    <view bindtap="changeQuestionProperties" data-type="TEXT" class="changeTypeButton" style="background-color:{{weeklyQuestions[curQuestion].chiQuestion != null?colors[0]:colors[1]}}">TEXT</view>
+    <form bindsubmit="submitQuestion" style="width:100%">
+      <input  name="subject" class="subjectTitle" value="{{weeklyQuestions[curQuestion].subject}}" placeholder="subject" />
+      <slider bindchange="changeDifficulty" class="difficultySlider" min="1" max="10" value="{{weeklyQuestions[curQuestion].difficulty}}"/>
+      <view class="difficultyStars">{{stars}}</view>      
+      <view class="changingQuestion" wx:if="{{weeklyQuestions[curQuestion].chiQuestion != null}}" >
+        <textarea maxlength="-1" style="width:100%;"  name="question"  id="inputAnswer" placeholder="enter your question..." value="{{weeklyQuestions[curQuestion].chiQuestion}}"> </textarea>
+      </view>
+      <image wx:if="{{weeklyQuestions[curQuestion].titleImg == null}}" bindtap="chooseTitleImg"  mode="scaleToFill" class="imgQuestion" src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/weeklyQuestions/chooseimg.png" ></image>
+      <image wx:else bindtap="chooseTitleImg"  mode="scaleToFill" class="imgQuestion" src="{{weeklyQuestions[curQuestion].titleImg}}" ></image>
+
+      <image wx:if="{{weeklyQuestions[curQuestion].img == 'null'}}" bindtap="chooseImg"  mode="scaleToFill" class="imgQuestion" src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/weeklyQuestions/chooseimg.png" ></image>
+      <image wx:elif="{{weeklyQuestions[curQuestion].img != null}}" bindtap="chooseImg"  mode="scaleToFill" class="imgQuestion" src="{{weeklyQuestions[curQuestion].img}}" ></image>
+      <view class="mcqAnswers" wx:if="{{weeklyQuestions[curQuestion].isMC == true}}">
+        <input name="choice1" style="background-color:{{colors[2]}} ;" value="{{weeklyQuestions[curQuestion].choice1}}" placeholder="enter choice..." class="mcqChoice"/>
+        <input name="choice2" style="background-color:{{colors[3]}} ;" value="{{weeklyQuestions[curQuestion].choice2}}" placeholder="enter choice..." class="mcqChoice"/>
+        <input name="choice3" style="background-color:{{colors[4]}} ;" value="{{weeklyQuestions[curQuestion].choice3}}" placeholder="enter choice..." class="mcqChoice"/>
+        <input name="choice4" style="background-color:{{colors[5]}} ;" value="{{weeklyQuestions[curQuestion].choice4}}" placeholder="enter choice..." class="mcqChoice"/>
+      
+        <view bindtap="chooseCorrectAnswer" data-choice="1" class="selectChoice" style="bottom:155px; color:{{correctChoice== 1?colors[0]:black}}">✓</view>
+        <view bindtap="chooseCorrectAnswer" data-choice="2" class="selectChoice" style="bottom:105px; color:{{correctChoice == 2?colors[0]:black}}">✓</view>
+        <view bindtap="chooseCorrectAnswer" data-choice="3"  class="selectChoice" style="bottom:55px; color:{{correctChoice == 3?colors[0]:black}}">✓</view>
+        <view bindtap="chooseCorrectAnswer" data-choice="4" class="selectChoice" style="bottom:5px;color:{{correctChoice== 4?colors[0]:black}}">✓</view>
+      </view>
+      <input wx:else name="answerInputText" id="answerInputText" class="answerInput answerText" placeholder="enter the answer" value="{{weeklyQuestions[curQuestion].answer}}"/>
+      <view class="answerInput answerText" style="background-color:{{colors[0]}}">
+        <textarea maxlength="-1" name="answerSteps" style="width:100%;" id="answerSteps" placeholder="enter the steps" value="{{weeklyQuestions[curQuestion].steps}}"> </textarea>
+      </view>
+      <button class="submitChanges" style="width: 40%;" form-type="submit" >SUBMIT</button>
+    </form>
+  </scroll-view>
+</view>
+
+<view wx:if="{{popups[1] == true}}" class="admins popup" >
+  <text bindtap="hidePopup" class="closePopup">X</text>
+  <text style="font-size:30px; font-weight:600">ADMIN\nMANAGEMENT</text>
+  <scroll-view scroll-y class="showAdminsArea">
+    <view class="adminInfo" wx:for="{{admins}}"  wx:for-index="i">
+      <image class="adminAvatar" src="{{admins[i].wechatInfo.avatarUrl}}"></image>
+      <text class="adminText">{{admins[i].wechatInfo.nickName}}</text>
+      <view class="deleteAdminButton" bindtap="removeAdmin" data-person="{{i}}">
+      <view style="position:absolute;top:24%;left:40%">X</view>
+      </view>
+    </view>
+  </scroll-view>
+  <form bindsubmit="addAdmin" >
+    <view class="addAdminArea">
+      Add Admin
+      <input name="gNum" class="adminInput" placeholder="enter Gnum" />
+      or
+      <input name="name" class="adminInput" placeholder="enter real name" />
+      <text style="color:crimson">{{adminError}}</text>
+    </view>
+    <button class="submitChanges" style="width: 40%;" form-type="submit" >ADD</button>
+  </form>
+</view>
+
+
+<view wx:if="{{popups[2] == true}}" class="admins popup" >
+  <text bindtap="hidePopup" class="closePopup">X</text>
+  <view class="timeUntilUpdate">{{timeLeftTillUpdate}}</view>
+  <button bindtap="toggleAutoUpdate" style="background-color: #52b69a; position:absolute; bottom:10px; width:60%; left:20%">auto = {{autoUpdate}}</button>
+  <button bindtap="chooseCoverImg" style="background-color: #52b69a; margin-top:30px; width:60%; margin-left:20%; font-size:13px"> Choose Cover Img</button>
+  <image class="coverImage" bindtap="chooseCoverImg"  mode="scaleToFill"  src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/weeklyQuestions/week{{weekNum+1}}/cover.jpg" ></image>
+  
+</view>

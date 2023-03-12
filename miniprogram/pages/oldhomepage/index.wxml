@@ -1,0 +1,61 @@
+<!--miniprogram/pages/index/index.wxml-->
+
+<scroll-view scroll-y style="height:100vh; width:100vw">
+  <!-- <input class="mySearchbar" placeholder="search"/> -->
+  <view  class="subtitle">Hello {{name}},</view>
+  <view class="subtitle">Time To Learn!</view>
+  <view wx:if="{{isAdmin}}" class="adminPanel" bindtap="redirect" data-link="../admin/index">
+      <text class="title" style="font-size:10px; color:black;"> ADMIN</text>
+  </view>
+  
+  <!-- <view class="newSection">
+    <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/bitday/cover.jpg" class="thisWeeksQuestions" bindtap="redirect" data-link="../events/moleday/index">
+    </image>
+  </view>
+  <view class="newSection"> -->
+  <!-- <view class="newSection">
+    <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/moleday/cover.jpg" class="thisWeeksQuestions" bindtap="redirect" data-link="../events/moleday/index">
+    </image>
+  </view> -->
+  <view class="newSection">
+
+    <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/weeklyQuestions/week{{weekNum}}/cover.jpg" class="thisWeeksQuestions" bindtap="redirect" data-link="../weekly questions/index">
+      <!-- <text class="title"> Week {{weekNum}}\n Questions</text> -->
+      <!-- <image src="../../images/a.jpg" style="width:100%; height:100%"></image> -->
+    </image>
+    <view class="seeAllQ" bindtap="redirect" data-link="../all weekly questions/index">see all questions</view>
+  </view>
+
+  <view class="newSection">
+    <view class="subtitle">Review Guides</view>
+    <scroll-view scroll-x style="width: 100%; height:130px; white-space:nowrap">
+      <view style="margin-left:5%;" class="studyItem">9th Grade</view>
+      <view class="studyItem">10th Grade</view>
+      <view class="studyItem">11th Grade</view>
+      <view class="studyItem" style="margin-right:5%">12th Grade</view>
+      
+    </scroll-view>
+  </view>
+
+  <view class="newSection">
+    <view class="subtitle">Mini Games</view>
+    <scroll-view scroll-x style="width: 100%; height:130px; white-space:nowrap">
+      <view style="margin-left:5%;" bindtap="redirect" class="studyItem" data-link="../mini games/24points/24points">24 Points</view>
+    </scroll-view>
+  </view>
+
+  <!-- <view class="newSection">
+    <view class="subtitle">Newest Articles</view>
+    <view class="article">askdjlsad</view>
+    <view class="article">askdjlsad</view>
+    <view class="article">askdjlsad</view>
+  </view> -->
+  
+</scroll-view>
+<!-- 
+
+<view class="overlay" bindtap="hidePopup" wx:if="{{showWeekResults}}"></view>
+<view wx:if="{{showWeekResults}}"  class="weeklyResults popup" >
+  <text bindtap="hidePopup" class="closePopup">X</text>
+  week {{lastWeek}} question results............(under development)
+</view> -->

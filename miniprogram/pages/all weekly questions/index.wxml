@@ -1,0 +1,70 @@
+<!--miniprogram/pages/all weekly questions/index.wxml-->
+
+<view class="header">
+  <view class="title">Weekly Questions</view>
+</view>
+
+<scroll-view scroll-y class="weeksArea">
+  <view class="weekItem" style="background-color:#d1d1d1">
+    <view class="weekNum">Week {{weekNum}}</view>
+    <view class="weekCorrect"> 🔒</view>
+  </view>
+  <view wx:if="{{(weekNum-i)>=startWeek && (weekNum-i)<weekNum}}" bindtap="showWeek" data-week="{{weekNum-i}}" class="weekItem" wx:for="{{weekNum}}" wx:for-index="i" >
+    <view class="weekNum">Week {{weekNum-i}} <!-- count down to 1 --></view>
+    <view wx:if="{{myAnswers[weekNum-i].length!=0}}" class="weekCorrect">{{numCorrect[weekNum-i]}}/{{questions[weekNum-i].length}}</view>
+  </view>
+</scroll-view>
+
+<view class="overlay" bindtap="hidePopup" wx:if="{{showWeekResults}}"></view>
+<view wx:if="{{showWeekResults}}"  class="popup" >
+  <view class="weekTitle">Week {{lookingAtWeek}}</view>
+  <view class="questionsRight">Questions Correct: {{numCorrect[lookingAtWeek]}}/{{questions[lookingAtWeek].length}}</view>
+  <scroll-view class="chooseQuestionsArea" scroll-x>
+    <view class="chooseQuestionsArea" style="width:calc(44px * {{questions[lookingAtWeek].length}})">
+      <view wx:for="{{questions[lookingAtWeek]}}" wx:for-item="question" wx:for-index="i"  class=".questionItem" style="background-color:{{questionItemColors[checkCorrect[lookingAtWeek][i]]}}; filter: brightness({{curQuestion==i?'60%':'100%'}}); "   bindtap="changeQ" data-num="{{i}}">
+        <text>{{i+1}}</text>
+      </view>
+    </view>
+  </scroll-view>
+  <text bindtap="hidePopup" class="closePopup">X</text>
+  <scroll-view scroll-y style="height:calc(100vh - 300px);">
+    <view class="questionArea">
+      <view class="subjectTitle" style=" background-color:{{questions[lookingAtWeek][curQuestion].isMC == true?colors[myAnswers[lookingAtWeek][curQuestion]]:myAnswers[lookingAtWeek][curQuestion]==0?colors[0]:colors[5]}}">
+        <view>#{{curQuestion+1}} {{questions[lookingAtWeek][curQuestion].subject}}</view>
+        <image class="subjectImage" wx:if="{{questions[lookingAtWeek][curQuestion].titleImg!=null&&questions[lookingAtWeek][curQuestion].titleImg!='null'}}" mode="widthFix"  src="{{questions[lookingAtWeek][curQuestion].titleImg}}"/>
+      </view>
+      <view class="stars">{{difficultyStars[lookingAtWeek][curQuestion]}}\n</view>
+      <view class="questionText">
+        <text>
+          {{questions[lookingAtWeek][curQuestion].chiQuestion}}
+          </text>
+        </view>
+      <image class="questionImage" wx:if="{{questions[lookingAtWeek][curQuestion].img!=null}}" mode="widthFix"  src="{{questions[lookingAtWeek][curQuestion].img}}"/>
+    </view>
+    <view class="answerArea">
+      <view wx:if="{{questions[lookingAtWeek][curQuestion].isMC}}">
+        <view class=".answerChoice" style="background-color:{{colors[1]}}">
+          <text class="centerText answerChoiceText" >A. {{questions[lookingAtWeek][curQuestion].choice1}}</text>
+        </view>
+        <view class=".answerChoice" style="background-color:{{colors[2]}}">
+          <text class="centerText answerChoiceText">B. {{questions[lookingAtWeek][curQuestion].choice2}}</text>
+        </view>
+        <view class=".answerChoice" style="background-color:{{colors[3]}}">
+          <text class="answerChoiceText" >C. {{questions[lookingAtWeek][curQuestion].choice3}}</text>
+        </view>
+        <view class=".answerChoice"style="background-color:{{colors[4]}}">
+          <text class="answerChoiceText" >D. {{questions[lookingAtWeek][curQuestion].choice4}}</text>
+        
+      </view>
+        <view class="answerText"><text>Your Answer: {{letters[myAnswers[lookingAtWeek][curQuestion]]}}</text></view>
+        <view class="answerText"><text>Correct Answer: {{letters[questions[lookingAtWeek][curQuestion].answer]}}</text></view>
+        <view class="answerText"><text>Steps:\n {{questions[lookingAtWeek][curQuestion].steps}}</text></view>
+      </view>
+      <view wx:else>
+        <view class="answerText"><text>Your Answer: {{myAnswers[lookingAtWeek][curQuestion]}}</text></view>
+        <view class="answerText"><text>Correct Answer: {{questions[lookingAtWeek][curQuestion].answer}}</text></view>
+        <view class="answerText"><text>Steps:\n {{questions[lookingAtWeek][curQuestion].steps}}</text></view>
+      </view>
+    </view>
+  </scroll-view>
+</view>

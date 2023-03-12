@@ -1,0 +1,18 @@
+<!--miniprogram/pages/bitday/index.wxml-->  
+
+
+<image  class="eventHeader" bindtap="redirect" data-link="../weekly questions/index" src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/weeklyQuestions/week{{weekNum}}/cover.jpg"> Current Week</image>
+
+<view class="leaderboardTop" bindtap="redirect" data-link="../all weekly questions/index" >
+    <view class="leaderboardElementWeek">Week # {{weekNum}}</view>
+    <view class="leaderboardElementWeek" style="position:absolute;right:20px; top:0px;">Points</view>
+  </view>
+<scroll-view scroll-y class="leaderboard">
+  
+  <view wx:for="{{totalRanking}}" wx:for-item="user" wx:for-index="i"  class="leaderboardElement">
+    <view class="username" style="margin-top:{{i * 50 + 10}}px">{{i+1}}. {{user.userRealName}} {{user.userGrade}}({{user.userClass}}) </view> 
+    <!-- <view class="bar" wx:if="{{i!=0}}" style="margin-top:{{i * 25 + 5}}px"></view> -->
+    <view class="userpoints" style="margin-top:{{i * 50 + 10}}px">{{user["weeklyPoints-"+weekNum] }}</view>
+  </view>
+  
+</scroll-view>

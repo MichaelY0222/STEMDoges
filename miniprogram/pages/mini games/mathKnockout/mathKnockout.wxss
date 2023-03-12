@@ -1,0 +1,189 @@
+/* miniprogram/pages/questions/mathKnockout/mathKnockout.wxss */
+
+page {
+  background: white;
+}
+
+.header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.title {
+  background: #f8f8f8;
+  border-top: 1px solid #eeeeee;
+  border-bottom: 1px solid #eee;
+}
+
+.bold {
+  font-weight: 600;
+  font-size: 25pt;
+}
+
+.title, .info {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  width: calc(100% - 46px);
+  padding: 15px 23px;
+}
+
+.info {
+  text-align: right;
+  right: 20px;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+.timer {
+  width: 100%;
+  display: block;
+  height: 22px !important;
+  position: relative;
+}
+
+.label {
+  position: absolute;
+  top: 0px;
+  right: 40px;
+}
+
+.content {
+  margin: 95px 20px 100px 20px;
+}
+
+.qChi, .qEng {
+  margin: 7.5px 0;
+  font-size: 12pt;
+}
+
+.qEng {
+  line-height: 14pt;
+}
+
+.qImg {
+  margin: 5px 0;
+}
+
+.choice {
+  padding: 10px 0;
+  border-bottom: #ddd solid 1px;
+}
+
+.choice-0 {
+  border-top: #ddd solid 1px;
+}
+
+.directions {
+  padding-bottom: 8px;
+}
+
+.bubble, .choiceText {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.choiceText {
+  width: calc(100% - 28px)
+}
+
+.bubble {
+  font-size: 9pt;
+  margin-right: 10px;
+  position: relative;
+  border-radius: 8px;
+}
+
+.chosen-false {
+  color: gray;
+  border: 1px gray solid;
+  background: white;
+  height: 14px;
+  width: 14px;
+}
+
+.chosen-true {
+  color: white;
+  border: none;
+  background: rgb(47,133,252); /* rgb(30, 205,151); */
+  height: 16px;
+  width: 16px;
+}
+
+.chosen-correct {
+  color: white;
+  border: none;
+  background: rgb(30, 205,151);
+  height: 16px;
+  width: 16px;
+}
+
+.chosen-incorrect {
+  color: white;
+  border: none;
+  background: rgb(255, 72, 0);
+  height: 16px;
+  width: 16px;
+}
+
+.letter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.footer {
+  width: 100%;
+  height: 60px;
+  padding-bottom: 20px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  border-top: 1px solid #eee;
+  background: #f8f8f8;
+}
+
+.submit {
+  position: absolute;
+  right: 65px;
+  top: 50%;
+  transform: translate(0, -50%);
+  font-weight: normal;
+  height: 35px !important;
+  border-radius: 17.5px;
+  background: rgb(30, 205,151);
+  color: white;
+  line-height: 35px !important;
+}
+
+.next {
+  height: 35px !important;
+  width: 35px !important;
+  position: absolute;
+  right: 20px;
+  top: 50%;
+  transform: translate(0, -50%);
+  border-radius: 17.5px;
+  background: rgb(30, 205,151);
+}
+
+.nextImg {
+  filter: invert(1);
+  height: 30px;
+  width: 30px;
+  position: absolute;
+  right: 50%;
+  top: 50%;
+  transform: translate(50%, -50%);
+}
+
+.disabled-true {
+  background: #ddd !important;
+}
+
+.answered-true {
+  display: none !important;
+}

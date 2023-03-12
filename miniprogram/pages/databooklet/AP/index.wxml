@@ -1,0 +1,5 @@
+<!--miniprogram/pages/bitday/index.wxml-->  
+<scroll-view scroll-y style="height:100vh">
+  <view  class="eventHeader" bindtap="redirect" data-link="general/index" >...</view>
+  <view style="height:50px"></view>
+</scroll-view>

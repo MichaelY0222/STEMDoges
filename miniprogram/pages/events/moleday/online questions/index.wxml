@@ -1,0 +1,72 @@
+<!--miniprogram/pages/bitday/programming questions/index.wxml-->
+<my-component id='confetti' duration="8000">
+  </my-component>
+<view wx:if="{{finished == true}}" > <!-- IF THE USER SUBMITTED ALREADY-->
+  <view class="title" style="background-color:{{correct?'#ddf9bf':'#ff797b'}}">
+    <view style="padding-top:30px;padding-bottom:20px;" wx:if="{{correct}}">Correct</view>
+    <view style="padding-top:30px;padding-bottom:20px;" wx:else>Wrong</view>
+  </view>
+  <view class="questionArea">
+      <view class="questionText">
+        <text>
+          {{questions[curQuestion].question}}
+          </text>
+        </view>
+    </view>
+  
+  
+    <view class="answerArea">
+        <view class=".answerChoice"  data-choice="1" style="background-color:{{colors[1]}}">
+          <text class="centerText answerChoiceText" >{{questions[curQuestion].choice1}}</text>
+        </view>
+        <view class=".answerChoice" data-choice="2" style="background-color:{{colors[2]}}">
+          <text class="centerText answerChoiceText">{{questions[curQuestion].choice2}}</text>
+        </view>
+        <view class=".answerChoice"  data-choice="3"style="background-color:{{colors[3]}}">
+          <text class="centerText answerChoiceText" >{{questions[curQuestion].choice3}}</text>
+        </view>
+        <view class=".answerChoice"  data-choice="4" style="background-color:{{colors[4]}}">
+          <text class="centerText answerChoiceText" >{{questions[curQuestion].choice4}}</text>
+        </view>
+    </view>
+
+    <view style="text-align: center;margin-top:10px"> Correct Answer: </view>
+    <view style="text-align: center;">choice {{questions[curQuestion].answer}}</view>
+    <view style="text-align: center;margin-top:10px"> Your Answer: </view>
+    <view style="text-align: center;">choice {{myAnswers[curQuestion]}}</view>
+    <view style="text-align: center;margin-top:10px;"> Explaination: </view>
+    <view style="text-align: center;margin-bottom:150px">{{questions[curQuestion].steps}}</view>
+</view>
+<view wx:elif="{{notFinished==true}}">
+  <scroll-view class="weeklyQ" scroll-y> <!-- IF THE USER HAS NOT FINISHED-->
+    <view class="questionArea">
+      <view class="suquestionsbjectTitle">
+        <view>#{{curQuestion+1}}</view>
+      </view>
+      <view class="questionText">
+        <text>
+          {{questions[curQuestion].question}}
+          </text>
+        </view>
+    </view>
+
+    <view class="answerArea">
+        <view class=".answerChoice" bindtap="selectAnswer"  data-choice="1" style="background-color:{{colors[1]}}">
+          <text class="centerText answerChoiceText" >{{questions[curQuestion].choice1}}</text>
+        </view>
+        <view class=".answerChoice" bindtap="selectAnswer"  data-choice="2" style="background-color:{{colors[2]}}">
+          <text class="centerText answerChoiceText">{{questions[curQuestion].choice2}}</text>
+        </view>
+        <view class=".answerChoice" bindtap="selectAnswer"  data-choice="3"style="background-color:{{colors[3]}}">
+          <text class="centerText answerChoiceText" >{{questions[curQuestion].choice3}}</text>
+        </view>
+        <view class=".answerChoice" bindtap="selectAnswer"  data-choice="4" style="background-color:{{colors[4]}}">
+          <text class="centerText answerChoiceText" >{{questions[curQuestion].choice4}}</text>
+        </view>
+    </view>
+  </scroll-view>
+  <view class="footer">
+    <view bindtap="showQuestions" class="footerText" style="left:45%">{{curQuestion+1}}/{{questions.length}}</view>
+  </view>
+</view>
+

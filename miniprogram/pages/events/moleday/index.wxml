@@ -1,0 +1,116 @@
+<!--miniprogram/pages/bitday/index.wxml-->  
+<my-component id='confetti' duration="8000">
+</my-component>
+<view wx:if="{{loading}}">
+  loading...
+</view>
+<view wx:else>
+  <scroll-view scroll-y style="height:100vh">
+  <button bindtap="scanQRCode" style="padding-top:5vh;width: 90%;height: 15vh;margin-left: 5%; scanBtn; font-size:30px">SCAN CODE</button>
+  <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/moleday/questions.jpg" class="eventHeader" bindtap="showPopup" data-popupNum="2">Online Questions</image>
+  <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/moleday/leaderboard.jpg"view class="eventHeader" bindtap="redirect" data-Qnum="1" data-link="../moleday/leader board/index" data-Qnum="0">Leader Board</image>
+  <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/moleday/scavenger.jpg" class="eventHeader"  bindtap="showPopup" data-popupNum="4">Scavenger Hunt</image>
+  <view wx:if="{{isAdmin}}" class="eventHeader"  bindtap="showPopup" data-popupNum="5">admin</view>
+  <view style="height:50px"></view>
+</scroll-view>
+
+<!-- info input area -->
+<view wx:if="{{showPopup[0]}}" class="overlay" ></view>
+<view wx:if="{{showPopup[0]}}" class="mini popup" >
+  <form bindsubmit="submitInfo" class="answerInputBox">
+    <input  style="margin-top:40%" id="inputAnswer" class="inputArea" placeholder="Name" name="name" />
+    <input  id="inputAnswer" class="inputArea" placeholder="Class" name="class" />
+    <input  id="inputAnswer" class="inputArea" placeholder="Grade" name="grade" />
+    <input  id="inputAnswer" class="inputArea" placeholder="Gnum" name="gnum" />
+    <button class="submit" style="position:absolute;bottom:0px;width:40%;left:30%" form-type="submit" >Continue</button>
+  </form>
+</view>
+
+
+<!-- programming questions area -->
+<view wx:if="{{showPopup[2]}}" class="overlay" bindtap="hidePopup"></view>
+<view wx:if="{{showPopup[2]}}" style="text-align: left; padding-right:10px" class="regular popup" >
+  <text bindtap="hidePopup" class="closePopup">X</text>
+  <!-- <view class="questionsDone">0/9</view> -->
+  <view>
+  
+    <view class="date">Online Questions</view>
+    <view class="bar'"></view>
+
+    <view wx:for="{{[1,2,3,4,5,6,7,8,9,10]}}" wx:for-index="i" class="questionItem2" style="margin-left:10%;background-color:{{colors[1]}}"  bindtap="redirect" data-Qnum="{{i}}" data-link="../moleday/online questions/index"><view class="questoinItemNumber">{{i+1}}</view></view>
+  </view>
+</view>
+
+<!-- scavenger hunt area -->
+<view wx:if="{{showPopup[4]}}" class="overlay" bindtap="hidePopup"></view>
+<scroll-view scroll-y wx:if="{{showPopup[4]}}" style="text-align: left" class="regular popup" >
+  <text bindtap="hidePopup" class="closePopup">X</text>
+  <view class="PeriodicTableTitle">Periodic Table</view>
+  <!-- <view class="questionsDone">0/30</view> -->
+  <view style="margin-top:50px; margin-left:5%; width:90%;">
+    <view wx:for="{{periodicTable}}" wx:for-index="j">
+      <view wx:if="{{periodicTable[j][i]!=''}}" wx:for="{{periodicTable[j]}}"  class="questionItem" wx:for-index="i" style="background-color:{{atomicNums[j][i]>0?colors[ScavProgress[atomicNums[j][i]]]:colors[3]}};margin-left:{{i * 40}}px; margin-top:{{j* 50}}px;">
+      <view wx:if="{{ScavProgress[atomicNums[j][i]]>0}}" bindtap="redirect" data-Qnum="{{atomicNums[j][i]}}" data-link="../moleday/scavenger hunt/index" class="questoinItemNumber"  >{{periodicTable[j][i]}}</view>
+      <view wx:else class="questoinItemNumber"  >{{periodicTable[j][i]}}</view>
+      </view>
+    </view>
+   
+   
+ 
+  </view>
+</scroll-view>
+
+<!-- admin area -->
+<view wx:if="{{showPopup[5]}}" class="overlay" bindtap="hidePopup"></view>
+<view wx:if="{{showPopup[5]}}" style="text-align: left" class="regular popup" >
+  <text bindtap="hidePopup" class="closePopup">X</text>
+  <text bindtap="deleteQuestion" class="closePopup" style="right:35px">🗑</text>
+  <view style="text-align:center">
+    <view class="topWeekNum" bindtap="lookAtPrevType">{{'<--'}}</view>
+    <text class="topWeekNum">{{types[typeIdx]}}</text>
+    <view class="topWeekNum" bindtap="lookAtNextType">--></view>
+  </view>
+  <scroll-view class="chooseQuestionsArea" style="width:calc(90vw - 80px)" scroll-x>
+    <view class="chooseQuestionsArea" style="width:calc(50px * {{weeklyQuestions.length}})">
+      <view wx:for="{{questions}}" wx:for-item="question" wx:for-index="i"  class="questionItem2" style="background-color:{{i==curQuestion?colors[1]:'#858587'}} "   bindtap="changeQ" data-num="{{i}}">
+        <text>{{i+1}}</text>
+      </view>
+      <view class="questionItem2" bindtap="addQ" >
+            <text>+</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <scroll-view class="questionArea" scroll-y>
+  
+    <form bindsubmit="submitQuestion" style="width:100%">
+      
+      <view class="changingQuestion"  >
+        <textarea wx:if="{{questions[curQuestion].question != null}}" maxlength="-1" style="width:100%;"  name="question"  id="inputAnswer" placeholder="enter your question..." value="{{questions[curQuestion].question}}"> </textarea>
+        <textarea wx:else maxlength="-1" style="width:100%;"  name="question"  id="inputAnswer" placeholder="enter your question..." > </textarea>
+      </view>
+ 
+      <view class="mcqAnswers" >
+        <input name="choice1" style="background-color:{{colors[2]}} ;" value="{{questions[curQuestion].choice1}}" placeholder="enter choice..." class="mcqChoice"/>
+        <input name="choice2" style="background-color:{{colors[3]}} ;" value="{{questions[curQuestion].choice2}}" placeholder="enter choice..." class="mcqChoice"/>
+        <input name="choice3" style="background-color:{{colors[4]}} ;" value="{{questions[curQuestion].choice3}}" placeholder="enter choice..." class="mcqChoice"/>
+        <input name="choice4" style="background-color:{{colors[5]}} ;" value="{{questions[curQuestion].choice4}}" placeholder="enter choice..." class="mcqChoice"/>
+      
+        <view bindtap="chooseCorrectAnswer" data-choice="1" class="selectChoice" style="bottom:155px; color:{{correctChoice== 1?colors[1]:black}}">✓</view>
+        <view bindtap="chooseCorrectAnswer" data-choice="2" class="selectChoice" style="bottom:105px; color:{{correctChoice == 2?colors[1]:black}}">✓</view>
+        <view bindtap="chooseCorrectAnswer" data-choice="3"  class="selectChoice" style="bottom:55px; color:{{correctChoice == 3?colors[1]:black}}">✓</view>
+        <view bindtap="chooseCorrectAnswer" data-choice="4" class="selectChoice" style="bottom:5px;color:{{correctChoice== 4?colors[1]:black}}">✓</view>
+      </view>
+
+      <view class="answerInput answerText" style="background-color:orange">
+        <textarea maxlength="-1" name="answerSteps" style="width:100%;" id="answerSteps" placeholder="enter the steps" value="{{questions[curQuestion].steps}}"> </textarea>
+      </view>
+      <button class="submitChanges" style="width: 40%;" form-type="submit" >SUBMIT</button>
+    </form>
+  </scroll-view>
+</view>
+
+
+
+</view>
+

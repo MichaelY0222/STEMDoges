@@ -1,0 +1,1 @@
+"C:\Program Files (x86)\Tencent\微信web开发者工具\cli.bat" cloud functions deploy --e shsid-3tx38 --n functions --r  --project C:\Users\alany\WeChatProjects\miniprogram-5

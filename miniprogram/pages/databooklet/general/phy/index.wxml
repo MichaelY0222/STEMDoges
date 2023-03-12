@@ -1,0 +1,11 @@
+<!--miniprogram/pages/bitday/index.wxml-->  
+<scroll-view scroll-y style="height:100vh">
+
+  <input class="mySearchbar" placeholder="search"/>
+  <view  class="eventHeader" bindtap="redirect" data-link="math/index" >...</view>
+  <view  class="eventHeader" bindtap="redirect" data-link="phy/index">...</view>
+  <view  class="eventHeader" bindtap="redirect" data-link="chem/index">...</view>
+  <view  class="eventHeader" bindtap="redirect" data-link="bio/index">...</view>
+  <view style="height:50px"></view>
+</scroll-view>
+
