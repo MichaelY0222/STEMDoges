@@ -26,15 +26,18 @@ Page({
       .get({
         success: function (res) {
           var ans = res.data[0]["mathquizzes"]
-          var dd = new Date().getDate()
-          for(var i = 0; i < (dd-12+1)*3; i++){
+          //var dd = new Date().getDate()
+          for(var i = 0; i < 9; i++) {//(dd-13+1)*3; i++){
             if(ans[i+1]["status"]==0){
               ans[i+1]["status"]=1;
             }
           }
+          for(var i = 9; i < 15; i++) {
+            ans[i+1]["status"]=0
+          }
           that.setData({
             answers: ans,
-            points: res.data[0]["quizzespoints"]
+            points: res.data[0]["quizzesPoints"]
           })
           db.collection('userInfo').where({ _openid: app.globalData.openid })
           .update({

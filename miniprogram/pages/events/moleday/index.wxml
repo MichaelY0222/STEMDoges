@@ -6,7 +6,7 @@
 </view>
 <view wx:else>
   <scroll-view scroll-y style="height:100vh">
-  <button bindtap="scanQRCode" style="padding-top:5vh;width: 90%;height: 15vh;margin-left: 5%; scanBtn; font-size:30px">SCAN CODE</button>
+  <button bindtap="scanQRCode" style="padding-top:5vh;width: 90%;height: 15vh;margin-left: 5%; font-size:30px">SCAN CODE</button>
   <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/moleday/questions.jpg" class="eventHeader" bindtap="showPopup" data-popupNum="2">Online Questions</image>
   <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/moleday/leaderboard.jpg"view class="eventHeader" bindtap="redirect" data-Qnum="1" data-link="../moleday/leader board/index" data-Qnum="0">Leader Board</image>
   <image src="cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/moleday/scavenger.jpg" class="eventHeader"  bindtap="showPopup" data-popupNum="4">Scavenger Hunt</image>

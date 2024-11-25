@@ -32,7 +32,9 @@
     "packNpmManually": false,
     "packNpmRelationList": [],
     "minifyWXSS": true,
-    "ignoreUploadUnusedFiles": true
+    "ignoreUploadUnusedFiles": true,
+    "condition": false,
+    "ignoreDevUnusedFiles": false
   },
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
   "condition": {
@@ -64,10 +66,10 @@
     "tabIndent": "insertSpaces",
     "tabSize": 2
   },
+  "appid": "wx75f99a2b335e85a9",
   "libVersion": "2.14.1",
   "packOptions": {
     "ignore": [],
     "include": []
-  },
-  "appid": "wx75f99a2b335e85a9"
+  }
 }

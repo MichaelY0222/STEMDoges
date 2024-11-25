@@ -31,7 +31,7 @@ Page({
     colors:["#eeeeee","#C4D3D8", "#F2EFE6", "#DBEAD7", "#A3B5D9", "#C9B8C0"], // not answered, mc1, mc2, mc3, mc4, input
     correct:false,
     started: false,
-    time:20,
+    time:480,
     timer:null
   },
   
@@ -47,10 +47,17 @@ Page({
     wx.cloud.init({
       env: 'shsid-3tx38'
     })
-
   },
+
+  onUnload: function() {
+    if (this.data.started==true && this.data.notFinished) {
+      console.log("hiidden")
+      this.submitAllAnswers();
+    }
+  },
+
   onShow: function () {
-    
+
   },
 
  // showConfetti(){
@@ -132,7 +139,7 @@ Page({
     if (curTime>0){
       this.setData({
         time:curTime-1
-      })
+      });
     }else{
       clearInterval(this.data.timer);
       this.submitAllAnswers();
@@ -140,6 +147,7 @@ Page({
   },
   
   checkCorrect(givePoints){
+    console.log("check")
     console.log(this.data.myAnswers);
     let correct = false;
     let that =this;
@@ -155,7 +163,8 @@ Page({
     })   
     console.log(givePoints);
     if (givePoints==true && correct && this.data.is_click){
-      that.awardPoints(100);
+      that.awardPoints(1);
+      console.log("given points")
       this.setData({
         is_click: false
       })
@@ -172,7 +181,7 @@ Page({
         .where({ _openid: app.globalData.openid })
         .update({
           data: {
-            bitdayPoints: res.data[0].bitdayPoints + num
+            gamesPoints: res.data[0].gamesPoints + num
           }
         });
         
@@ -199,25 +208,26 @@ Page({
           .where({type:"bitday"})
           .get({
             success: function (res){
-              that.awardPoints(50);
+              that.awardPoints(0);
             }
           })
         }
-        bitdayAns["scav-" + (that.data.curQuestion+1).toString()] = 0;
-        db.collection('userInfo')
-        .where({ _openid: app.globalData.openid })
-        .update({
-          data: {
-            bitdayAnswers: bitdayAns
-          }
-        });
+        // bitdayAns["scav-" + (that.data.curQuestion+1).toString()] = 0;
+        // db.collection('userInfo')
+        // .where({ _openid: app.globalData.openid })
+        // .update({
+        //   data: {
+        //     bitdayAnswers: bitdayAns
+        //   }
+        // });
       }
     })
   },
   startQuestion(event){
+    console.log("started");
     this.setData({
       timer:setInterval(this.myTimer, 1000),
-      time:20,
+      time:60,
       started: true,
       notFinished: true
     })
@@ -308,6 +318,7 @@ Page({
   submitAllAnswers(event){
     let bitdayAns = {};
     let that = this;
+    that.checkCorrect(true);
     db.collection('userInfo')
     .where({ _openid: app.globalData.openid })
     .get({

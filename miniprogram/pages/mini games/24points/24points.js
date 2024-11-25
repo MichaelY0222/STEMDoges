@@ -94,6 +94,24 @@ Page({
         }
       }
     })
+    this.awardPoints(scoreVal);
+  },
+
+  awardPoints(num){
+    console.log("updateScore", num)
+      db.collection('userInfo')
+      .where({ _openid: app.globalData.openid })
+      .get({
+        success: function (res){
+          db.collection('userInfo')
+          .where({ _openid: app.globalData.openid })
+          .update({
+            data: {
+              pointsPoints: (num > res.data[0].pointsPoints || num == null) ? num : res.data[0].pointsPoints
+            }
+          });
+        }
+      })
   },
 
   check: function (a, n) { // recursive function to check solvability, 抄的 不comment了
@@ -389,3 +407,4 @@ function addRecord(score) {
     })
  
 }
+

@@ -15,7 +15,7 @@
       </view>
     </view>
   </view>
-  <view bindtap="try_again" style="position:fixed;bottom:0;;width:40%;left:30%;font-size: 60rpx;font-weight: 500;">try again</view>
+  <view bindtap="try_again" style="position:fixed;bottom:0;;width:40%;left:30%;font-size: 60rpx;font-weight: 500;">Try Again?</view>
 </view>
 
 <view wx:if="{{answers[number]['status']==2}}" > <!-- IF THE USER SUBMITTED ALREADY-->

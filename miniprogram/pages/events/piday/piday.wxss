@@ -1,16 +1,28 @@
 /* miniprogram/pages/bitday/index.wxss */
 .eventHeader{
   width: 90%;
-  height: 25vh;
+  height: 15vh;
   margin-left: 5%;
-  background-color:rgba(0, 0, 0, 0.377);
+  background-color:rgb(255, 255, 255);
   border-radius: 15px;
   margin-top:20px;
   box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
   text-align: center;
   display: table;
+
+  font-size: 3vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+.day{
+  width: 100%;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
+  font-size: 20px;
+}
 
 .popup{
   background: white;
@@ -106,7 +118,7 @@
   font-size: 25px;
   width: 100%;
   text-align: center;
-  margin-top: 5px;
+  margin-top: 10px;
 }
 
 .questionsDone{

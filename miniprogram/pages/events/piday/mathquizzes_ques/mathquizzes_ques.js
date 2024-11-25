@@ -32,7 +32,7 @@ Page({
           success: function (res) {
             that.setData({
               answers: res.data[0]["mathquizzes"],
-              points: res.data[0]["quizzespoints"]
+              points: res.data[0]["quizzesPoints"]
             })
           }
         })
@@ -84,7 +84,7 @@ Page({
       .update({
         data: {
             mathquizzes: new_answer,
-            points: new_points
+            quizzesPoints: new_points
       }})
     }
     if (ans_status == false){

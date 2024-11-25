@@ -9,176 +9,70 @@ Page({
    */
   data: {
     users:[],
-    user: []
+    user: [],
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-    this.getUsers();
+    // this.getUsers();
  //   this.getRanking();
+    this.getGamesUsers();
+    //console.log("hello", this.data.day);
   },
 
-  getUsers(){
-    let that = this;
-    db.collection('userInfo').orderBy('bitdayPoints', 'desc')
-    .limit(20)
-    .get({
-      success: function (res) {
-        let users = [];
-        let user = [];
-        for (var i=0; i<res.data.length; i++)
-        {
-          users[i] = [i+1, res.data[i].userRealName, res.data[i].bitdayPoints,res.data[i].userGrade, res.data[i].userClass];
-          if (res.data[i]._openid==app.globalData.openid){
-            user = [i+1, res.data[i].userRealName, res.data[i].bitdayPoints,res.data[i].userGrade, res.data[i].userClass];
-          }
-        }
-        console.log(users);
-        console.log(user);
-        that.setData({
-          users:users,
-          user:user
-        })
-      }
-    })
-  },
-/**
-  getRanking() {
-    let that = this;
-    // wx.cloud.callFunction({
-    //   name: 'getRanking',
-    //   success: res => {
-    //     var arr = res.result
-    //     console.log(res.result);
-    //     arr.sort((a, b) => b.bitdayPoints - a.bitdayPoints)
-    //     that.setData({ totalRanking: arr })
-    //     var totalRank = arr.map((a) => a._openid).indexOf(app.globalData.openid) + 1
-    //     that.setData({ rank: totalRank })
-        
-    //   },
-    // })
-    
-    db.collection('bitday')
-    .where({type:"trivia-1"})
-    .get({
-      success: function (res){
-        let trivia1 = res.data;
-        db.collection('bitday')
-        .where({type:"trivia-2"})
-        .get({
-          success: function (res){
-            let trivia2 = res.data;
-            db.collection('bitday')
-            .where({type:"trivia-3"})
-            .get({
-              success: function (res){
-                let trivia3 = res.data;  
-                db.collection('bitday')
-                .where({type:"scavenger hunt"})
-                .get({
-                  success: function (res){
-                  let scavenger = res.data;
-                  db.collection('bitday')
-                  .where({type:"scavenger hunt"})
-                  .skip(20)
-                  .get({
-                    success: function (res){
-                    scavenger = scavenger.concat(res.data);
-                    db.collection('bitday')
-                  .where({type:"programming"})
-                  .get({
-                    success: function (res){
-                      let programmingQuestions = res.data;
-                      let arr = [];
-                      for (let i=1; i<=49; i++){
-                        db.collection('userInfo')
-                        .where({bitdayVerified:true})
-                        .skip(i*20)
-                        .get({
-                          success: function (res){
-                            arr = arr.concat(res.data);
-                            if (i == 49){
-                              console.log(arr);
-                              let newArr = [];
-                              for (let j=0; j<arr.length;j++){
-                                if (arr[j].bitdayAnswers!=null){
-                                  console.log(j);
-                                  for (const key in arr[j]["bitdayAnswers"]) {
-                                    if (key == "trivia-1"){
-                                      for (let k = 0; k<10; k++){
-                                        if (arr[j]["bitdayAnswers"][key][k] == trivia1[k].answer)
-                                          arr[j].bitdayPoints +=100;
-                                      }
-                                    }
-                                    else if (key == "trivia-2"){
-                                      for (let k = 0; k<10; k++){
-                                        if (arr[j]["bitdayAnswers"][key][k] == trivia2[k].answer)
-                                          arr[j].bitdayPoints +=100;
-                                      }
-                                    }
-                                    else if (key == "trivia-3"){
-                                      for (let k = 0; k<10; k++){
-                                        if (arr[j]["bitdayAnswers"][key][k] == trivia3[k].answer)
-                                          arr[j].bitdayPoints +=100;
-                                      }
-                                    }
-                                }
-                                for (let k =1; k<=9;k++){
-                                  if (arr[j]["bitdayAnswers"]["programmingQuestion-" + k.toString()] != null){
-                                    let correct = true;
-                                    for (let l = 0; l<arr[j]["bitdayAnswers"]["programmingQuestion-" + k.toString()]; l++){
-                                      if (arr[j]["bitdayAnswers"]["programmingQuestion-" + k.toString()][l] != programmingQuestions[k-1].order[l] )
-                                        correct = false;
-                                    }
-                                    console.log("programming");
-                                    if (correct)
-                                      arr[j].bitdayPoints +=200;
-                                  }
-                                }
-                                for (let k=1; k<=30; k++){
-                                  if (arr[j]["bitdayAnswers"]["scav-" + k.toString()] != null){
-                                    if (arr[j]["bitdayAnswers"]["scav-" + k.toString()] == scavenger[k-1].answer){
-                                      console.log("scav");
+  getGamesUsers(){
+        let that = this;
 
-                                      arr[j].bitdayPoints +=150;
-                                    }
-                                  }
-                                }
-                                
-                                newArr.push(arr[j]);
-                              }
-                              
-                              }
-                              newArr.sort((a,b) => b.bitdayPoints - a.bitdayPoints);
-                              that.setData({
-                                totalRanking:newArr
-                              });
-                              console.log(newArr);
-                            }
-
-                          }
-                        })
-                      }
-                    }
-                  })
-                    }
-                  })
-                  }
-                })
+        wx.cloud.callFunction({ // get openid
+          name: 'getRanking',
+          success: res => {
+            console.log(res.result.data)
+            let users = [];
+            let user = [];
+            for (var i=0; i<res.result.data.length; i++)
+            {
+              users[i] = [i+1, res.result.data[i].userRealName, res.result.data[i].gamesPoints, res.result.data[i].userGrade, res.result.data[i].userClass];
+              if (res.result.data[i]._openid==app.globalData.openid){
+                user = [i+1, res.result.data[i].userRealName, res.result.data[i].gamesPoints, res.result.data[i].userGrade, res.result.data[i].userClass];
               }
+            }
+            console.log(users);
+            console.log(user);
+            that.setData({
+              users:users,
+              user:user
             })
+          },
+          fail: err => {
+            console.error(err)
           }
         })
-      }
-    })
-    
-    
-  },*/
-  /**
-   * Lifecycle function--Called when page is initially rendered
-   */
+
+        // db.collection('userInfo').orderBy('gamesPoints', 'desc')
+        // .limit(100)
+        // .get({
+        //   success: function (res) {
+        //     let users = [];
+        //     let user = [];
+        //     for (var i=0; i<res.data.length; i++)
+        //     {
+        //       users[i] = [i+1, res.data[i].userRealName, res.data[i].gamesPoints,res.data[i].userGrade, res.data[i].userClass];
+        //       if (res.data[i]._openid==app.globalData.openid){
+        //         user = [i+1, res.data[i].userRealName, res.data[i].gamesPoints,res.data[i].userGrade, res.data[i].userClass];
+        //       }
+        //     }
+        //     console.log(users);
+        //     console.log(user);
+        //     that.setData({
+        //       users:users,
+        //       user:user
+        //     })
+        //   }
+        // })
+      },
+
   onReady: function () {
 
   },

@@ -139,7 +139,9 @@ Page({
     changedWeek:false,
     correctChoice:1,
     dayNum: 0,
-    blocks:[]
+    blocks:[],
+    viewNames: ["g9", "g10"],
+    viewShow: [true, true]
   },
 
   
@@ -444,6 +446,23 @@ Page({
     app.globalData.questionNum = event.currentTarget.dataset.qnum;
     wx.navigateTo({
       url: event.currentTarget.dataset.link
+    })
+  },
+
+  searchInput: function(options) {
+    let value = options.detail.value;
+    value = value.toLowerCase();
+    var newViewShow = []
+    for (var i = 0; i < this.data.viewNames.length; i++) {
+      var name = this.data.viewNames[i]
+      if (name.indexOf(value) == 0) {
+        newViewShow.push(true);
+      } else {
+        newViewShow.push(false);
+      }
+    }
+    this.setData({
+      viewShow: newViewShow
     })
   },
 

@@ -1,31 +1,58 @@
 {
   "pages": [
     "pages/index/index",
+
+    "pages/events/moleday/index",
+    "pages/events/moleday/leader board/index",
+    "pages/events/moleday/online questions/index",
+    "pages/events/moleday/scavenger hunt/index",
+
     "pages/events/piday/piday",
+    "pages/events/piday/leaderboard/leaderboard",
     "pages/events/piday/trophywall/trophywall",
     "pages/events/piday/mathquizzes/mathquizzes",
     "pages/events/piday/mathquizzes_ques/mathquizzes_ques",
-    "pages/weekly questions/index",
     "pages/admin/index",
     "pages/me/index",
-    "pages/weekly Q/index",
     "pages/mini games/24points/24points",
     "pages/mini games/riddle/riddle",
-    "pages/all weekly questions/index",
     "pages/events/bitday/index",
     "pages/events/bitday/leader board/index",
-    "pages/events/bitday/programming questions/index",
     "pages/events/bitday/scavenger hunt/index",
-    "pages/events/bitday/trivia/index",
+
     "pages/databooklet/index",
     "pages/reviewGuides/index",
-    "pages/databooklet/IB/Chem/index"
+    "pages/databooklet/general/index",
+    "pages/databooklet/general/math/index",
+    "pages/databooklet/general/math/g9/index",
+    "pages/databooklet/general/math/g10/index",
+    "pages/databooklet/general/phy/index",
+    "pages/databooklet/general/phy/g9/index",
+    "pages/databooklet/general/phy/g10/index",
+    "pages/databooklet/general/chem/index",
+    "pages/databooklet/general/chem/g9/index",
+    "pages/databooklet/general/chem/g10/index",
+    "pages/databooklet/general/bio/index",
+    "pages/databooklet/general/bio/g9/index",
+    "pages/databooklet/general/bio/g10/index",
+    "pages/databooklet/general/it/index",
+    "pages/databooklet/general/it/g9/index",
+    "pages/databooklet/general/it/g10/index",
+    "pages/databooklet/AP/index",
+    "pages/databooklet/IB/index",
+    "pages/databooklet/IB/Chem/index",
+    "pages/databooklet/IB/MAA/index",
+    "pages/databooklet/IB/Phy/index",
+
+    "pages/mini games/Soduku/DifficultySelection/Select",
+    "pages/mini games/Soduku/sudoku/sudoku",
+    "pages/mini games/Soduku/menu/menu"
   ],
   "window": {
     "backgroundColor": "#F6F6F6",
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#ffffff",
-    "navigationBarTitleText": "理工狗",
+    "navigationBarTitleText": "STEM Doges",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -47,6 +74,9 @@
         "selectedIconPath": "/images/me2.jpg"
       }
     ]
+  },
+  "usingComponents": {
+    "cu-custom":"/colorui/components/cu-custom"
   },
   "sitemapLocation": "sitemap.json",
   "style": "v2"

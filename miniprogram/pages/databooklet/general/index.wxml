@@ -1,11 +1,12 @@
 <!--miniprogram/pages/bitday/index.wxml-->  
 <scroll-view scroll-y style="height:100vh">
 
-  <input class="mySearchbar" placeholder="search"/>
-  <view  class="eventHeader" bindtap="redirect" data-link="math/index" >Math</view>
-  <view  class="eventHeader" bindtap="redirect" data-link="phy/index">Physics</view>
-  <view  class="eventHeader" bindtap="redirect" data-link="chem/index">Chemistry</view>
-  <view  class="eventHeader" bindtap="redirect" data-link="bio/index">Biology</view>
+  <input bindinput = "searchInput" class="mySearchbar" placeholder="Search"/>
+  <view wx:if="{{viewShow[0]}}"wx:if="{{viewShow[0]}}" class="eventHeader" bindtap="redirect" data-link="math/index" >Math</view>
+  <view wx:if="{{viewShow[1]}}" class="eventHeader" bindtap="redirect" data-link="phy/index">Physics</view>
+  <view wx:if="{{viewShow[2]}}" class="eventHeader" bindtap="redirect" data-link="chem/index">Chemistry</view>
+  <view wx:if="{{viewShow[3]}}" class="eventHeader" bindtap="redirect" data-link="bio/index">Biology</view>
+  <view wx:if="{{viewShow[4]}}" class="eventHeader" bindtap="redirect" data-link="it/index">IT</view>
   <view style="height:50px"></view>
 </scroll-view>
 

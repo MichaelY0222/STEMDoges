@@ -1,25 +1,14 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
-cloud.init({
-  env: 'shsid-3tx38'
-})
-const db = cloud.database()
+
+cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV }) // 使用当前云环境
 
 // 云函数入口函数
 exports.main = async (event, context) => {
-  console.log(1)
-  try {
-    var arr = []
-    var x = 0
-    for (let i = 0; i < 3; i++) {
-      x = await db.collection('userInfo').where({bitdayVerified: true}).skip(i*100).get()
-      console.log(x)
-      arr = arr.concat(x.data)
-    }    
-    console.log(arr)
-    return arr
-
-  } catch (e) {
-    console.log(e)
-  }
+  return cloud.database().collection('userInfo').orderBy('gamesPoints', 'desc').limit(100).get()
+  // return {
+  //   str: "hehe",
+  //   users:users,
+  //   user:user
+  // }
 }

@@ -63,5 +63,18 @@ Page({
    */
   onShareAppMessage: function () {
 
-  }
+  },
+
+  selectImage:function(event){
+    var imgList = []
+    for (var i = 0; i < this.data.pages.length; i++) {
+      imgList.push("cloud://shsid-3tx38.7368-shsid-3tx38-1303924092/Data Booklets/IB/MAA/" + String(this.data.pages[i]) + ".jpg")
+    }
+    var src = event.currentTarget.dataset.src;
+       wx.previewImage({
+         current: src,
+         urls: imgList
+       })
+   }
+
 })

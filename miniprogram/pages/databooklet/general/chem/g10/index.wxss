@@ -1,0 +1,4 @@
+/* miniprogram/pages/databooklet/IB/Chem/index.wxss */
+.pageImg{
+  width: 100%;
+}

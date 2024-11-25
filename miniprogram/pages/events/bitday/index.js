@@ -130,6 +130,7 @@ Page({
     showPopup:[false,false,false,false,false,false,false],
     bitdayVerified: false,
     QRCodes:[],
+    updatedQRCodes:[],
     ScavProgress:[], //not found, found, correct, incorrect
     colors:["grey","#dddddd","","darkgrey"],
     isAdmin: false,
@@ -140,7 +141,9 @@ Page({
     changedWeek:false,
     correctChoice:1,
     dayNum: 0,
-    blocks:[]
+    blocks:[],
+    day: 0,
+    questionShift: 1
   },
 
   
@@ -153,14 +156,19 @@ Page({
       isAdmin:app.isAdmin,
       dayNum: app.bitdayNum
     });
-
+    this.setData({
+      day: new Date().getDate()
+    });
     this.getScavengerHashes();
     this.getUserData();
     if (app.isAdmin){
       this.getQuestionStats();
     }
   },
-  showPopup(event){
+  showPopup1(event){
+    this.setData({
+      questionShift:1
+    })
     let thePopups = this.data.showPopup;
     thePopups[event.currentTarget.dataset.popupnum] = true;
     this.setData({
@@ -170,9 +178,23 @@ Page({
     if (event.currentTarget.dataset.popupnum == 5)
       this.getQuestionStats();
   },
+  showPopup2(event){
+    this.setData({
+      questionShift:16
+    })
+    let thePopups = this.data.showPopup;
+    thePopups[event.currentTarget.dataset.popupnum] = true;
+    this.setData({
+      showingPopup: true,
+      showPopup:thePopups
+    })
+    if (event.currentTarget.dataset.popupnum == 5)
+      this.getQuestionStats();
+  },
+
   getUserData(){
     let ScavProgress = [];
-    for (let i=0; i<30; i++){
+    for (let i = 0; i < 30; i++) {
       ScavProgress[i] = 0;
     }
     this.setData({
@@ -194,8 +216,15 @@ Page({
       codes[i] = SHA256("scav" + (i+1).toString() +".");
     }
 
+    let updatedCodes = [30];
+    for (let i = 0; i < 30; i++) {
+      updatedCodes[i] = SHA256("scav" + (i+1).toString());
+      console.log(updatedCodes[i]);
+    }
+
     this.setData({
-      QRCodes:codes
+      QRCodes:codes,
+      updatedQRCodes:updatedCodes
     })
   },
   deleteQuestion(event){
@@ -409,16 +438,32 @@ Page({
           //scavenger hunt progress
           let scav = [];
           let scanned = 0;
+          //
+          // console.log("scanned"+scanned)
           for (let i=1; i<=30; i++){
-            if (res.data[0].bitdayAnswers["scav-" + i.toString()] == null){
+            if (res.data[0].bitdayAnswers["scav-" + i.toString()] == 1){
+              scanned+=1;
+              scav.push(1);
+            } else {
               scav.push(0);
             }
-            else if (res.data[0].bitdayAnswers["scav-" + i.toString()] >= 0){
-              scanned = scanned + 1;
-              scav.push(1);
-            }
-            console.log("scanned"+scanned)
           }
+          // console.log("scanned"+scanned)
+          // console.log(scav)
+          /*for (let i = 1; i <= 8; i++) {
+            scanned = scanned + 1;
+            scav.push(1);
+          }
+      
+          var dd = new Date().getDate()
+          for (let i=1; i<=(dd-13+1)*3; i++){
+            scanned = scanned + 1;
+            scav.push(1);
+          }
+          for (let i=(dd-13+1)*3+1; i<=15; i++){
+            scav.push(0);
+          }*/
+          console.log("scanned"+scanned)
           that.setData({
             bitdayVerified:true,
             ScavProgress: scav,
@@ -435,6 +480,7 @@ Page({
       }
     })
   },
+
   hidePopup(event){
     this.setData({
       showingPopup: false,
@@ -461,6 +507,7 @@ Page({
         userClass:classNum,
         userGrade:grade,
         bitdayPoints: 0,
+        gamesPoints: 0,
         bitdayVerified: true
       } 
     })
@@ -472,22 +519,32 @@ Page({
   
   scanQRCode(){
     let that = this;
-    let codes = this.data.QRCodes;
+    let codes = this.data.updatedQRCodes;
     let prog = this.data.ScavProgress;
+    let scan = 0;
     wx.scanCode({
       success (res) {
+        console.log(codes[0]);
         for (let i =0; i<codes.length; i++){ 
           if (codes[i] == res.result){ 
-          console.log(i+1); 
-          prog[i] = 1; 
-          that.setData({ 
-          ScavProgress:prog 
-          }) 
-          app.globalData.questionNum = i+1; 
-          wx.navigateTo({ 
-          url: "../bitday/scavenger hunt/index" 
-          }) 
-          }          
+            console.log(i+1); 
+            prog[i] = 1; 
+            that.setData({ 
+              ScavProgress:prog 
+            }) 
+            for (let i = 0; i<30; i++) {
+              if (prog[i] == 1) {
+                scan = scan + 1;
+              }
+            }
+            that.setData({
+              scanned:scan
+            })
+            app.globalData.questionNum = i+1; 
+            wx.navigateTo({ 
+            url: "../bitday/scavenger hunt/index" 
+            }) 
+          }   
         }
           
       }
@@ -540,5 +597,16 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  trophywall(){
+    wx.navigateTo({ 
+      url: "../piday/trophywall/trophywall" 
+      }) 
+  },
+  mathquizzes(){
+    wx.navigateTo({ 
+      url: "../piday/mathquizzes/mathquizzes" 
+      }) 
   }
 })

@@ -1,0 +1,8 @@
+<!--pages/DifficultySelection/Select.wxml-->
+<view style="font-family:fantasy;font-size:30px;display: flex;justify-content: center;align-items: center;margin-top: 100px;">难度选择</view>
+<view class="padding flex flex-direction">
+  <button class="cu-btn bg-green lg" style="margin-left: 80px;margin-right: 100px;margin-top: 20px;" bindtap="easy">简单</button>
+  <button class="cu-btn bg-green margin-tb-sm lg"  style="margin-left: 80px;margin-right: 100px;margin-top: 20px; " bindtap="normal">普通</button>
+  <button class="cu-btn bg-green margin-tb-sm lg" style="margin-left: 80px;margin-right: 100px;margin-top: 20px;" bindtap="hard">困难</button>
+  <button class="cu-btn bg-green margin-tb-sm lg" style="margin-left: 80px;margin-right: 100px;margin-top: 20px;"bindtap="veryhard">非常难</button>
+</view>

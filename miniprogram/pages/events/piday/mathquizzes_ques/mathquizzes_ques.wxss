@@ -1,6 +1,6 @@
 /* pages/events/piday/mathquizzes_ques/mathquizzes_ques.wxss */
 page {
-  background-color: #eeeeee;
+  background-color: white;
 }
 
 .chooseQuestionsArea{
