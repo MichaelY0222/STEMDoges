@@ -175,7 +175,7 @@ Page({
       showingPopup: true,
       showPopup:thePopups
     })
-    if (event.currentTarget.dataset.popupnum == 5)
+    if (event.currentTarget.dataset.popupnum == 6)
       this.getQuestionStats();
   },
   showPopup2(event){
@@ -194,7 +194,7 @@ Page({
 
   getUserData(){
     let ScavProgress = [];
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 20; i++) {
       ScavProgress[i] = 0;
     }
     this.setData({
@@ -209,15 +209,15 @@ Page({
     });
   },
   getScavengerHashes(){
-    let codes=[30];
+    let codes=[20];
 
     //sha256 
-    for (let i=0;i<30;i++){
+    for (let i=0;i<20;i++){
       codes[i] = SHA256("scav" + (i+1).toString() +".");
     }
 
-    let updatedCodes = [30];
-    for (let i = 0; i < 30; i++) {
+    let updatedCodes = [20];
+    for (let i = 0; i < 20; i++) {
       updatedCodes[i] = SHA256("scav" + (i+1).toString());
       console.log(updatedCodes[i]);
     }
@@ -257,7 +257,6 @@ Page({
         if (type == "scavenger hunt"){
           db.collection('bitday')
           .where({type:"scavenger hunt"})
-          .skip(20)
           .get({
             success: function (res){
               questions = questions.concat(res.data);
@@ -440,7 +439,7 @@ Page({
           let scanned = 0;
           //
           // console.log("scanned"+scanned)
-          for (let i=1; i<=30; i++){
+          for (let i=1; i<=20; i++){
             if (res.data[0].bitdayAnswers["scav-" + i.toString()] == 1){
               scanned+=1;
               scav.push(1);
@@ -532,7 +531,7 @@ Page({
             that.setData({ 
               ScavProgress:prog 
             }) 
-            for (let i = 0; i<30; i++) {
+            for (let i = 0; i<20; i++) {
               if (prog[i] == 1) {
                 scan = scan + 1;
               }

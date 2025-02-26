@@ -79,7 +79,6 @@ Page({
         let questions = res.data;
         db.collection('bitday')
         .where({type:"scavenger hunt"})
-        .skip(20)
         .get({
           success: function (res){
             questions = questions.concat(res.data);

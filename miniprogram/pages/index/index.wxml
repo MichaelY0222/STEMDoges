@@ -1,6 +1,6 @@
 <scroll-view scroll-y style="height:100vh"> 
 
-<image  class="eventHeader" bindtap="redirect"  data-link="../events/bitday/index" src="../../images/bitday.jpg"></image>
+<image  class="eventHeader" bindtap="redirect"  data-link="../events/bitday/index" src="../../images/moleday.jpg"></image>
  <view  class="eventHeader" bindtap="redirect" data-link="../databooklet/index" >Data Booklet</view>
  <view  class="eventHeader" bindtap="redirect" data-link="../events/piday/piday" >Challenges</view>
 
@@ -17,9 +17,9 @@
 <view wx:if="{{showPopup[0]==0}}" class="mini popup" >
   <form bindsubmit="submitInfo" class="answerInputBox">
     <input  style="margin-top:10%" id="inputAnswer" class="inputArea" placeholder="Name" name="name" />
-    <input  id="inputAnswer" class="inputArea" placeholder="Class" name="class" />
     <input  id="inputAnswer" class="inputArea" placeholder="Grade" name="grade" />
+    <input  id="inputAnswer" class="inputArea" placeholder="Class" name="class" />
     <input  id="inputAnswer" class="inputArea" placeholder="Gnum" name="gnum" />
-    <button class="submit" style="position:absolute;bottom:0px;width:40%;left:30%" form-type="submit" >Continue</button>
+    <button class="submit" style="position:absolute;bottom:20px;width:40%;left:30%" form-type="submit" >Continue</button>
   </form>
 </view>

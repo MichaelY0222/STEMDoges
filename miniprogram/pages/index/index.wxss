@@ -28,10 +28,13 @@
   display: inline-block;
 }
 
-.popup{
-  background: white;
+.popup {
+  background: rgb(255, 255, 255);
   z-index: 91;
   position: fixed;
+  border: 2px solid #cccccc; /* Add a border */
+  border-radius: 10px;       /* Optional: Rounded corners */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add a shadow for better appearance */
 }
 
 .closePopup {
@@ -64,7 +67,7 @@
 }
 
 .inputArea{
-  background-color: rgba(117, 117, 117, 0.377);
+  background-color: rgba(105, 105, 105, 0.377);
   width: 50%;
   height: 30px;
   margin-left:25%;

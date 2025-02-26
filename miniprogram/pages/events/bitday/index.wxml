@@ -1,10 +1,9 @@
 <!--pages/events/piday/piday.wxml-->
 <scroll-view scroll-y style="height:100vh">
 
-  <view class="eventHeader"  bindtap="showPopup1" data-popupNum="2">StemDoge Trivia!!!</view>
+  <view class="eventHeader"  bindtap="showPopup1" data-popupNum="6">MOLE DAY</view>
 
-  <view class="eventHeader"  bindtap="showPopup2" data-popupNum="6">Trivia@GlobalVariable</view>
-
+  <view class="eventHeader" bindtap="redirect" data-Qnum="1" data-link="leader board/index" data-Qnum="0"> Leaderboard </view>
 </scroll-view>
 
 <!--<view  class="eventHeader" bindtap="redirect" data-link="../databooklet/index" >Data Booklet</view>-->
@@ -128,16 +127,16 @@
   </view>
 </scroll-view>
 
-<!-- scavenger hunt area 15 question ver-->
+<!-- scavenger hunt area 一天五题 ver-->
 <view wx:if="{{showPopup[4]}}" class="overlay" bindtap="hidePopup"></view>
 <scroll-view scroll-y wx:if="{{showPopup[4]}}" style="text-align: left" class="regular popup" >
   <text bindtap="hidePopup" class="closePopup" style="font-size: 20px;">x</text>
   <!-- <view class="questionsDone">0/30</view> -->
-  <view class="day">DATE:10/{{day}} </view>
+  <view class="day">今日五题: 1-5 </view>
   <view style="margin-top:15px; margin-left:5%; width:90%;">
     <view style = "text-align: center;">
     </view>
-    <view wx:for="{{[QRCodes[0], QRCodes[1], QRCodes[2], QRCodes[3], QRCodes[4], QRCodes[5], QRCodes[6], QRCodes[7], QRCodes[8], QRCodes[9], QRCodes[10], QRCodes[11], QRCodes[12], QRCodes[13], QRCodes[14]]}}"  class="questionItem" wx:for-index="i" style="background-color:#dddddd">
+    <view wx:for="{{[QRCodes[0], QRCodes[1], QRCodes[2], QRCodes[3], QRCodes[4]]}}"  class="questionItem" wx:for-index="i" style="background-color:#dddddd">
       <view bindtap="redirect" data-Qnum="{{i+questionShift}}" data-link="scavenger hunt/index" class="questoinItemNumber"  >{{i+1}}</view>
     </view>
   </view>
@@ -148,11 +147,12 @@
 <scroll-view scroll-y wx:if="{{showPopup[6]}}" style="text-align: left" class="regular popup" >
   <text bindtap="hidePopup" class="closePopup" style="font-size: 20px;">x</text>
   <!-- <view class="questionsDone">0/30</view> -->
-  <view class="day">DATE:10/{{day}} </view>
+  <view class="day">Full Trivia </view>
   <view style="margin-top:15px; margin-left:5%; width:90%;">
     <view style = "text-align: center;">
     </view>
-    <view wx:for="{{[QRCodes[0], QRCodes[1], QRCodes[2], QRCodes[3], QRCodes[4], QRCodes[5], QRCodes[6], QRCodes[7], QRCodes[8], QRCodes[9], QRCodes[10], QRCodes[11], QRCodes[12], QRCodes[13], QRCodes[14], QRCodes[15], QRCodes[16], QRCodes[7], QRCodes[18], QRCodes[19]]}}"  class="questionItem" wx:for-index="i" style="background-color:#dddddd">
+    <view wx:for="{{[QRCodes[0], QRCodes[1], QRCodes[2], QRCodes[3], QRCodes[4], QRCodes[5], QRCodes[6], QRCodes[7], QRCodes[8], QRCodes[9], QRCodes[10], QRCodes[11], QRCodes[12], QRCodes[13], QRCodes[14], QRCodes[15], QRCodes[16], QRCodes[17], QRCodes[18], QRCodes[19]]}}" class="questionItem"
+    wx:for-index="i" style="background-color:#dddddd">
       <view bindtap="redirect" data-Qnum="{{i+questionShift}}" data-link="scavenger hunt/index" class="questoinItemNumber"  >{{i+1}}</view>
     </view>
   </view>
