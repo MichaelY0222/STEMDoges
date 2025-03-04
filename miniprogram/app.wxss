@@ -1,6 +1,7 @@
 /**app.wxss**/
 @import "colorui/main.wxss";
 @import "colorui/icon.wxss";
+@import "global-colors.wxss";
 
 .container {
   display: flex;
@@ -21,10 +22,59 @@ button::after{
   border: none;
 }
 
-
 page {
   background: #eeeeee;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+text, input {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  color: var(--primary);
+}
+
+.big-title-text {
+  font-size: 34px;
+  font-weight: bold;
+}
+
+.heading-text {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.big-title-sub-text {
+  font-weight: 400;
+  font-size: 17px;
+  color: var(--secondary);
+  line-height: 20px;
+}
+
+.subtext {
+  text-align: center;
+  color: var(--secondary);
+  font-size: 15px;
+  line-height: 18px;
+}
+
+.admin-button {
+  width: 41px;
+  height: 41px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--subcontainer-background);
+  border-radius: 50%;
+}
+
+.admin-image {
+  height: 20px;
+  width: 17px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .admin-image {
+    filter: invert();
+  }
 }

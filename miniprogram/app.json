@@ -1,6 +1,8 @@
 {
   "pages": [
     "pages/index/index",
+    "pages/registration/registration",
+    "pages/scanFailure/scanFailure",
 
     "pages/events/moleday/index",
     "pages/events/moleday/leader board/index",
@@ -14,6 +16,7 @@
     "pages/events/piday/mathquizzes_ques/mathquizzes_ques",
     "pages/admin/index",
     "pages/me/index",
+    "pages/challenges/challenges",
     "pages/mini games/24points/24points",
     "pages/mini games/riddle/riddle",
     "pages/events/bitday/index",
@@ -49,31 +52,11 @@
     "pages/mini games/Soduku/menu/menu"
   ],
   "window": {
-    "backgroundColor": "#F6F6F6",
+    "backgroundColor": "#eeeeee",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#ffffff",
+    "navigationBarBackgroundColor": "#eeeeee",
     "navigationBarTitleText": "STEM Doges",
     "navigationBarTextStyle": "black"
-  },
-  "tabBar": {
-    "color": "#000000",
-    "selectedColor": "#2A9D8F",
-    "borderStyle": "black",
-    "backgroundColor": "#ffffff",
-    "list": [
-      {
-        "pagePath": "pages/index/index",
-        "text": "HOME",
-        "iconPath": "/images/home2.jpg",
-        "selectedIconPath": "/images/home2.jpg"
-      },
-      {
-        "pagePath": "pages/me/index",
-        "text": "ME",
-        "iconPath": "/images/me2.jpg",
-        "selectedIconPath": "/images/me2.jpg"
-      }
-    ]
   },
   "usingComponents": {
     "cu-custom":"/colorui/components/cu-custom"

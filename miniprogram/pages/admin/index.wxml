@@ -1,5 +1,7 @@
 <!--miniprogram/pages/admin/index.wxml-->
-<text class="title">ADMIN</text>
+<view id="admin-container">
+  <text class="big-title-text">Admin</text>
+</view>
 <view >
   <view class="item" style="top:70px;left:5%">
     <!-- WEEKLY QUESTIONS-->
@@ -24,18 +26,18 @@
     <view>total users</view>
 
     <view >{{admins.length}}</view>
-    <view> admins</view>
+    <view>admins</view>
 
     <view class="itemBtn" bindtap="showPopup" data-popupNum="1">Manage Admins</view>
     <view class="itemBtn" bindtap="showPopup" >Manage Users</view>
   </view>
   <view class="item" style="top:380px;left:5%">
-  <!-- REVIEW GUIDES-->
-    <view  class="itemTitle">Review Guides</view>
+  <view  class="itemTitle">Data Booklets</view>
+    
   </view>
   <view class="item" style="top:380px;right:5%">
-  <!-- ARTICLES -->
-    <view  class="itemTitle">Articles</view>
+  <view  class="itemTitle">Navigation</view>
+    <view class="itemBtn" bindtap="redirect" data-link="../oldhomepage/index">Old Homepage</view>
   </view>
 </view>
 
@@ -103,7 +105,7 @@
   <scroll-view scroll-y class="showAdminsArea">
     <view class="adminInfo" wx:for="{{admins}}"  wx:for-index="i">
       <image class="adminAvatar" src="{{admins[i].wechatInfo.avatarUrl}}"></image>
-      <text class="adminText">{{admins[i].wechatInfo.nickName}}</text>
+      <text class="adminText">{{admins[i].adminName}}</text>
       <view class="deleteAdminButton" bindtap="removeAdmin" data-person="{{i}}">
       <view style="position:absolute;top:24%;left:40%">X</view>
       </view>

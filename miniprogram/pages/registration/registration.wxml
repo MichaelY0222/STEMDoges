@@ -1,0 +1,43 @@
+<!--pages/registration/registration.wxml-->
+<view id="registration-container">
+    <text class="big-title-text" id="registration-big-title">Registration</text>
+    <text class="big-title-sub-text" id="registration-big-title-sub">Input your registration information below. Once submitted, this cannot be changed.</text>
+    <view class="question">
+      <text class="question-label">Name</text>
+      <input class="question-input" value="{{name}}" bindinput="nameInputChanged" />
+    </view>
+    <view class="question">
+      <text class="question-label">Grade</text>
+      <picker class="question-input-with-selector" mode="selector" range="{{gradeOptions}}" value="{{grade}}" bindchange="gradeChanged">
+        <view class="question-select">
+          {{gradeOptions[grade]}}
+          <image src="../../icons/chevron-down.svg" class="selectorIcon"></image>
+        </view>
+      </picker>
+    </view>
+    <view class="question">
+      <text class="question-label">Class</text>
+      <picker class="question-input-with-selector" mode="selector" range="{{classOptions}}" value="{{class}}" bindchange="classChanged">
+        <view class="question-select">
+          {{classOptions[class]}}
+          <image src="../../icons/chevron-down.svg" class="selectorIcon"></image>
+        </view>
+      </picker>
+    </view>
+    <view class="question">
+      <text class="question-label">G-Number</text>
+      <view id="input-container">
+        <text id="g-hint">G -</text>
+        <input id="g-password-box" bindinput="handleGInput"></input>
+      </view>
+    </view>
+    <view id="button-container">
+      <view id="submit-button" bindtap="onSubmitClick">
+        <text id="submit-button-text">Submit</text>
+      </view>
+    </view>
+    <view id="registration-skip-container">
+        <text id="registration-skip-text" bindtap="skipRegistration">Skip registration</text>
+        <text class="subtext" id="registration-skip-subtext">Registration is required to participate in most events, such as Pi Day, Mole Day, and Bit Day.</text>
+    </view>
+</view>

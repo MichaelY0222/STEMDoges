@@ -1,6 +1,6 @@
 .eventHeader{
   width: 90%;
-  height: 30vh;
+  height: 25vh;
   margin-left: 5%;
   background-color:rgb(255, 255, 255);
   border-radius: 15px;
@@ -335,4 +335,75 @@
 .answerText{
   font-family: 'REEJI-ZhenyanGB2.0';
   color:#222222;
+}
+
+#main-menu-scroll {
+  height: 85vh;
+}
+
+#main-menu-footer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 16px;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.main-menu-registration-information {
+  font-size: 17px;
+  color: var(--secondary);
+  margin: 0 31px;
+}
+
+#main-menu-registration-button {
+  margin-top: 11px;
+  color: var(--link);
+  font-size: 17px;
+}
+
+#main-menu-registration-ask {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#version-footer {
+  color: var(--secondary);
+  display:block;
+  text-align: center;
+  padding-top:16px;
+  font-size: 17px;
+}
+
+#main-menu-top-container {
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#main-menu-top-right-container {
+  display: flex;
+}
+
+#main-menu-top-scan-button-container {
+  width: 41px;
+  height: 41px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--button-background-color);
+  border-radius: 50%;
+  margin-left: 10px;
+}
+
+#main-menu-top-scan-button-image {
+  width: 100%;
+  height: 100%;
+}
+
+@media (prefers-color-scheme: dark) {
+    #main-menu-top-scan-button-image {
+        filter: invert();
+    }
 }

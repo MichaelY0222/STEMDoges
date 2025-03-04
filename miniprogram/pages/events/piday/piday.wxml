@@ -1,5 +1,18 @@
 <!--pages/events/piday/piday.wxml-->
-<scroll-view scroll-y style="height:100vh">
+
+<view id="pi-day-top-container">
+  <text class="big-title-text">Pi Day</text>
+  <view id="pi-day-top-right-container">
+    <view class="admin-button" bindtap="redirect" data-link="../admin/index" wx:if="{{isAdmin}}">
+      <image src="../../../icons/bolt.svg" class="admin-image"></image>
+    </view>
+    <view id="pi-day-top-scan-button-container" bindtap="scanButtonClick">
+      <image src="../../../icons/scan.svg" id="pi-day-top-scan-button-image"></image>
+    </view>
+  </view>
+</view>
+
+<scroll-view scroll-y id="pi-day-scroll">
 
 <!-- <image bindtap="trophywall" src="../../../images/trophy.jpg" class = "eventHeader"> </image>
 
@@ -16,9 +29,11 @@
 
   <!--<image src="../../../images/24Points.png" class="eventHeader"  bindtap="show24Points" ></image>-->
 
-  <!--<view class="eventHeader" bindtap="showPopup" data-popupNum="4" >STEM Trivia</view>-->
-  <view class="eventHeader" bindtap="mathquizzes" >Math Puzzles</view>
-  <view class="eventHeader" bindtap="show24Points" >24 Points</view>
+  <view id="pi-day-info-container">
+    <text class="heading-text">Daily Trivia</text>
+  </view>
+  <image src="../../../images/scan.jpg"view class="eventHeaderSmall" bindtap="scanQRCode"></image>
+  <image src="../../../images/leaderboard.jpg"view class="eventHeader" bindtap="redirect" data-Qnum="1" data-link="../piday/leaderboard/leaderboard" data-Qnum="0"></image>
 
   <!-- <image src="../../../images/Puzzles.jpeg" class="eventHeader"  bindtap="showSoduku" ></image>-->
 </scroll-view>

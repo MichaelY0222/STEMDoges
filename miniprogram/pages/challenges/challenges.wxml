@@ -1,0 +1,9 @@
+<!--pages/challenges/challenges.wxml-->
+<view id="challenges-top-container">
+  <text class="big-title-text">Challenges</text>
+</view>
+<view class="eventHeader" bindtap="redirect" data-link="/pages/mini games/24points/24points">24 Points</view>
+<!-- <view class="eventHeader" bindtap="redirect" data-link="/pages/mini games/mathKnockout/mathKnockout">Math Knockout</view>
+<view class="eventHeader" bindtap="redirect" data-link="/pages/mini games/mentalMath/mentalMath">Mental Math</view> -->
+<view class="eventHeader" bindtap="redirect" data-link="/pages/mini games/riddle/riddle">Math Riddles</view>
+<view class="eventHeader"  bindtap="redirect" data-link="/pages/mini games/Soduku/DifficultySelection/Select">Soduku</view>

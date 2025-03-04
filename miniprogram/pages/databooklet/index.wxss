@@ -342,3 +342,9 @@
   font-family: 'REEJI-ZhenyanGB2.0';
   color:#222222;
 }
+
+#databooklet-top-container {
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+}

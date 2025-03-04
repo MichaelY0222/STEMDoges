@@ -1,15 +1,12 @@
 /* miniprogram/pages/admin/index.wxss */
-
-page {
-  background-color: orange;
-}
-
-.title{
-  width: 100%;
-  text-align: center;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-weight: 700;
-  font-size: 40px;
+#admin-container {
+  padding: 0 16px;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  box-sizing: border-box;
+  background-color: var(--page-background);
 }
 
 .item{

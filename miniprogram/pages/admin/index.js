@@ -245,29 +245,28 @@ Page({
   getUsersStats(){
     let that = this;
     //count total users
-    const db = wx.cloud.database();
-    db.collection('userInfo')
-    .count({
-      success: function (res){
+    db.collection('userData').count({
+      success: function(res) {
         that.setData({
           userNum: res.total
         })
-        
       }
     })
 
     //count admins
-    db.collection('userInfo')
-    .where({ admin: true})
-    .get({
+    db.collection('admins').get({
       success: function (res){
         console.log(res.data)
         that.setData({
           admins: res.data
         })
-        
       }
     })
+  },
+  redirect: function(event) {
+    wx.navigateTo({
+      url: event.currentTarget.dataset.link
+    });
   },
   hidePopup(event){
     this.setData({

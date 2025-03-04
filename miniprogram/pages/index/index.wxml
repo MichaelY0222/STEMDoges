@@ -1,8 +1,19 @@
-<scroll-view scroll-y style="height:100vh"> 
+<view id="main-menu-top-container">
+  <text class="big-title-text">STEM Doges</text>
+  <view id="main-menu-top-right-container">
+    <view class="admin-button" bindtap="redirect" data-link="../admin/index" wx:if="{{isAdmin}}">
+      <image src="../../icons/bolt.svg" class="admin-image"></image>
+    </view>
+    <view id="main-menu-top-scan-button-container" bindtap="scanButtonClick">
+      <image src="../../icons/scan.svg" id="main-menu-top-scan-button-image"></image>
+    </view>
+  </view>
+</view>
 
-<image  class="eventHeader" bindtap="redirect"  data-link="../events/bitday/index" src="../../images/moleday.jpg"></image>
- <view  class="eventHeader" bindtap="redirect" data-link="../databooklet/index" >Data Booklet</view>
- <view  class="eventHeader" bindtap="redirect" data-link="../events/piday/piday" >Challenges</view>
+<scroll-view scroll-y id="main-menu-scroll">
+<image  class="eventHeader" bindtap="redirectRestrictedAccessEvent"  data-link="../events/piday/piday" src="../../images/moleday.jpg"></image>
+<image  class="eventHeader" bindtap="redirect" data-link="../databooklet/index" src="../../images/dataBooklet.jpg"></image>
+<image  class="eventHeader" bindtap="redirect" data-link="../challenges/challenges" src="../../images/challenges.jpg"></image>
 
 <!--
 <image  class="eventHeader" bindtap="redirect"  data-link="../databooklet/index" src="../../images/DataBooklet.png"></image>
@@ -12,8 +23,19 @@
   -->
 </scroll-view>
 
+<view id="main-menu-footer">
+    <text class="main-menu-registration-information" wx:if="{{!needRegistration}}">Registered as {{name}} {{grade}}-{{class}}</text>
+    <view id="main-menu-registration-ask" wx:if="{{needRegistration}}">
+      <text class="main-menu-registration-information">Not registered</text>
+      <text id="main-menu-registration-button" bindtap="handleRegister">Register now...</text>
+    </view>
+  </view>
+  <view id="version-footer">
+    Version 5.0.0
+  </view>
+
 <!-- info input area -->
-<view wx:if="{{showPopup[0]==0}}" class="overlay" ></view>
+<!-- <view wx:if="{{showPopup[0]==0}}" class="overlay" ></view>
 <view wx:if="{{showPopup[0]==0}}" class="mini popup" >
   <form bindsubmit="submitInfo" class="answerInputBox">
     <input  style="margin-top:10%" id="inputAnswer" class="inputArea" placeholder="Name" name="name" />
@@ -22,4 +44,4 @@
     <input  id="inputAnswer" class="inputArea" placeholder="Gnum" name="gnum" />
     <button class="submit" style="position:absolute;bottom:20px;width:40%;left:30%" form-type="submit" >Continue</button>
   </form>
-</view>
+</view> -->

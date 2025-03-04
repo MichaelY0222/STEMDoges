@@ -1,3 +1,4 @@
+import CacheSingleton from '../../../classes/CacheSingleton';
 const db = wx.cloud.database();
 const app = getApp();
 
@@ -125,6 +126,7 @@ Page({
    * Page initial data
    */
   data: {
+    cacheSingleton: CacheSingleton,
     scanned:0,
     showPopup:[false,false,false,false,false,false,false],
     bitdayVerified: false,
@@ -148,12 +150,11 @@ Page({
   /**
    * Lifecycle function--Called when page load
    */
-  onLoad: function (options) {
+  onLoad: async function (options) {
+    this.data.cacheSingleton = CacheSingleton.getInstance();
     this.setData({
-      isAdmin:app.isAdmin,
-      dayNum: app.bitdayNum
-    });
-    this.setData({
+      isAdmin: await this.data.cacheSingleton.fetchUserInfo('isPiDayAdmin'),
+      dayNum: app.bitdayNum,
       day: new Date().getDate()
     });
     this.getScavengerHashes();

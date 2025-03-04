@@ -1,0 +1,22 @@
+/* pages/challenges/challenges.wxss */
+#challenges-top-container {
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.eventHeader{
+  width: 90%;
+  height: 15vh;
+  margin-left: 5%;
+  background-color:rgb(255, 255, 255);
+  border-radius: 15px;
+  margin-top:20px;
+  box-shadow: 0 0 2px 2px rgba(0, 0, 0, 0.2);
+  text-align: center;
+  display: table;
+  font-size: 3vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
