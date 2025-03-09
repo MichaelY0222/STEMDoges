@@ -1,4 +1,5 @@
 import CacheSingleton from '../../../classes/CacheSingleton';
+import { handleCode } from '../../../utils/handleCode';
 const db = wx.cloud.database();
 const app = getApp();
 
@@ -126,475 +127,454 @@ Page({
    * Page initial data
    */
   data: {
+    // scanned:0,
+    // showPopup:[false,false,false,false,false,false,false],
+    // bitdayVerified: false,
+    // QRCodes:[],
+    // ScavProgress:[], //not found, found, correct, incorrect
+    // colors:["grey","#dddddd","","darkgrey"],
+    // isAdmin: false,
+    // types:["programming", "trivia-1","trivia-2","trivia-3", "scavenger hunt"],
+    // typeIdx: 0,
+    // curQuestion:0,
+    // changedWeek:false,
+    // correctChoice:1,
+    // dayNum: 0,
+    // blocks:[],
+    // day: 0,
     cacheSingleton: CacheSingleton,
-    scanned:0,
-    showPopup:[false,false,false,false,false,false,false],
-    bitdayVerified: false,
-    QRCodes:[],
-    ScavProgress:[], //not found, found, correct, incorrect
-    colors:["grey","#dddddd","","darkgrey"],
-    isAdmin: false,
-    types:["programming", "trivia-1","trivia-2","trivia-3", "scavenger hunt"],
-    questions:[],
-    typeIdx: 0,
-    curQuestion:0,
-    changedWeek:false,
-    correctChoice:1,
-    dayNum: 0,
-    blocks:[],
-    day: 0
+    questions: [],
+    userOpenId: 'undefined'
   },
-
-  
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: async function (options) {
+    wx.showLoading({
+      title: '加载中...',
+      mask: true
+    });
     this.data.cacheSingleton = CacheSingleton.getInstance();
     this.setData({
       isAdmin: await this.data.cacheSingleton.fetchUserInfo('isPiDayAdmin'),
-      dayNum: app.bitdayNum,
-      day: new Date().getDate()
+      userOpenId: await this.data.cacheSingleton.fetchUserOpenId(),
+      questions: await this.data.cacheSingleton.fetchAnyEventTriviaQuestions(),
+      // dayNum: app.bitdayNum,
+      // day: new Date().getDate()
     });
-    this.getScavengerHashes();
-    this.getUserData();
-    if (app.isAdmin){
-      this.getQuestionStats();
-    }
+    console.log(this.data.questions)
+    wx.hideLoading();
+    // this.getScavengerHashes();
+    // this.getUserData();
+    // if (app.isAdmin){
+    //   this.getQuestionStats();
+    // }
   },
-  showPopup(event){
-    let thePopups = this.data.showPopup;
-    thePopups[event.currentTarget.dataset.popupnum] = true;
-    this.setData({
-      showingPopup: true,
-      showPopup:thePopups
-    })
-    if (event.currentTarget.dataset.popupnum == 5)
-      this.getQuestionStats();
-  },
-  getUserData(){
-    console.log("update")
-    //var dd = new Date().getDate()
-    //console.log((dd-13+1)*3);
 
-    let ScavProgress = [];
-    /*
-    for (let i=0; i<(dd-13+1)*3; i++){
-      ScavProgress[i] = 1;
-    }
-    for (let i=(dd-13+1)*3; i<20; i++){
-      ScavProgress[i] = 0;
-    }*/
-    for (let i = 0; i < 16; i++) {
-      ScavProgress[i] = 1;
-    }
-
-    this.setData({
-      ScavProgress:ScavProgress
-    })
-  },
-  addBlock(event){
-    let blocks = this.data.blocks;
-    blocks.push(["",""]);
-    this.setData({
-      blocks:blocks
+  onShow: async function() {
+    wx.showLoading({
+      title: '加载中...',
+      mask: true
     });
-  },
-  getScavengerHashes(){
-    let codes=[16];
-
-    //sha256 
-    for (let i=0;i<16;i++){
-      codes[i] = SHA256("scav" + (i+1).toString() +".");
-    }
-
     this.setData({
-      QRCodes:codes
-    })
-  },
-  deleteQuestion(event){
-    let curQ = this.data.curQuestion;
-    //change cur Q index
-    if (curQ == 0)
-      curQ = this.data.questions.length-2;
-    else
-      curQ --;
-    let that = this;
-    let QuestionId = this.data.questions[this.data.curQuestion]._id;
-    db.collection('bitday').doc(QuestionId)
-    .remove()
-    .then(res=>{
-      that.setData({curQuestion:curQ})
-      that.getQuestionStats()
-    })
-  },
-  getQuestionStats(){
-    let that = this;
-    let cur = this.data.curQuestion;
-    let type = this.data.types[this.data.typeIdx];
-    console.log(type);
-    //get questions
-    db.collection('bitday')
-    .where({type:type})
-    .get({
-      success: function (res){
-        let questions = res.data;
-        if (type == "scavenger hunt"){
-          db.collection('bitday')
-          .where({type:"scavenger hunt"})
-          .skip(20)
-          .get({
-            success: function (res){
-              questions = questions.concat(res.data);
-
-              if (that.data.changedWeek){
-                cur = 0;
-                that.setData({
-                  curQuestion:0,
-                  changedWeek: false,
-                  questions: questions,
-                  correctChoice:0
-                })
-                //if there are any questoins, then get the stars & answer
-                if (questions.length > 0){
-                  that.setData({
-                    correctChoice: questions[cur].answer==null?0:questions[cur].answer,
-                    blocks: questions[cur].blocks==null?[]: questions[cur].blocks
-                  })
-                }
-              }
-              else{
-                that.setData({
-                  questions: questions,
-                  correctChoice: questions[cur].answer==null?0:questions[cur].answer,
-                  blocks: questions[cur].blocks==null?[]: questions[cur].blocks
-                })
-              }
-              
-            }
-          })
-        }else{
-          if (that.data.changedWeek){
-            cur = 0;
-            that.setData({
-              curQuestion:0,
-              changedWeek: false,
-              questions: res.data,
-              correctChoice:0
-            })
-            //if there are any questoins, then get the stars & answer
-            if (res.data.length > 0){
-              that.setData({
-                correctChoice: res.data[cur].answer==null?0:res.data[cur].answer,
-                blocks: res.data[cur].blocks==null?[]: res.data[cur].blocks
-              })
-            }
-          }
-          else{
-            that.setData({
-              questions: res.data,
-              correctChoice: res.data[cur].answer==null?0:res.data[cur].answer,
-              blocks: res.data[cur].blocks==null?[]: res.data[cur].blocks
-            })
-          }
-          
-        }
-      }
-    })
-  },
-
-  
-  changeQ: function(event){
-    let questions = this.data.questions;
-    this.setData({
-      curQuestion: event.currentTarget.dataset.num, // change question index
-      correctChoice: questions[event.currentTarget.dataset.num].answer==null?0:questions[event.currentTarget.dataset.num].answer,
-      blocks: questions[event.currentTarget.dataset.num].blocks==null?[]:questions[event.currentTarget.dataset.num].blocks
-    })
-  },
-  submitQuestion(event){
-    let questions = this.data.questions;
-    let currentQ = this.data.curQuestion;
-    let that = this;
-    questions[currentQ].choice1 = event.detail.value.choice1;
-    questions[currentQ].choice2 = event.detail.value.choice2;
-    questions[currentQ].choice3 = event.detail.value.choice3;
-    questions[currentQ].choice4 = event.detail.value.choice4;
-    questions[currentQ].question = event.detail.value.question;
-    questions[currentQ].steps = event.detail.value.answerSteps;
-    questions[currentQ].answer = this.data.correctChoice;
-    questions[currentQ].type = this.data.types[this.data.typeIdx];
-
-    let blocks = [];
-    if (this.data.types[this.data.typeIdx] == "programming"){
-      questions[currentQ].order = event.detail.value.order.split(" ");
-      for (let i=0; i<questions[currentQ].order.length; i++){
-        questions[currentQ].order[i] = parseInt(questions[currentQ].order[i]);
-      }
-      let blocksLength = this.data.blocks.length;
-      for (let i=0; i<blocksLength; i++){
-        let num = i.toString();
-        blocks.push([event.detail.value["englishBlock" + num],event.detail.value["pythonBlock" + num]]);
-      }
-    }
-    
-    questions[currentQ].blocks = blocks;
-    wx.cloud.init({
-      env: 'shsid-3tx38'
-    })
-    db.collection('bitday')
-    .where({ _id: questions[currentQ]._id })
-    .update({
-      data: {
-        answer: questions[currentQ].answer,
-        question: questions[currentQ].question,
-        choice1: questions[currentQ].choice1,
-        choice2: questions[currentQ].choice2,
-        choice3: questions[currentQ].choice3,
-        choice4: questions[currentQ].choice4,
-        steps: questions[currentQ].steps,
-        blocks: questions[currentQ].blocks,
-        order: questions[currentQ].order==null?0:questions[currentQ].order
-      }
-    }).then(res=>{
-      that.setData({
-        questions:questions
-      })
+      questions: await this.data.cacheSingleton.fetchAnyEventTriviaQuestions(),
     });
+    wx.hideLoading();
   },
-  
-  chooseCorrectAnswer(event){
-    this.setData({
-      correctChoice: event.currentTarget.dataset.choice
-    })
-  },
-  addQ(event){
-    //let currentQuestions = this.data.weeklyQuestions;
-    //currentQuestions.push();
-    let that = this;
-    let create = app.globalData.openid ;
-    db.collection('bitday')
-    .add({
-      data: {
-        uploadDate: new Date(),
-        creator: create,
-        type: that.data.types[that.data.typeIdx]
+
+  answerTrivia: function(event){
+    console.log(event.currentTarget.dataset.link)
+    wx.navigateTo({
+      url: './trivia/trivia',
+      success: (res) => {
+        res.eventChannel.emit('questionId', event.currentTarget.dataset.link);
       }
-    }).then(res=>{
-      that.getQuestionStats()
-    })
-  },
-
-  lookAtNextType(event){
-    let week = this.data.typeIdx+1;
-    if (week>=this.data.types.length){
-      week = 0;
-    }
-
-    this.setData({
-      typeIdx:week,
-      changedWeek:true
-    })
-    this.getQuestionStats();
-  },
-
-  lookAtPrevType(event){
-    let week = this.data.typeIdx -1;
-    if (week<0){
-      week = this.data.types.length -1;
-    }
-    this.setData({
-      typeIdx:week,
-      changedWeek:true
-    })
-    this.getQuestionStats();
-  },
-  
-  checkIfVerified(){
-    let that = this;
-    wx.cloud.init({
-      env: 'shsid-3tx38'
-    })
-    db.collection('userInfo')
-    .where({_openid: app.globalData.openid})
-    .get({
-      success: function (res) {
-        if (res.data[0].bitdayVerified){
-          //scavenger hunt progress
-          let scav = [];
-          let scanned = 0;
-          /*
-          for (let i=1; i<=15; i++){
-            if (res.data[0].bitdayAnswers["scav-" + i.toString()] == null){
-              scav.push(0);
-            }
-            else if (res.data[0].bitdayAnswers["scav-" + i.toString()] >= 0){
-              scanned = scanned + 1;
-              scav.push(1);
-            }
-            console.log("scanned"+scanned)
-          }*/
-          for (let i = 1; i <= 16; i++) {
-            scanned = scanned + 1;
-            scav.push(1);
-          }
-          /*
-          var dd = new Date().getDate()
-          for (let i=1; i<=(dd-13+1)*3; i++){
-            scanned = scanned + 1;
-            scav.push(1);
-          }
-          for (let i=(dd-13+1)*3+1; i<=15; i++){
-            scav.push(0);
-          }*/
-          console.log("scanned"+scanned)
-          that.setData({
-            bitdayVerified:true,
-            ScavProgress: scav,
-            scanned: scanned
-          })
-        }
-        else{
-          let pops = that.data.showPopup;
-          pops[0] = true;
-          that.setData({
-            showPopup:pops
-          })
-        }
-      }
-    })
-  },
-
-  hidePopup(event){
-    this.setData({
-      showingPopup: false,
-      showPopup:[]
     })
   },
 
   redirect: function(event){
     app.globalData.questionNum = event.currentTarget.dataset.qnum;
     wx.navigateTo({
-      url: event.currentTarget.dataset.link
+      url: event.currentTarget.dataset.link,
     })
   },
 
-  submitInfo(event){
-    let name =  event.detail.value.name;
-    let classNum =  event.detail.value.class;
-    let grade =  event.detail.value.grade;
-    db.collection('userInfo')
-    .where({ _openid: app.globalData.openid })
-    .update({
-      data: {
-        userRealName:name,
-        userClass:classNum,
-        userGrade:grade,
-        bitdayPoints: 0,
-        gamesPoints: 0,
-        bitdayVerified: true
-      } 
-    })
-    this.setData({
-      showingPopup: false,
-      showPopup:[]
-    })
-  },
-  
-  scanQRCode(){
-    let that = this;
-    let codes = this.data.QRCodes;
-    let prog = this.data.ScavProgress;
+  scanButtonClick: function() {
     wx.scanCode({
-      success (res) {
-        for (let i =0; i<codes.length; i++){ 
-          if (codes[i] == res.result){ 
-          console.log(i+1); 
-          prog[i] = 1; 
-          that.setData({ 
-          ScavProgress:prog 
-          }) 
-          app.globalData.questionNum = i+1; 
-          wx.navigateTo({ 
-          url: "../bitday/scavenger hunt/index" 
-          }) 
-          }          
-        }
-          
+      onlyFromCamera: true,
+      success: (res) => {
+        handleCode(this.data.userOpenId, res.result);
       }
-    })
+    });
   },
-  /**
-   * Lifecycle function--Called when page is initially rendered
-   */
-  onReady: function () {
+  // showPopup(event){
+  //   let thePopups = this.data.showPopup;
+  //   thePopups[event.currentTarget.dataset.popupnum] = true;
+  //   this.setData({
+  //     showingPopup: true,
+  //     showPopup:thePopups
+  //   })
+  //   if (event.currentTarget.dataset.popupnum == 5)
+  //     this.getQuestionStats();
+  // },
+  // getUserData(){
+  //   console.log("update")
+  //   //var dd = new Date().getDate()
+  //   //console.log((dd-13+1)*3);
 
-  },
+  //   let ScavProgress = [];
+  //   /*
+  //   for (let i=0; i<(dd-13+1)*3; i++){
+  //     ScavProgress[i] = 1;
+  //   }
+  //   for (let i=(dd-13+1)*3; i<20; i++){
+  //     ScavProgress[i] = 0;
+  //   }*/
+  //   for (let i = 0; i < 16; i++) {
+  //     ScavProgress[i] = 1;
+  //   }
+
+  //   this.setData({
+  //     ScavProgress:ScavProgress
+  //   })
+  // },
+  // addBlock(event){
+  //   let blocks = this.data.blocks;
+  //   blocks.push(["",""]);
+  //   this.setData({
+  //     blocks:blocks
+  //   });
+  // },
+  // getScavengerHashes(){
+  //   let codes=[16];
+
+  //   //sha256 
+  //   for (let i=0;i<16;i++){
+  //     codes[i] = SHA256("scav" + (i+1).toString() +".");
+  //   }
+
+  //   this.setData({
+  //     QRCodes:codes
+  //   })
+  // },
+  // deleteQuestion(event){
+  //   let curQ = this.data.curQuestion;
+  //   //change cur Q index
+  //   if (curQ == 0)
+  //     curQ = this.data.questions.length-2;
+  //   else
+  //     curQ --;
+  //   let that = this;
+  //   let QuestionId = this.data.questions[this.data.curQuestion]._id;
+  //   db.collection('bitday').doc(QuestionId)
+  //   .remove()
+  //   .then(res=>{
+  //     that.setData({curQuestion:curQ})
+  //     that.getQuestionStats()
+  //   })
+  // },
+  // getQuestionStats(){
+  //   let that = this;
+  //   let cur = this.data.curQuestion;
+  //   let type = this.data.types[this.data.typeIdx];
+  //   console.log(type);
+  //   //get questions
+  //   db.collection('bitday')
+  //   .where({type:type})
+  //   .get({
+  //     success: function (res){
+  //       let questions = res.data;
+  //       if (type == "scavenger hunt"){
+  //         db.collection('bitday')
+  //         .where({type:"scavenger hunt"})
+  //         .skip(20)
+  //         .get({
+  //           success: function (res){
+  //             questions = questions.concat(res.data);
+
+  //             if (that.data.changedWeek){
+  //               cur = 0;
+  //               that.setData({
+  //                 curQuestion:0,
+  //                 changedWeek: false,
+  //                 questions: questions,
+  //                 correctChoice:0
+  //               })
+  //               //if there are any questoins, then get the stars & answer
+  //               if (questions.length > 0){
+  //                 that.setData({
+  //                   correctChoice: questions[cur].answer==null?0:questions[cur].answer,
+  //                   blocks: questions[cur].blocks==null?[]: questions[cur].blocks
+  //                 })
+  //               }
+  //             }
+  //             else{
+  //               that.setData({
+  //                 questions: questions,
+  //                 correctChoice: questions[cur].answer==null?0:questions[cur].answer,
+  //                 blocks: questions[cur].blocks==null?[]: questions[cur].blocks
+  //               })
+  //             }
+              
+  //           }
+  //         })
+  //       }else{
+  //         if (that.data.changedWeek){
+  //           cur = 0;
+  //           that.setData({
+  //             curQuestion:0,
+  //             changedWeek: false,
+  //             questions: res.data,
+  //             correctChoice:0
+  //           })
+  //           //if there are any questoins, then get the stars & answer
+  //           if (res.data.length > 0){
+  //             that.setData({
+  //               correctChoice: res.data[cur].answer==null?0:res.data[cur].answer,
+  //               blocks: res.data[cur].blocks==null?[]: res.data[cur].blocks
+  //             })
+  //           }
+  //         }
+  //         else{
+  //           that.setData({
+  //             questions: res.data,
+  //             correctChoice: res.data[cur].answer==null?0:res.data[cur].answer,
+  //             blocks: res.data[cur].blocks==null?[]: res.data[cur].blocks
+  //           })
+  //         }
+          
+  //       }
+  //     }
+  //   })
+  // },
+
+  
+  // changeQ: function(event){
+  //   let questions = this.data.questions;
+  //   this.setData({
+  //     curQuestion: event.currentTarget.dataset.num, // change question index
+  //     correctChoice: questions[event.currentTarget.dataset.num].answer==null?0:questions[event.currentTarget.dataset.num].answer,
+  //     blocks: questions[event.currentTarget.dataset.num].blocks==null?[]:questions[event.currentTarget.dataset.num].blocks
+  //   })
+  // },
+  // submitQuestion(event){
+  //   let questions = this.data.questions;
+  //   let currentQ = this.data.curQuestion;
+  //   let that = this;
+  //   questions[currentQ].choice1 = event.detail.value.choice1;
+  //   questions[currentQ].choice2 = event.detail.value.choice2;
+  //   questions[currentQ].choice3 = event.detail.value.choice3;
+  //   questions[currentQ].choice4 = event.detail.value.choice4;
+  //   questions[currentQ].question = event.detail.value.question;
+  //   questions[currentQ].steps = event.detail.value.answerSteps;
+  //   questions[currentQ].answer = this.data.correctChoice;
+  //   questions[currentQ].type = this.data.types[this.data.typeIdx];
+
+  //   let blocks = [];
+  //   if (this.data.types[this.data.typeIdx] == "programming"){
+  //     questions[currentQ].order = event.detail.value.order.split(" ");
+  //     for (let i=0; i<questions[currentQ].order.length; i++){
+  //       questions[currentQ].order[i] = parseInt(questions[currentQ].order[i]);
+  //     }
+  //     let blocksLength = this.data.blocks.length;
+  //     for (let i=0; i<blocksLength; i++){
+  //       let num = i.toString();
+  //       blocks.push([event.detail.value["englishBlock" + num],event.detail.value["pythonBlock" + num]]);
+  //     }
+  //   }
+    
+  //   questions[currentQ].blocks = blocks;
+  //   wx.cloud.init({
+  //     env: 'shsid-3tx38'
+  //   })
+  //   db.collection('bitday')
+  //   .where({ _id: questions[currentQ]._id })
+  //   .update({
+  //     data: {
+  //       answer: questions[currentQ].answer,
+  //       question: questions[currentQ].question,
+  //       choice1: questions[currentQ].choice1,
+  //       choice2: questions[currentQ].choice2,
+  //       choice3: questions[currentQ].choice3,
+  //       choice4: questions[currentQ].choice4,
+  //       steps: questions[currentQ].steps,
+  //       blocks: questions[currentQ].blocks,
+  //       order: questions[currentQ].order==null?0:questions[currentQ].order
+  //     }
+  //   }).then(res=>{
+  //     that.setData({
+  //       questions:questions
+  //     })
+  //   });
+  // },
+  
+  // chooseCorrectAnswer(event){
+  //   this.setData({
+  //     correctChoice: event.currentTarget.dataset.choice
+  //   })
+  // },
+  // addQ(event){
+  //   //let currentQuestions = this.data.weeklyQuestions;
+  //   //currentQuestions.push();
+  //   let that = this;
+  //   let create = app.globalData.openid ;
+  //   db.collection('bitday')
+  //   .add({
+  //     data: {
+  //       uploadDate: new Date(),
+  //       creator: create,
+  //       type: that.data.types[that.data.typeIdx]
+  //     }
+  //   }).then(res=>{
+  //     that.getQuestionStats()
+  //   })
+  // },
+
+  // lookAtNextType(event){
+  //   let week = this.data.typeIdx+1;
+  //   if (week>=this.data.types.length){
+  //     week = 0;
+  //   }
+
+  //   this.setData({
+  //     typeIdx:week,
+  //     changedWeek:true
+  //   })
+  //   this.getQuestionStats();
+  // },
+
+  // lookAtPrevType(event){
+  //   let week = this.data.typeIdx -1;
+  //   if (week<0){
+  //     week = this.data.types.length -1;
+  //   }
+  //   this.setData({
+  //     typeIdx:week,
+  //     changedWeek:true
+  //   })
+  //   this.getQuestionStats();
+  // },
+  
+  // checkIfVerified(){
+  //   let that = this;
+  //   wx.cloud.init({
+  //     env: 'shsid-3tx38'
+  //   })
+  //   db.collection('userInfo')
+  //   .where({_openid: app.globalData.openid})
+  //   .get({
+  //     success: function (res) {
+  //       if (res.data[0].bitdayVerified){
+  //         //scavenger hunt progress
+  //         let scav = [];
+  //         let scanned = 0;
+  //         /*
+  //         for (let i=1; i<=15; i++){
+  //           if (res.data[0].bitdayAnswers["scav-" + i.toString()] == null){
+  //             scav.push(0);
+  //           }
+  //           else if (res.data[0].bitdayAnswers["scav-" + i.toString()] >= 0){
+  //             scanned = scanned + 1;
+  //             scav.push(1);
+  //           }
+  //           console.log("scanned"+scanned)
+  //         }*/
+  //         for (let i = 1; i <= 16; i++) {
+  //           scanned = scanned + 1;
+  //           scav.push(1);
+  //         }
+  //         /*
+  //         var dd = new Date().getDate()
+  //         for (let i=1; i<=(dd-13+1)*3; i++){
+  //           scanned = scanned + 1;
+  //           scav.push(1);
+  //         }
+  //         for (let i=(dd-13+1)*3+1; i<=15; i++){
+  //           scav.push(0);
+  //         }*/
+  //         console.log("scanned"+scanned)
+  //         that.setData({
+  //           bitdayVerified:true,
+  //           ScavProgress: scav,
+  //           scanned: scanned
+  //         })
+  //       }
+  //       else{
+  //         let pops = that.data.showPopup;
+  //         pops[0] = true;
+  //         that.setData({
+  //           showPopup:pops
+  //         })
+  //       }
+  //     }
+  //   })
+  // },
+
+  // hidePopup(event){
+  //   this.setData({
+  //     showingPopup: false,
+  //     showPopup:[]
+  //   })
+  // },
+
+  // submitInfo(event){
+  //   let name =  event.detail.value.name;
+  //   let classNum =  event.detail.value.class;
+  //   let grade =  event.detail.value.grade;
+  //   db.collection('userInfo')
+  //   .where({ _openid: app.globalData.openid })
+  //   .update({
+  //     data: {
+  //       userRealName:name,
+  //       userClass:classNum,
+  //       userGrade:grade,
+  //       bitdayPoints: 0,
+  //       gamesPoints: 0,
+  //       bitdayVerified: true
+  //     } 
+  //   })
+  //   this.setData({
+  //     showingPopup: false,
+  //     showPopup:[]
+  //   })
+  // },
+  
+  // scanQRCode(){
+  //   let that = this;
+  //   let codes = this.data.QRCodes;
+  //   let prog = this.data.ScavProgress;
+  //   wx.scanCode({
+  //     success (res) {
+  //       for (let i =0; i<codes.length; i++){ 
+  //         if (codes[i] == res.result){ 
+  //         console.log(i+1); 
+  //         prog[i] = 1; 
+  //         that.setData({ 
+  //         ScavProgress:prog 
+  //         }) 
+  //         app.globalData.questionNum = i+1; 
+  //         wx.navigateTo({ 
+  //         url: "../bitday/scavenger hunt/index" 
+  //         }) 
+  //         }          
+  //       }
+          
+  //     }
+  //   })
+  // },
 
   /**
    * Lifecycle function--Called when page show
    */
-  onShow: function () {
-    this.checkIfVerified();
-  },
+  // onShow: function () {
+  //   this.checkIfVerified();
+  // },
 
-  /**
-   * Lifecycle function--Called when page hide
-   */
-  onHide: function () {
-
-  },
-
-  /**
-   * Lifecycle function--Called when page unload
-   */
-  onUnload: function () {
-
-  },
-
-  /**
-   * Page event handler function--Called when user drop down
-   */
-  onPullDownRefresh: function () {
-
-  },
-
-  /**
-   * Called when page reach bottom
-   */
-  onReachBottom: function () {
-
-  },
-
-  /**
-   * Called when user click on the top right corner to share
-   */
-  onShareAppMessage: function () {
-
-  },
-
-  trophywall(){
-    wx.navigateTo({ 
-      url: "../piday/trophywall/trophywall" 
-      }) 
-  },
-  mathquizzes(){
-    wx.navigateTo({ 
-      url: "../piday/mathquizzes/mathquizzes" 
-      }) 
-  },
-
-  show24Points() {
-    wx.navigateTo({ 
-      url: "../../mini games/24points/24points" 
-      }) 
-  },
-
-  showSoduku() {
-    wx.navigateTo({ 
-      url: "../../mini games/Soduku/DifficultySelection/Select" 
-      }) 
-  }
+  // trophywall(){
+  //   wx.navigateTo({ 
+  //     url: "../piday/trophywall/trophywall" 
+  //     }) 
+  // }
 })
 

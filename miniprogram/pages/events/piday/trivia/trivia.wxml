@@ -1,0 +1,25 @@
+<!--pages/events/piday/trivia/trivia.wxml-->
+<view id="trivia-container">
+    <text class="big-title-text">Pi Day Trivia</text>
+    <view id="timer-container" wx:if="{{questionStatus === 'unanswered'}}">
+      <text class="heading-text">Time Remaining: {{remainingTime}}</text>
+    </view>
+    <view id="trivia-question-container">
+      <text id="question-text">{{selectedQuestion.questionContent}}</text>
+    </view>
+    <view id="trivia-option-container" class="{{opt0Class}}" bindtap="handleAnswer" data-link='0'>
+      <text id="question-text">A) {{selectedQuestion.optA}}</text>
+    </view>
+    <view id="trivia-option-container" class="{{opt1Class}}" bindtap="handleAnswer" data-link='1'>
+      <text id="question-text">B) {{selectedQuestion.optB}}</text>
+    </view>
+    <view id="trivia-option-container" class="{{opt2Class}}" bindtap="handleAnswer" data-link='2'>
+      <text id="question-text">C) {{selectedQuestion.optC}}</text>
+    </view>
+    <view id="trivia-option-container" class="{{opt3Class}}" bindtap="handleAnswer" data-link='3'>
+      <text id="question-text">D) {{selectedQuestion.optD}}</text>
+    </view>
+    <view id="question-id-container">
+        <text id="question-id-text">Question ID: {{selectedQuestion.questionId}}</text>
+    </view>
+</view>

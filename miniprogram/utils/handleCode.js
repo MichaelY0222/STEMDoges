@@ -89,16 +89,44 @@ export async function handleCode(openId, x) {
   }
   
   // handle the code
+  console.log('Handle Code')
   if (keyToValueMap.get("event")==="PI25") {
+    console.log('Pi Day 2025')
     if (keyToValueMap.get("type")==="questionCode") {
+      console.log('Scav Hunt Quest')
       // Scavenger Hunt Question Code
+      let scannedTicketId = String.fromCharCode(...keyToValueMap.get("dat"));
+      console.log(scannedTicketId)
+      let getTicketData = await wx.cloud.database().collection("piDayScav").where({
+        questionId: scannedTicketId,
+      }).get();
+      console.log(getTicketData)
+      if (getTicketData.data.length === 0) {
+        reportCodeScanError(`This Pi Day Scavenger Hunt Question Code is invalid.`);
+        return;
+      }
+      else {
+        console.log('Navigating to Trivia Page')
+        wx.navigateTo({
+          url: '/pages/events/piday/trivia/trivia',
+          success: (res) => {
+            res.eventChannel.emit('questionId', getTicketData.data[0].questionId);
+          },
+          fail: (err) => {
+            console.error("Navigation failed:", err);
+          }
+        })
+        return;
+      }
     } else {
-      reportCodeScanError(`This Spring Formal Code is of unknown type ${keyToValueMap.get("type")}.`);
+      reportCodeScanError(`This Pi Day Code is of unknown type ${keyToValueMap.get("type")}.`);
       return;
     }
   }
   else if (keyToValueMap.get("event") === undefined) {
+    console.log('Undefined event')
     if (keyToValueMap.get("type") === "adminDebugCode") {
+      console.log('Admin Debug Code')
       wx.showModal({
         title: 'Admin Override',
         content: `Account openId: ${{openId}}`,

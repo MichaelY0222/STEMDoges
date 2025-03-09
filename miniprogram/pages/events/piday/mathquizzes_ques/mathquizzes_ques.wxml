@@ -22,9 +22,9 @@
   <view class="title" style="background-color:{{'#ddf9bf'}}">
     <view style="padding-top:30px;padding-bottom:20px;">Correct</view>
   </view>
-  <view class="image">
+  <!-- <view class="image">
     <image lazy-load src="{{questions[number-1]['question']}} "  bindload='onLazyLoad'></image>
-  </view>
+  </view> -->
   <view class="place">  
     <view style="margin-left: 60rpx;  font-weight:500;  font-size: 55rpx;margin-bottom:20rpx">correct answer:</view>
     <view wx:for="{{questions[number-1]['answer']}}" class = "result" >

@@ -3,7 +3,7 @@
 <view id="pi-day-top-container">
   <text class="big-title-text">Pi Day</text>
   <view id="pi-day-top-right-container">
-    <view class="admin-button" bindtap="redirect" data-link="../admin/index" wx:if="{{isAdmin}}">
+    <view class="admin-button" bindtap="redirect" data-link="./admin/admin" wx:if="{{isAdmin}}">
       <image src="../../../icons/bolt.svg" class="admin-image"></image>
     </view>
     <view id="pi-day-top-scan-button-container" bindtap="scanButtonClick">
@@ -31,8 +31,18 @@
 
   <view id="pi-day-info-container">
     <text class="heading-text">Daily Trivia</text>
+    <view id="pi-day-trivia-container">
+      <block wx:if="{{questions.length!==0}}" wx:for="{{questions}}" wx:key="index">
+        <view id="pi-day-question-number" class="pi-day-question-{{item.status}}" bindtap="answerTrivia" data-link="{{item.questionId}}">{{index + 1}}</view>
+      </block>
+      <block wx:if="{{questions.length===0}}" id="comment-text-container">
+        <text id="comment-text">No Trivia Questions</text>
+        <text id="comment-text">Available Today...</text>
+        <text id="comment-text-small">Daily Trivia either hasn't started or has alread ended. Please check back at a later time!</text>
+      </block>
+    </view>
   </view>
-  <image src="../../../images/scan.jpg"view class="eventHeaderSmall" bindtap="scanQRCode"></image>
+  <image src="../../../images/scan.jpg"view class="eventHeaderSmall" bindtap="scanButtonClick"></image>
   <image src="../../../images/leaderboard.jpg"view class="eventHeader" bindtap="redirect" data-Qnum="1" data-link="../piday/leaderboard/leaderboard" data-Qnum="0"></image>
 
   <!-- <image src="../../../images/Puzzles.jpeg" class="eventHeader"  bindtap="showSoduku" ></image>-->
@@ -40,7 +50,7 @@
 
 
 <!-- info trivia area -->
-<view wx:if="{{showPopup[1]}}" class="overlay" bindtap="hidePopup"></view>
+<!-- <view wx:if="{{showPopup[1]}}" class="overlay" bindtap="hidePopup"></view>
 <view wx:if="{{showPopup[1]}}" class="mini popup" >
   <text bindtap="hidePopup" class="closePopup">X</text>
   <text class="eventTitle">Trivia</text>
@@ -52,15 +62,15 @@
 
   <view wx:if="{{dayNum>=3}}" bindtap="redirect" data-Qnum="3" data-link="../bitday/trivia/index" class="eventHeader" style="height:50px; background-color:{{colors[1]}}"><view style="margin-top:15px;">10/20</view></view>
   <view wx:else class="eventHeader" style="height:50px"><view style="margin-top:15px;">10/20</view></view>
-</view>
+</view> -->
 
 
 <!-- programming questions area -->
-<view wx:if="{{showPopup[2]}}" class="overlay" bindtap="hidePopup"></view>
+<!-- <view wx:if="{{showPopup[2]}}" class="overlay" bindtap="hidePopup"></view>
 <view wx:if="{{showPopup[2]}}" style="text-align: left" class="regular popup" >
-  <text bindtap="hidePopup" class="closePopup">X</text>
+  <text bindtap="hidePopup" class="closePopup">X</text> -->
   <!-- <view class="questionsDone">0/9</view> -->
-  <view>
+  <!-- <view>
   <view  style="margin-top:70px">
     <view class="date">10/18</view>
     <view class="bar'"></view>
@@ -102,9 +112,9 @@
     <view wx:else class="questionItem" style="background-color:{{colors[0]}}"><view class="questoinItemNumber">9</view></view>
   </view>
   </view>
-</view>
+</view> -->
 <!-- Schedule area -->
-<view wx:if="{{showPopup[3]}}" class="overlay" bindtap="hidePopup"></view>
+<!-- <view wx:if="{{showPopup[3]}}" class="overlay" bindtap="hidePopup"></view>
 <scroll-view scroll-y wx:if="{{showPopup[3]}}" style="text-align: left" class="regular popup">
   <text bindtap="hidePopup" class="closePopup">X</text>
   <view>
@@ -156,15 +166,15 @@
     <view class="scheduleItem" style="margin-top:10px;font-weight:bold">Pixel Board (CS)</view>
     <view class="scheduleItem">All Day: infront of ZTB</view>
   </view>
-</scroll-view>
+</scroll-view> -->
 
 <!-- scavenger hunt area -->
-<view wx:if="{{showPopup[4]}}" class="overlay" bindtap="hidePopup"></view>
+<!-- <view wx:if="{{showPopup[4]}}" class="overlay" bindtap="hidePopup"></view>
 <scroll-view scroll-y wx:if="{{showPopup[4]}}" style="text-align: left" class="regular popup" >
-  <text bindtap="hidePopup" class="closePopup" style="font-size: 20px;">X</text>
+  <text bindtap="hidePopup" class="closePopup" style="font-size: 20px;">X</text> -->
   <!-- <view class="questionsDone">0/30</view> -->
   <!-- <view class="day"> Day {{day==30?2:(day==31?3:(day==1?4:1))}} </view> -->
-  <view style="margin-top:45px; margin-left:5%; width:90%;">
+  <!-- <view style="margin-top:45px; margin-left:5%; width:90%;">
     <view style = "text-align: center;">
     </view>
     <view wx:for="{{QRCodes}}"  class="questionItem" wx:for-index="i" style="background-color:{{colors[ScavProgress[i]]}}">
@@ -172,17 +182,17 @@
       <view wx:else class="questoinItemNumber"  >{{i+1}}</view>
     </view>
   </view>
-</scroll-view>
+</scroll-view> -->
 
 <!-- admin area -->
-<view wx:if="{{showPopup[5]}}" class="overlay" bindtap="hidePopup"></view>
+<!-- <view wx:if="{{showPopup[5]}}" class="overlay" bindtap="hidePopup"></view>
 <view wx:if="{{showPopup[5]}}" style="text-align: left" class="regular popup" >
   <text bindtap="hidePopup" class="closePopup">X</text>
   <text bindtap="deleteQuestion" class="closePopup" style="right:35px">🗑</text>
   <view style="text-align:center">
     <view class="topWeekNum" bindtap="lookAtPrevType">{{'<--'}}</view>
     <text class="topWeekNum">{{types[typeIdx]}}</text>
-    <view class="topWeekNum" bindtap="lookAtNextType">--></view>
+    <view class="topWeekNum" bindtap="lookAtNextType"></view>
   </view>
   <scroll-view class="chooseQuestionsArea" style="width:calc(90vw - 80px)" scroll-x>
     <view class="chooseQuestionsArea" style="width:calc(50px * {{weeklyQuestions.length}})">
@@ -235,6 +245,4 @@
       <button class="submitChanges" style="width: 40%;" form-type="submit" >SUBMIT</button>
     </form>
   </scroll-view>
-</view>
-
-
+</view> -->

@@ -10,6 +10,8 @@
     "pages/events/moleday/scavenger hunt/index",
 
     "pages/events/piday/piday",
+    "pages/events/piday/trivia/trivia",
+    "pages/events/piday/admin/admin",
     "pages/events/piday/leaderboard/leaderboard",
     "pages/events/piday/trophywall/trophywall",
     "pages/events/piday/mathquizzes/mathquizzes",

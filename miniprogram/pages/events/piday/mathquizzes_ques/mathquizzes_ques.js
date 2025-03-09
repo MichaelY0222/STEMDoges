@@ -108,9 +108,9 @@ Page({
   onReady() {
 
   },
-  onLazyLoad(info) {
-    console.log(info)
-  },
+  // onLazyLoad(info) {
+  //   console.log(info)
+  // },
   /**
    * 生命周期函数--监听页面显示
    */

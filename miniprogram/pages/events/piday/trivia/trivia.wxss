@@ -1,0 +1,72 @@
+/* pages/events/piday/trivia/trivia.wxss */
+#trivia-container {
+  padding: 0 16px;
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+#trivia-question-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 15px;
+  padding: 15px;
+  padding-right: 15px;
+  border-radius: 20px;
+  background-color: var(--subcontainer-background);
+}
+
+#trivia-option-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 15px;
+  padding: 15px;
+  padding-right: 15px;
+  border-radius: 20px;
+}
+
+#question-text {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+#timer-container {
+  padding: 0 16px;
+  margin-bottom: 6px;
+  margin-top: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.pi-day-question-correct {
+  background-color: #A0D911;
+}
+
+.pi-day-question-wrong {
+  background-color: #FF4C4C;
+}
+
+.pi-day-question-unanswered {
+  background-color: var(--subcontainer-background);
+}
+
+#question-id-container {
+  display: flex;
+  position: absolute;
+  bottom: 0;
+  margin-bottom: 30px;
+  flex-direction: column;
+  align-items: center;
+}
+
+#question-id-text {
+  padding: 0 29px;
+  color: var(--secondary);
+}

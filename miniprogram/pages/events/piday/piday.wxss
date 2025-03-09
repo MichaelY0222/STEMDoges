@@ -362,7 +362,7 @@
 }
 
 #pi-day-scroll {
-  height: 85vh;
+  height: 100vh;
 }
 
 #pi-day-top-right-container {
@@ -395,4 +395,60 @@
   padding: 0 16px;
   margin-bottom: 6px;
   margin-top: 20px;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+#pi-day-trivia-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 15px;
+  padding: 15px;
+  padding-right: 15px;
+  border-radius: 20px;
+  background-color: var(--subcontainer-background);
+}
+
+#pi-day-question-number {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+  border-radius: 50%;
+  font-weight: bold;
+  font-size: 25px;
+}
+
+.pi-day-question-unanswered {
+  background-color: #E5E5E5;
+}
+
+.pi-day-question-correct {
+  background-color: #A0D911;
+}
+
+.pi-day-question-wrong {
+  background-color: #FF4C4C;
+}
+
+#comment-text-container {
+  display: flex;
+  align-items: center;
+  text-align: center;
+}
+
+#comment-text {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+#comment-text-small {
+  margin-top: 10px;
+  font-size: 15px;
+  font-weight: bold;
 }

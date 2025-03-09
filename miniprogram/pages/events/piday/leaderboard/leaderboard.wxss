@@ -1,9 +1,9 @@
 /* miniprogram/pages/bitday/leader board/index.wxss */
 .leaderboard{
-  width: 80%;
+  width: 90%;
   height: 80vh;
-  margin-top: 10px;
-  margin-left:10%;
+  margin-top: 20px;
+  margin-left:5%;
   border-radius: 10px;
   background-color: rgba(0, 0, 0, 0.274);
 }
@@ -44,4 +44,10 @@
 
 .userarea{
   margin-top:10px;
+}
+
+#pi-day-top-container {
+  padding: 0 16px;
+  display: flex;
+  justify-content: space-between;
 }

@@ -1,3 +1,6 @@
+import allCollectionsData from "../utils/allCollectionsData";
+import { Question } from "./question";
+import { Event } from "./event";
 let instance = null;
 
 class CacheSingleton {
@@ -9,8 +12,12 @@ class CacheSingleton {
     #studentClass
     #isAdmin
     #isPiDayAdmin
+    #questions
+    #scavQuestions
+    #events
     constructor(db) {
         this.#db = db;
+        this.#questions = undefined;
     }
     static initialize(db) {
         wx.showLoading({
@@ -108,6 +115,105 @@ class CacheSingleton {
         return this.#isPiDayAdmin;
       } else return undefined;
     }
+
+    async forceGetAnyEventTriviaQuestions() {
+      wx.showLoading({
+        title: '加载中...',
+        mask: true
+      });
+      this.#questions = undefined;
+  
+      this.#questions = new Array()
+      let questions = await allCollectionsData(this.#db, "piDayTrivia");
+      for (let i=0;i<questions.data.length;i++) {
+          if (questions.data[i].startTime <= (Date.now()/1000) && (Date.now()/1000) <= questions.data[i].endTime){
+            let status = 'unanswered'
+            let checkQuestionStatus = await wx.cloud.database().collection("piDayActivityLog").where({
+              userId: this.#userOpenId,
+              questionId: questions.data[i].questionId
+            }).get();
+            
+            if (checkQuestionStatus.data.length !== 0) {
+              status = checkQuestionStatus.data[0].status
+            }
+            
+            this.#questions.push(new Question(questions.data[i].questionId, questions.data[i].questionContent, questions.data[i].optA, questions.data[i].optB, questions.data[i].optC, questions.data[i].optD, questions.data[i].correctOptIndex, questions.data[i].startTime, questions.data[i].endTime, status));
+          }
+      }
+ 
+      wx.hideLoading();
+      return this.#questions;
+  }
+
+  async fetchAnyEventTriviaQuestions() {
+    wx.showLoading({
+      title: '加载中...',
+      mask: true
+    });
+
+    if (this.#questions !== undefined) {
+        wx.hideLoading();
+        return this.#questions;
+    } else {
+      await this.forceGetAnyEventTriviaQuestions();
+      wx.hideLoading();
+      return this.#questions;
+    }
+  }
+
+  async fetchAnyEventScavQuestions() {
+    wx.showLoading({
+      title: '加载中...',
+      mask: true
+    });
+    if (this.#scavQuestions !== undefined) {
+      wx.hideLoading();
+      return this.#scavQuestions;
+    } else {
+      this.#scavQuestions = new Array()
+    let questions = await allCollectionsData(this.#db, "piDayScav");
+    for (let i=0;i<questions.data.length;i++) {
+          let status = 'unanswered'
+          let checkQuestionStatus = await wx.cloud.database().collection("piDayActivityLog").where({
+            userId: this.#userOpenId,
+            questionId: questions.data[i].questionId
+          }).get();
+          
+          if (checkQuestionStatus.data.length !== 0) {
+            status = checkQuestionStatus.data[0].status
+          }
+          
+          let startTime = 1800000000;
+          let endTime = -1;
+
+          this.#scavQuestions.push(new Question(questions.data[i].questionId, questions.data[i].questionContent, questions.data[i].optA, questions.data[i].optB, questions.data[i].optC, questions.data[i].optD, questions.data[i].correctOptIndex, startTime, endTime, status));
+      }
+
+      wx.hideLoading();
+      return this.#scavQuestions;
+    }
+  }
+
+  async fetchAnyEventActivity() {
+    console.log('fetching activivty')
+    wx.showLoading({
+      title: '加载中...',
+      mask: true
+    });
+    if (this.#events !== undefined) {
+      wx.hideLoading();
+      return this.#events;
+    } else {
+      this.#events = new Array()
+      let activity = await allCollectionsData(this.#db, "piDayEvents");
+      for (let i=0;i<activity.data.length;i++) {
+        this.#events.push(new Event(activity.data[i].eventId, activity.data[i].eventName, activity.data[i].eventHost, activity.data[i].points));
+      }
+
+      wx.hideLoading();
+      return this.#events;
+    }
+  }
 }
 
 export default CacheSingleton;

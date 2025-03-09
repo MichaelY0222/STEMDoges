@@ -1,0 +1,32 @@
+<view id="admin-container">
+  <text class="big-title-text" id="admin-big-title">Pi Day Admin</text>
+  <text class="big-title-sub-text">Ask the user to launch the mini program by scanning the code below. Then, ask the user to use the scan function within the mini program to scan the code you generate to log activity.</text>
+  
+  <view id="mp-code-img-container">
+    <image src="../../../../images/mpCode.jpg" id="mp-code-img"></image>
+  </view>
+
+  <text class="heading-text">Log Points</text>
+  <view class="question">
+    <text class="question-label">Select Event</text>
+    <picker class="question-input-with-selector" mode="selector" range="{{eventOptions}}" value="{{event}}" bindchange="eventChanged">
+      <view class="question-select">
+        {{eventOptions[event] ? eventOptions[event].eventName : 'Select an Event'}}
+        <image src="../../../../icons/chevron-down.svg" class="selectorIcon"></image>
+      </view>
+    </picker>
+  </view>
+
+  <view id="button-container">
+    <view id="submit-button" bindtap="onGenerateClick">
+      <text id="submit-button-text">Generate</text>
+    </view>
+  </view>
+
+  <view id="personal-code-code-container" wx:if="{{codeGenerated}}">
+    <view class="secure-code-preview-container">
+      <canvas type="2d" class="secure-code-canvas" id="personalcodecanvas" canvas-id="activitycodecanvas"></canvas>
+      <text class="secure-code-preview-caption" style="text-align: center">{{codeLastGen ? 'Updated ' + codeLastGen : 'Updating...'}}\nYour Personal Code and Compact ID uniquely identify your account.</text>
+    </view>
+  </view>
+</view>
