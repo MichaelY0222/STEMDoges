@@ -53,16 +53,18 @@
     "pages/mini games/Soduku/sudoku/sudoku",
     "pages/mini games/Soduku/menu/menu"
   ],
+  "darkmode": true,
+  "themeLocation": "theme.json",
   "window": {
-    "backgroundColor": "#eeeeee",
-    "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#eeeeee",
+    "backgroundTextStyle": "@backgroundTextStyle",
+    "navigationBarBackgroundColor": "@navBackgroundColor",
     "navigationBarTitleText": "STEM Doges",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "@navTextStyle"
   },
   "usingComponents": {
     "cu-custom":"/colorui/components/cu-custom"
   },
   "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
   "style": "v2"
 }

@@ -5,7 +5,8 @@
   margin-top: 20px;
   margin-left:5%;
   border-radius: 10px;
-  background-color: rgba(0, 0, 0, 0.274);
+  /* background-color: rgba(0, 0, 0, 0.274); */
+  background-color: #FFFFFF;
 }
 
 .day{
@@ -53,4 +54,37 @@
   padding: 0 16px;
   display: flex;
   justify-content: space-between;
+}
+
+@media (prefers-color-scheme: dark) {
+  .leaderboard{
+    width: 90%;
+    height: 80vh;
+    margin-top: 20px;
+    margin-left:5%;
+    border-radius: 10px;
+    /* background-color: rgba(0, 0, 0, 0.274); */
+    background-color: #1C1C1E;
+  }
+  .yourRank{
+    width: 100%;
+    margin-top:10px;
+    text-align: center;
+    color: white;
+  }
+  .username{
+    position: absolute;
+    left:20px;
+    color: white;
+  }
+  .userclass{
+    position: absolute;
+    left:200px;
+    color: white;
+  }
+  .userpoints{
+    position: absolute;
+    right:20px;
+    color: white;
+  }
 }
