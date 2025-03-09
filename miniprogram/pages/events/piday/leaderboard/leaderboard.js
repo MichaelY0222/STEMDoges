@@ -19,7 +19,7 @@ Page({
   /**
    * Lifecycle function--Called when page load
    */
-  onLoad: function (options) {
+  onLoad: async function (options) {
     wx.showLoading({
       title: '加载中...',
       mask: true
@@ -31,7 +31,7 @@ Page({
     //   day: new Date().getDate()
     // });
     //console.log("hello", this.data.day);
-    wx.cloud.callFunction({
+    await wx.cloud.callFunction({
       name: "computeLeaderboard",
     }).then(res => {
       this.setData({

@@ -1,4 +1,5 @@
 // pages/registration/registration.js
+import CacheSingleton from '../../classes/CacheSingleton';
 const db = wx.cloud.database();
 Page({
 
@@ -6,6 +7,7 @@ Page({
    * Page initial data
    */
   data: {
+    cacheSingleton: CacheSingleton,
     userOpenId: String,
     grade: 0,
     gradeOptions: ['Please Select...','9','10','11','12'],
@@ -20,6 +22,7 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function() {
+    this.data.cacheSingleton = CacheSingleton.getInstance();
   },
 
   nameInputChanged: function(x) {
@@ -56,7 +59,9 @@ Page({
         confirmText: 'Confirm',
         complete: async (res) => {
           if (res.confirm) {
-            await this.determineNeedNewUser();
+            this.setData({
+              needRegistration: await this.data.cacheSingleton.determineNeedNewUser()
+            })
             if (this.data.needRegistration) {
               await wx.cloud.callFunction({
                 name: "registerUser",
@@ -90,43 +95,6 @@ Page({
         confirmText: 'Dismiss',
       })
     }
-  },
-
-  fetchUserOpenId: async function() {
-    wx.showLoading({
-      title: 'Loading...',
-      mask: true
-    });
-    if (this.data.userOpenId !== 'undefined') {
-      wx.hideLoading();
-      return;
-    }
-    let res = ((await wx.cloud.callFunction({
-      name: "quickstartFunctions",
-      data: {
-        type: "getOpenId"
-      }
-    })).result).openid;
-    this.setData({
-      userOpenId: res
-    })
-    wx.hideLoading();
-  },
-
-  determineNeedNewUser: async function () {
-    wx.showLoading({
-      title: 'Loading...',
-      mask: true
-    });
-    let checkUser = await db.collection("userData").where({
-      userId: this.data.userOpenId,
-    }).get();
-    if (checkUser.data.length === 0){
-      this.setData({
-        needRegistration: true
-      })
-    }
-    wx.hideLoading();
   },
 
   skipRegistration: function() {

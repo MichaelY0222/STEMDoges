@@ -13,6 +13,7 @@ Page({
     questions: [],
     selectedQuestion: [],
     questionStatus: 'unanswered',
+    questionType: 'undefined',
     userOpenId: 'undefined',
     remainingTime: 30,
     timerElapsed: false,
@@ -37,14 +38,20 @@ Page({
       scavQuestions: await this.data.cacheSingleton.fetchAnyEventScavQuestions(),
     });
     this.setData({
-      questions: [...this.data.scavQuestions, ...this.data.triviaQuestions]
+      questions: [
+        ...this.data.scavQuestions.map(q => ({ ...q, type: 'Scav' })), 
+        ...this.data.triviaQuestions.map(q => ({ ...q, type: 'Trivia' }))
+      ]
     })
     const eventChannel = this.getOpenerEventChannel();
     eventChannel.on('questionId', async (data) => {
       this.setData({
         questionId: data,
-        selectedQuestion: this.data.questions.find(q => q.questionId === data)
+        selectedQuestion: this.data.questions.find(q => q.questionId === data),
       });
+      this.setData({
+        questionType: this.data.selectedQuestion.type
+      })
       let checkQuestionStatus = await wx.cloud.database().collection("piDayActivityLog").where({
         userId: this.data.userOpenId,
         questionId: data
@@ -113,19 +120,20 @@ Page({
             await wx.cloud.callFunction({
               name: "pushAnyEventLog",
               data: {
-                type: 'Trivia',
+                type: this.data.questionType,
                 questionId: this.data.selectedQuestion.questionId,
                 status: this.data.questionStatus
               }
             })
-            wx.hideLoading();
             await this.data.cacheSingleton.forceGetAnyEventTriviaQuestions();
+            wx.hideLoading();
           }
           wx.hideLoading();
         }
       })
+    } else {
+      wx.hideLoading();
     }
-    wx.hideLoading();
   },
 
   correctAnswer: async function() {
@@ -140,15 +148,16 @@ Page({
       await wx.cloud.callFunction({
         name: "pushAnyEventLog",
         data: {
-          type: 'Trivia',
+          type: this.data.questionType,
           questionId: this.data.selectedQuestion.questionId,
           status: this.data.questionStatus
         }
       })
-      wx.hideLoading();
       await this.data.cacheSingleton.forceGetAnyEventTriviaQuestions();
+      wx.hideLoading();
+    } else {
+      wx.hideLoading();
     }
-    wx.hideLoading();
   },
 
   handleAnswer: async function(event) {
@@ -177,16 +186,17 @@ Page({
         await wx.cloud.callFunction({
           name: "pushAnyEventLog",
           data: {
-            type: 'Trivia',
+            type: this.data.questionType,
             questionId: this.data.selectedQuestion.questionId,
             status: this.data.questionStatus
           }
         })
-        wx.hideLoading();
         await this.data.cacheSingleton.forceGetAnyEventTriviaQuestions();
+        wx.hideLoading();
       }
+    } else {
+      wx.hideLoading();
     }
-    wx.hideLoading();
   },
 
   onUnload() {

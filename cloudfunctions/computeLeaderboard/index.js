@@ -31,15 +31,17 @@ exports.main = async (event, context) => {
 
       userLogs.forEach(log => {
         if (log.type === "Trivia" && log.status === "correct") {
-          totalPoints += 1;
-        }
-        if (log.points) {
+          totalPoints += 3;
+        } else if (log.type === "Scav" && log.status === "correct") {
+          totalPoints += 5;
+        } else if (log.points) {
           totalPoints += log.points;
         }
       });
 
       if (totalPoints > 0) {
         leaderboard.push({
+          userId: user.userId,
           name: user.name,
           grade: user.grade,
           class: user.class,
@@ -54,7 +56,7 @@ exports.main = async (event, context) => {
 
     leaderboard.sort((a, b) => b.points - a.points);
     if (rankCurrentUser){
-      currentUserRank = leaderboard.findIndex(user => user.userId === currentUserId) + 2;
+      currentUserRank = leaderboard.findIndex(user => user.userId === currentUserId) + 1;
     }
 
     return { 

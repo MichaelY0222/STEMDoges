@@ -68,11 +68,11 @@ class CacheSingleton {
         title: '加载中...',
         mask: true
       });
-      if (this.#needRegistration !== undefined) {
-        console.log("Registration Status Already Fetched");
-        wx.hideLoading();
-        return this.#needRegistration;
-      }
+      // if (this.#needRegistration !== undefined) {
+      //   console.log("Registration Status Already Fetched");
+      //   wx.hideLoading();
+      //   return this.#needRegistration;
+      // }
       let checkUser = await wx.cloud.database().collection("userData").where({
         userId: this.#userOpenId,
       }).get();

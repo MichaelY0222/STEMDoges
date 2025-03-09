@@ -7,7 +7,7 @@ cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV }) // 使用当前云环境
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
 
-  if (event.type === "Trivia") {
+  if (event.type === "Trivia" || event.type === "Scav") {
     let checkQuestionStatus = await cloud.database().collection("piDayActivityLog").where({
       userId: wxContext.OPENID,
       questionId: event.questionId

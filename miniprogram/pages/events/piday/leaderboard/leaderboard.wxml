@@ -33,7 +33,7 @@
 </view>
 
 <view class="yourRank">Your Rank: {{currentUserRank}}</view>
-<view class="yourRank" style="margin-top:0px;">Your Points: {{currentUserPoints}}</view>
+<view class="yourRank" style="margin-top:0px;">Your Pi Points: {{currentUserPoints}}</view>
 <scroll-view class="leaderboard" scroll-y>
   <view wx:for="{{leaderboard}}" wx:for-item="user" wx:key="index" class="userarea">
   <view class="username" style="margin-top:{{i * 25 + 5}}px">{{index +1}}. {{user.name}} </view> 
