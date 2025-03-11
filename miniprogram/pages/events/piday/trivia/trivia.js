@@ -52,6 +52,11 @@ Page({
       this.setData({
         questionType: this.data.selectedQuestion.type
       })
+      if(this.data.selectedQuestion.type === 'Scav') {
+        this.setData({
+          remainingTime: 150
+        })
+      }
       let checkQuestionStatus = await wx.cloud.database().collection("piDayActivityLog").where({
         userId: this.data.userOpenId,
         questionId: data

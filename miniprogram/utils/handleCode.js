@@ -139,28 +139,45 @@ export async function handleCode(openId, x) {
             logId: scannedTicketId
           },
         });
+
+        let checkStatus = await wx.cloud.database().collection("piDayActivityLog").where({
+          userId: openId,
+          eventId: await getTicketData.data[0].eventId,
+        }).get();
+
         let points = await getTicketData.data[0].points;
         let eventName = await getTicketData.data[0].eventName;
         console.log(points, eventName)
-        let ans = await wx.cloud.callFunction({
-          name: "pushAnyEventLog",
-          data: {
-            type: "activity",
-            logId: scannedTicketId,
-            issuerId: await getTicketData.data[0].issuerId,
-            eventId: await getTicketData.data[0].eventId,
-            eventName: eventName,
-            points: points,
-          },
-        });
+        if (checkStatus.data.length === 0) {
+          let ans = await wx.cloud.callFunction({
+            name: "pushAnyEventLog",
+            data: {
+              type: "activity",
+              logId: scannedTicketId,
+              issuerId: await getTicketData.data[0].issuerId,
+              eventId: await getTicketData.data[0].eventId,
+              eventName: eventName,
+              points: points,
+            },
+          });
+          
+          wx.showModal({
+            title: 'Activity Log Added',
+            content: `Congratulations! You earned ${points} points from ${eventName}.`,
+            showCancel: false,
+            confirmText: 'Dismiss'
+          })
+          return;
+        } else {
+          wx.showModal({
+            title: 'Activity Already Logged',
+            content: `You already recceived Pi Points from ${eventName}. You may not receive points from this activity again.`,
+            showCancel: false,
+            confirmText: 'Dismiss'
+          })
+        }
+
         
-        wx.showModal({
-          title: 'Activity Log Added',
-          content: `Congratulations! You earned ${points} points from ${eventName}.`,
-          showCancel: false,
-          confirmText: 'Dismiss'
-        })
-        return;
       }
     } else {
       reportCodeScanError(`This Pi Day Code is of unknown type ${keyToValueMap.get("type")}.`);
