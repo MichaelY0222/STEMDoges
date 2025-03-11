@@ -1,23 +1,41 @@
-const QRCode = require('weapp-qrcode');  // Use weapp-qrcode to generate QR code
+import { get256ToBinaryMap } from "./binaryMapType";
 
-function generateQRCode(canvasId, data) {
-  return new Promise((resolve, reject) => {
-    QRCode({
-      text: data,  // The string to encode in the QR code
-      width: 300,  // Width of the QR code
-      height: 300, // Height of the QR code
-      canvasId: canvasId, // The canvas element id where the QR code will be drawn
-      callback: function (res) {
-        if (res.errMsg === 'createQRCode:ok') {
-          resolve('QR code generated successfully!');
-        } else {
-          reject('Error generating QR code: ' + res.errMsg);
-        }
-      }
-    });
-  });
+function toBase64(x) {
+  let value=0;
+  for (let i=0;i<6;i++) {
+    value+=(x[i] ? 1:0)*(1<<(6-1-i));
+  }
+  if (value>=0&&value<26) {
+    return String.fromCharCode(65+value);
+  }
+  if (value>=26&&value<26+26) {
+    return String.fromCharCode(97+value-26);
+  }
+  if (value>=26+26&&value<26+26+10) {
+    return String.fromCharCode(48+value-(26+26));
+  }
+  if (value===62) {
+    return "=";
+  }
+  if (value===63) {
+    return "_";
+  }
+  console.log("error in to base 64:", x, value);
+  return ""; 
 }
-
-module.exports = {
-  generateQRCode,
-};
+export function generateQRCode(type, event, payload) {
+  let payloadBinaryData = [];
+  // type binaryMapType = {[key:number]: boolean[]};
+  let binaryMap = get256ToBinaryMap();
+  for (let i=0;i<payload.length;i++) {
+    payloadBinaryData.push.apply(payloadBinaryData, binaryMap[payload[i]]);
+  }
+  while (payloadBinaryData.length%6!==0) {
+    payloadBinaryData.push(false);
+  }
+  let base64EncodedPayload = "";
+  for (let i=0;i<payloadBinaryData.length;i+=6) {
+    base64EncodedPayload+=toBase64(payloadBinaryData.slice(i,i+6));
+  }
+  return `stemDoges;1;type-${type};${event === null ? "" : `event-${event};`}dat-${payload.length}-${base64EncodedPayload}`;
+}

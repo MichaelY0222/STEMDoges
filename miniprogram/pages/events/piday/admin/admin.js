@@ -1,5 +1,8 @@
 import CacheSingleton from '../../../../classes/CacheSingleton';
-const { generateQRCode } = require('../../../../utils/generateQRCode');
+import { createQRCode, lightBackgroundColor, UserDataType } from "../../../../utils/common";
+import { generateQRCode } from '../../../../utils/generateQRCode';
+import { isDarkTheme } from "../../../../utils/isDarkTheme";
+import { extendNumberToLengthString } from "../../../../utils/util";
 
 Page({
 
@@ -10,12 +13,14 @@ Page({
     cacheSingleton: CacheSingleton,
     eventData: [],
     eventOptions: [],
+    eventLabels: [],
     event: 0,
     eventId: 'undefined',
     codeGenerated: false,
     recomputeCaller: null,
     codeLastGen: 'Updating...',
     qrCodeUrl: 'undefined',
+    logId: 'undefined'
   },
 
   /**
@@ -41,8 +46,11 @@ Page({
       };
     });
 
+    const eventLabels = eventData.map(event => `${event.eventHost} - ${event.eventName} (${event.points} Pi Points)`);
+
     this.setData({
       eventOptions: eventOptions,
+      eventLabels: eventLabels,
       eventId: eventOptions[this.data.event]?.eventId || 'undefined',
     });
   },
@@ -55,25 +63,36 @@ Page({
     });
   },
 
-  recomputeCode: function(data) {
-    const that = this;
-    
-    // Use the generateQRCode utility to generate the QR code
-    generateQRCode('activitycodecanvas', data)
-      .then((msg) => {
-        console.log(msg);
-        that.setData({
-          codeGenerated: true,
-          codeLastGen: new Date().toLocaleTimeString(),
-        });
-      })
-      .catch((error) => {
-        console.error(error);
-        that.setData({
-          codeGenerated: false,
-          codeLastGen: 'Error generating QR code',
-        });
-      });
+  recomputeCode: function() {
+    wx.showLoading({
+      title: '加载中...',
+      mask: true
+    });
+    this.setData({
+      codeGenerated: true
+    })
+    let uniqueLogId = this.data.logId;
+    let qrCodeData=[];
+    for (let i=0;i<uniqueLogId.length;i++) {
+      qrCodeData.push(uniqueLogId.charCodeAt(i));
+    }
+    let accessCodeContents=generateQRCode("activityCode", "PI25", qrCodeData);
+    if (accessCodeContents !== this.data.codeLastGen) {
+      let myCreateQRCode = createQRCode.bind(this);
+      if (isDarkTheme()) {
+        myCreateQRCode("personalcodecanvas", accessCodeContents, 'FFFFFF', '000000');
+      } else {
+        myCreateQRCode("personalcodecanvas", accessCodeContents, '000000', lightBackgroundColor);
+      }
+      this.data.codeLastGen=accessCodeContents;
+    }
+    let date = new Date();
+    let newUpdateString=`${extendNumberToLengthString(date.getHours(), 2)}:${extendNumberToLengthString(date.getMinutes(), 2)}:${extendNumberToLengthString(date.getSeconds(), 2)}`;
+    this.setData({
+      lastUpdateTime: newUpdateString,
+    });
+    wx.hideLoading();
+    setTimeout(this.onClearClick, 7000);
   },
 
   generateRandomString(length) {
@@ -88,9 +107,36 @@ Page({
     return randomString;
   },
 
-  onGenerateClick: function() {
-    const randomString = this.generateRandomString(6);
-    const data = `stemDoges;1;type-activityCode;event-PI25;dat-6-${randomString}`;
-    this.recomputeCode(data);
+  onClearClick: function() {
+    this.setData({
+      codeGenerated: false,
+      lastUpdateTime: undefined
+    })
+    wx.cloud.callFunction({
+      name: "pushAnyEventLog",
+      data: {
+        type: 'delActivityCode',
+        logId: this.data.logId,
+      }
+    })
+  },
+
+  onGenerateClick: async function() {
+    const randomString = await this.generateRandomString(6);
+    this.setData({
+      logId: randomString
+    })
+    console.log(this.data.logId)
+    await wx.cloud.callFunction({
+      name: "pushAnyEventLog",
+      data: {
+        type: 'newActivityCode',
+        logId: randomString,
+        eventId: this.data.eventOptions[this.data.event].eventId,
+        eventName: this.data.eventOptions[this.data.event].eventName,
+        points: this.data.eventOptions[this.data.event].points
+      }
+    })
+    this.recomputeCode();
   },
 });

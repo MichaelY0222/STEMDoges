@@ -111,7 +111,7 @@
       </view>
     </view>
   </scroll-view>
-  <form bindsubmit="addAdmin" >
+  <form bindsubmit="addAdmin" class="add-admin-container">
     <view class="addAdminArea">
       Add Admin
       <input name="gNum" class="adminInput" placeholder="enter Gnum" />

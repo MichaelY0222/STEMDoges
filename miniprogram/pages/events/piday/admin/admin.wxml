@@ -1,17 +1,18 @@
 <view id="admin-container">
   <text class="big-title-text" id="admin-big-title">Pi Day Admin</text>
-  <text class="big-title-sub-text">Ask the user to launch the mini program by scanning the code below. Then, ask the user to use the scan function within the mini program to scan the code you generate to log activity.</text>
+  <text class="big-title-sub-text" wx:if="{{!codeGenerated}}">Ask the user to launch the mini program by scanning the code below. Then, ask the user to use the scan function within the mini program to scan the code you generate to log activity. Each code you generate can only be scanned once, and each user can only be logged for each activity once.</text>
+  <text class="big-title-sub-text" wx:if="{{codeGenerated}}">Each code you generate can only be scanned once, expires after 7 seconds, and each user can only be logged for each activity once.</text>
   
-  <view id="mp-code-img-container">
+  <view id="mp-code-img-container" wx:if="{{!codeGenerated}}">
     <image src="../../../../images/mpCode.jpg" id="mp-code-img"></image>
   </view>
 
   <text class="heading-text">Log Points</text>
   <view class="question">
     <text class="question-label">Select Event</text>
-    <picker class="question-input-with-selector" mode="selector" range="{{eventOptions}}" value="{{event}}" bindchange="eventChanged">
+    <picker class="question-input-with-selector" mode="selector" range="{{eventLabels}}" value="{{event}}" bindchange="eventChanged">
       <view class="question-select">
-        {{eventOptions[event] ? eventOptions[event].eventName : 'Select an Event'}}
+        {{eventOptions[event].eventHost}} - {{eventOptions[event].eventName}} ({{eventOptions[event].points}} Pi Points)
         <image src="../../../../icons/chevron-down.svg" class="selectorIcon"></image>
       </view>
     </picker>
@@ -21,12 +22,15 @@
     <view id="submit-button" bindtap="onGenerateClick">
       <text id="submit-button-text">Generate</text>
     </view>
+    <view id="submit-button" bindtap="onClearClick">
+      <text id="submit-button-text">Clear</text>
+    </view>
   </view>
 
   <view id="personal-code-code-container" wx:if="{{codeGenerated}}">
     <view class="secure-code-preview-container">
       <canvas type="2d" class="secure-code-canvas" id="personalcodecanvas" canvas-id="activitycodecanvas"></canvas>
-      <text class="secure-code-preview-caption" style="text-align: center">{{codeLastGen ? 'Updated ' + codeLastGen : 'Updating...'}}\nYour Personal Code and Compact ID uniquely identify your account.</text>
+      <text class="secure-code-preview-caption" style="text-align: center">{{(lastUpdateTime===undefined ? 'Generating...' : 'Generated '+lastUpdateTime)+'\nThis activity code is only valid once. Click "Generate" to generate a new code.'}}</text>
     </view>
   </view>
 </view>

@@ -52,6 +52,7 @@ Page({
         class: await this.data.cacheSingleton.fetchUserInfo('class'),
         isAdmin: await this.data.cacheSingleton.fetchUserInfo('isAdmin'),
       })
+      console.log(this.data.isAdmin)
     }
     // db.collection('userInfo').where({openid: app.globalData.openid}).count().then(res => {
     //   console.log(res.total);
@@ -293,6 +294,7 @@ Page({
     wx.scanCode({
       onlyFromCamera: true,
       success: (res) => {
+        console.log(this.data.userOpenId)
         handleCode(this.data.userOpenId, res.result);
       }
     });

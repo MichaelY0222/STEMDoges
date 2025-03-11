@@ -25,9 +25,46 @@ exports.main = async (event, context) => {
           type: event.type,
           questionId: event.questionId,
           status: event.status,
+          timestamp: Date.now()
         }
       });
     }
+  } else if (event.type === "newActivityCode") {
+    await cloud.database().collection("piDayTemp").add({
+      data: {
+        issuerId: wxContext.OPENID,
+        logId: event.logId,
+        eventId: event.eventId,
+        eventName: event.eventName,
+        points: event.points,
+        used: false,
+        timestamp: Date.now()
+      }
+    });
+  } else if (event.type === "delActivityCode") {
+    await cloud.database().collection("piDayTemp").where({
+      logId: event.logId
+    }).remove()
+  } else if (event.type === "useActivityCode") {
+    await cloud.database().collection("piDayTemp").where({
+      logId: event.logId
+    }).update({
+      data: {
+        used: true
+      }
+    })
+  } else if (event.type === "activity") {
+    await cloud.database().collection("piDayActivityLog").add({
+      data: {
+        userId: wxContext.OPENID,
+        type: event.type,
+        issuerId: event.issuerId,
+        logId: event.logId,
+        eventId: event.eventId,
+        eventName: event.eventName,
+        points: event.points,
+      }
+    });
   }
 
   return {

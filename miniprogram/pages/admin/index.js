@@ -508,7 +508,7 @@ Page({
       this.setData({
         adminError:"success"
       })
-      db.collection('userInfo')
+      db.collection('userData')
       .where({ _id: res.data[0]._id})
       .update({
         data: {
@@ -541,9 +541,9 @@ Page({
    
     if (gNum != ""){
        //find user by Gnum
-       db.collection('userInfo')
+       db.collection('userData')
       .where({
-        userGnum:gNum
+        gNumber:gNum
       })
       .get({
         success: function (res) {
@@ -553,9 +553,9 @@ Page({
     }
     else if(name!=""){
        //find user by Wechat Nickname
-       db.collection('userInfo')
+       db.collection('userData')
        .where({
-         userRealName:name
+         name: name
        })
        .get({
         success: function (res) {

@@ -11,6 +11,7 @@ function reportCodeScanError(error) {
 
 export async function handleCode(openId, x) {
   // parse it
+  console.log(openId)
   if (x.length<10) {
     // not a valid STEM Doges code
     console.log("Incorrect Length");
@@ -118,6 +119,49 @@ export async function handleCode(openId, x) {
         })
         return;
       }
+    } else if (keyToValueMap.get("type")==="activityCode") {
+      let scannedTicketId = String.fromCharCode(...keyToValueMap.get("dat"));
+      console.log(scannedTicketId)
+      let getTicketData = await wx.cloud.database().collection("piDayTemp").where({
+        logId: scannedTicketId,
+      }).get();
+      console.log(getTicketData)
+      if (getTicketData.data.length === 0 || getTicketData.data[0].used === true || Date.now() - getTicketData.data[0].timestamp > 7000) {
+        reportCodeScanError(`This Pi Day Activity Code is invalid.`);
+        return;
+      }
+      else {
+        console.log(scannedTicketId)
+        let res = await wx.cloud.callFunction({
+          name: "pushAnyEventLog",
+          data: {
+            type: "useActivityCode",
+            logId: scannedTicketId
+          },
+        });
+        let points = await getTicketData.data[0].points;
+        let eventName = await getTicketData.data[0].eventName;
+        console.log(points, eventName)
+        let ans = await wx.cloud.callFunction({
+          name: "pushAnyEventLog",
+          data: {
+            type: "activity",
+            logId: scannedTicketId,
+            issuerId: await getTicketData.data[0].issuerId,
+            eventId: await getTicketData.data[0].eventId,
+            eventName: eventName,
+            points: points,
+          },
+        });
+        
+        wx.showModal({
+          title: 'Activity Log Added',
+          content: `Congratulations! You earned ${points} points from ${eventName}.`,
+          showCancel: false,
+          confirmText: 'Dismiss'
+        })
+        return;
+      }
     } else {
       reportCodeScanError(`This Pi Day Code is of unknown type ${keyToValueMap.get("type")}.`);
       return;
@@ -129,7 +173,7 @@ export async function handleCode(openId, x) {
       console.log('Admin Debug Code')
       wx.showModal({
         title: 'Admin Override',
-        content: `Account openId: ${{openId}}`,
+        content: `Account openId: ${openId}`,
         showCancel: false,
         confirmText: 'Dismiss'
       })

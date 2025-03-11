@@ -74,6 +74,9 @@
   text-align: center;
   background-color:gold;
 }
+.add-admin-container{
+  align-items: center;
+}
 .adminInput{
   color:teal;
 
@@ -217,7 +220,8 @@
 .submitChanges{
   margin-top: 10px;
   margin-bottom: 20px;
-  position: relative;
+  position: absolute;
+  bottom: 0;
   background-color: pink;
   text-align: center;
   box-shadow: 0 0 8px 3px rgba(0, 0, 0, 0.2);

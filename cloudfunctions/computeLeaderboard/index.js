@@ -47,7 +47,7 @@ exports.main = async (event, context) => {
           class: user.class,
           points: totalPoints
         });
-        if (user.userId = currentUserId) {
+        if (user.userId === currentUserId) {
           currentUserPoints = totalPoints;
           rankCurrentUser = true;
         }
