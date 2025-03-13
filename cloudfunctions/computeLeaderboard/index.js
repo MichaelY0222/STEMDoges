@@ -10,11 +10,8 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const currentUserId = wxContext.OPENID;
   try {
-    const userDataRes = await db.collection("userData").get();
-    const users = userDataRes.data;
-
-    const logDataRes = await db.collection("piDayActivityLog").get();
-    const logs = logDataRes.data;
+    const users = await fetchAllData("userData");
+    const logs = await fetchAllData("piDayActivityLog");
 
     let leaderboard = [];
     let currentUserPoints = 0;
@@ -69,3 +66,25 @@ exports.main = async (event, context) => {
     return { error: error.message };
   }
 };
+
+async function fetchAllData(collectionName) {
+  let allData = [];
+  let batchSize = 20;
+  let totalFetched = 0;
+  
+  while (true) {
+    const res = await db.collection(collectionName)
+      .skip(totalFetched)
+      .limit(batchSize)
+      .get();
+    
+    allData = allData.concat(res.data);
+    totalFetched += res.data.length;
+
+    if (res.data.length < batchSize) {
+      break;
+    }
+  }
+
+  return allData;
+}
