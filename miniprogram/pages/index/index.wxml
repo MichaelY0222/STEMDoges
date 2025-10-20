@@ -11,7 +11,7 @@
 </view>
 
 <scroll-view scroll-y id="main-menu-scroll">
-<image  class="eventHeader" bindtap="redirectRestrictedAccessEvent"  data-link="../events/piday/piday" src="../../images/piday.jpg"></image>
+<image  class="eventHeader" bindtap="redirectRestrictedAccessEvent"  data-link="../events/anyEvent/anyEvent" src="../../images/bitday.png"></image>
 <image  class="eventHeader" bindtap="redirect" data-link="../databooklet/index" src="../../images/dataBooklet.jpg"></image>
 <image  class="eventHeader" bindtap="redirect" data-link="../challenges/challenges" src="../../images/challenges.jpg"></image>
 
@@ -31,7 +31,7 @@
     </view>
   </view>
   <view id="version-footer">
-    Version 4.9.2
+    Version 4.10.0
   </view>
 
 <!-- info input area -->

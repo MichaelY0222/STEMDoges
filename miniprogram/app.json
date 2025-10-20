@@ -16,6 +16,8 @@
     "pages/events/piday/trophywall/trophywall",
     "pages/events/piday/mathquizzes/mathquizzes",
     "pages/events/piday/mathquizzes_ques/mathquizzes_ques",
+    "pages/events/anyEvent/anyEvent",
+
     "pages/admin/index",
     "pages/me/index",
     "pages/challenges/challenges",

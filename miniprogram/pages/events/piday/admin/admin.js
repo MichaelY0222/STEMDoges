@@ -46,7 +46,7 @@ Page({
       };
     });
 
-    const eventLabels = eventData.map(event => `${event.eventHost} - ${event.eventName} (${event.points} Pi Points)`);
+    const eventLabels = eventData.map(event => `${event.eventHost} - ${event.eventName} (${event.points} Bits)`);
 
     this.setData({
       eventOptions: eventOptions,

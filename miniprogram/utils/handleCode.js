@@ -122,7 +122,7 @@ export async function handleCode(openId, x) {
     } else if (keyToValueMap.get("type")==="activityCode") {
       let scannedTicketId = String.fromCharCode(...keyToValueMap.get("dat"));
       console.log(scannedTicketId)
-      let getTicketData = await wx.cloud.database().collection("piDayTemp").where({
+      let getTicketData = await wx.cloud.database().collection("bitDayTemp").where({
         logId: scannedTicketId,
       }).get();
       console.log(getTicketData)
@@ -140,7 +140,7 @@ export async function handleCode(openId, x) {
           },
         });
 
-        let checkStatus = await wx.cloud.database().collection("piDayActivityLog").where({
+        let checkStatus = await wx.cloud.database().collection("bitDayActivityLog").where({
           userId: openId,
           eventId: await getTicketData.data[0].eventId,
         }).get();
@@ -171,7 +171,7 @@ export async function handleCode(openId, x) {
         } else {
           wx.showModal({
             title: 'Activity Already Logged',
-            content: `You already recceived Pi Points from ${eventName}. You may not receive points from this activity again.`,
+            content: `You already recceived Bits from ${eventName}. You may not receive points from this activity again.`,
             showCancel: false,
             confirmText: 'Dismiss'
           })

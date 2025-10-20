@@ -57,7 +57,7 @@ Page({
           remainingTime: 150
         })
       }
-      let checkQuestionStatus = await wx.cloud.database().collection("piDayActivityLog").where({
+      let checkQuestionStatus = await wx.cloud.database().collection("bitDayActivityLog").where({
         userId: this.data.userOpenId,
         questionId: data
       }).get();
@@ -128,6 +128,17 @@ Page({
                 type: this.data.questionType,
                 questionId: this.data.selectedQuestion.questionId,
                 status: this.data.questionStatus
+              }
+            })
+            await this.data.cacheSingleton.forceGetAnyEventTriviaQuestions();
+            wx.hideLoading();
+          } else {
+            await wx.cloud.callFunction({
+              name: "pushAnyEventLog",
+              data: {
+                type: this.data.questionType,
+                questionId: this.data.selectedQuestion.questionId,
+                status: 'wrong'
               }
             })
             await this.data.cacheSingleton.forceGetAnyEventTriviaQuestions();

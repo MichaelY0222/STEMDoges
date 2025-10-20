@@ -1,5 +1,5 @@
 <view id="admin-container">
-  <text class="big-title-text" id="admin-big-title">Pi Day Admin</text>
+  <text class="big-title-text" id="admin-big-title">Bit Day Admin</text>
   <text class="big-title-sub-text" wx:if="{{!codeGenerated}}">Ask the user to launch the mini program by scanning the code below. Then, ask the user to use the scan function within the mini program to scan the code you generate to log activity. Each code you generate can only be scanned once, and each user can only be logged for each activity once.</text>
   <text class="big-title-sub-text" wx:if="{{codeGenerated}}">Each code you generate can only be scanned once, expires after 7 seconds, and each user can only be logged for each activity once.</text>
   
@@ -12,7 +12,7 @@
     <text class="question-label">Select Event</text>
     <picker class="question-input-with-selector" mode="selector" range="{{eventLabels}}" value="{{event}}" bindchange="eventChanged">
       <view class="question-select">
-        {{eventOptions[event].eventHost}} - {{eventOptions[event].eventName}} ({{eventOptions[event].points}} Pi Points)
+        {{eventOptions[event].eventHost}} - {{eventOptions[event].eventName}} ({{eventOptions[event].points}} Bits)
         <image src="../../../../icons/chevron-down.svg" class="selectorIcon"></image>
       </view>
     </picker>

@@ -50,7 +50,7 @@ Page({
   },
 
   onSubmitClick: async function() {
-    const regex = /^G(201[0-9]|202[0-9])010\d{3}$/;
+    const regex = /^G(201[4-9]|202[0-5])010\d{3}$/; // G number filter verification, MUST be updated each year to ensure registration works
     if (this.data.name.length !== 0 && this.data.grade !== "0" && this.data.class !== "0" && regex.test(this.data.gNumber)) {
       wx.showModal({
         title: 'Confirm Registration',

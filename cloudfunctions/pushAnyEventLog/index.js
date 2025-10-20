@@ -8,7 +8,7 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
 
   if (event.type === "Trivia" || event.type === "Scav") {
-    let checkQuestionStatus = await cloud.database().collection("piDayActivityLog").where({
+    let checkQuestionStatus = await cloud.database().collection("bitDayActivityLog").where({
       userId: wxContext.OPENID,
       questionId: event.questionId
     }).get();
@@ -19,7 +19,7 @@ exports.main = async (event, context) => {
         reason: "User already logged for this activity"
       };
     } else {
-      await cloud.database().collection("piDayActivityLog").add({
+      await cloud.database().collection("bitDayActivityLog").add({
         data: {
           userId: wxContext.OPENID,
           type: event.type,
@@ -30,7 +30,7 @@ exports.main = async (event, context) => {
       });
     }
   } else if (event.type === "newActivityCode") {
-    await cloud.database().collection("piDayTemp").add({
+    await cloud.database().collection("bitDayTemp").add({
       data: {
         issuerId: wxContext.OPENID,
         logId: event.logId,
@@ -42,11 +42,11 @@ exports.main = async (event, context) => {
       }
     });
   } else if (event.type === "delActivityCode") {
-    await cloud.database().collection("piDayTemp").where({
+    await cloud.database().collection("bitDayTemp").where({
       logId: event.logId
     }).remove()
   } else if (event.type === "useActivityCode") {
-    await cloud.database().collection("piDayTemp").where({
+    await cloud.database().collection("bitDayTemp").where({
       logId: event.logId
     }).update({
       data: {
@@ -54,7 +54,7 @@ exports.main = async (event, context) => {
       }
     })
   } else if (event.type === "activity") {
-    await cloud.database().collection("piDayActivityLog").add({
+    await cloud.database().collection("bitDayActivityLog").add({
       data: {
         userId: wxContext.OPENID,
         type: event.type,
@@ -63,6 +63,7 @@ exports.main = async (event, context) => {
         eventId: event.eventId,
         eventName: event.eventName,
         points: event.points,
+        timestamp: Date.now()
       }
     });
   }
