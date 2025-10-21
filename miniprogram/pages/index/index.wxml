@@ -1,9 +1,9 @@
 <view id="main-menu-top-container">
   <text class="big-title-text">STEM Doges</text>
   <view id="main-menu-top-right-container">
-    <view class="admin-button" bindtap="redirect" data-link="../admin/index" wx:if="{{isAdmin}}">
+    <!-- <view class="admin-button" bindtap="redirect" data-link="../admin/index" wx:if="{{isAdmin}}">
       <image src="../../icons/bolt.svg" class="admin-image"></image>
-    </view>
+    </view> -->
     <view id="main-menu-top-scan-button-container" bindtap="scanButtonClick">
       <image src="../../icons/scan.svg" id="main-menu-top-scan-button-image"></image>
     </view>
@@ -31,7 +31,7 @@
     </view>
   </view>
   <view id="version-footer">
-    Version 4.10.0
+    Version 4.10.1
   </view>
 
 <!-- info input area -->

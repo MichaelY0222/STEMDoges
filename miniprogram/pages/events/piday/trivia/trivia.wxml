@@ -1,6 +1,6 @@
 <!--pages/events/piday/trivia/trivia.wxml-->
 <view id="trivia-container">
-    <text class="big-title-text">Pi Day Trivia</text>
+    <text class="big-title-text">Bit Day Trivia</text>
     <view id="timer-container" wx:if="{{questionStatus === 'unanswered'}}">
       <text class="heading-text">Time Remaining: {{remainingTime}}</text>
     </view>

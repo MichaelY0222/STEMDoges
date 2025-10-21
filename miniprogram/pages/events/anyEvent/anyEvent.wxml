@@ -42,8 +42,8 @@
       </block>
     </view>
   </view>
-  <image src="../../../images/scan.jpg"view class="eventHeaderSmall" bindtap="scanButtonClick"></image>
-  <image src="../../../images/leaderboard.jpg"view class="eventHeader" bindtap="redirect" data-Qnum="1" data-link="../piday/leaderboard/leaderboard" data-Qnum="0"></image>
+  <image src="../../../images/scan.jpg" class="eventHeader" bindtap="scanButtonClick"></image>
+  <image src="../../../images/leaderboard.jpg" class="eventHeader" bindtap="redirect" data-link="../piday/leaderboard/leaderboard"></image>
 
   <!-- <image src="../../../images/Puzzles.jpeg" class="eventHeader"  bindtap="showSoduku" ></image>-->
 </scroll-view>

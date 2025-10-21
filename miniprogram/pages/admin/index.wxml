@@ -29,7 +29,7 @@
     <view>admins</view>
 
     <view class="itemBtn" bindtap="showPopup" data-popupNum="1">Manage Admins</view>
-    <view class="itemBtn" bindtap="showPopup" >Manage Users</view>
+    <!-- <view class="itemBtn" bindtap="showPopup">Manage Users</view> -->
   </view>
   <view class="item" style="top:380px;left:5%">
   <view  class="itemTitle">Data Booklets</view>
