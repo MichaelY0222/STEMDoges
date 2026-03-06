@@ -290,6 +290,24 @@ Page({
     });
   },
 
+  footerRegInfoTap: function () {
+    wx.showModal({
+      title: 'Note',
+      content: 'Your registration is permanent and cannot be changed. If you have any concerns, please contact the system admin.',
+      showCancel: false,
+      confirmText: 'Dismiss'
+    })
+  },
+
+  footerCreditsTap: function () {
+    wx.showModal({
+      title: 'STEM Doges Mini-Program Credits',
+      content: "2025-2026\nDevelopers: Michael Yu '26 & Ethan Ai '27",
+      showCancel: false,
+      confirmText: 'Dismiss',
+    })
+  },
+
   scanButtonClick: function() {
     wx.scanCode({
       onlyFromCamera: true,

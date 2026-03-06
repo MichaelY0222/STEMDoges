@@ -1,6 +1,6 @@
 import CacheSingleton from '../../../../classes/CacheSingleton';
 import { createQRCode, lightBackgroundColor, UserDataType } from "../../../../utils/common";
-import { generateQRCode } from '../../../../utils/generateQRCode';
+import { generateQRCode } from '../../../../utils/generateQrCode';
 import { isDarkTheme } from "../../../../utils/isDarkTheme";
 import { extendNumberToLengthString } from "../../../../utils/util";
 
@@ -46,7 +46,7 @@ Page({
       };
     });
 
-    const eventLabels = eventData.map(event => `${event.eventHost} - ${event.eventName} (${event.points} Bits)`);
+    const eventLabels = eventData.map(event => `${event.eventHost} - ${event.eventName} (${event.points} Pi Points)`);
 
     this.setData({
       eventOptions: eventOptions,
@@ -76,7 +76,7 @@ Page({
     for (let i=0;i<uniqueLogId.length;i++) {
       qrCodeData.push(uniqueLogId.charCodeAt(i));
     }
-    let accessCodeContents=generateQRCode("activityCode", "PI25", qrCodeData);
+    let accessCodeContents=generateQRCode("activityCode", "PI26", qrCodeData);
     if (accessCodeContents !== this.data.codeLastGen) {
       let myCreateQRCode = createQRCode.bind(this);
       if (isDarkTheme()) {

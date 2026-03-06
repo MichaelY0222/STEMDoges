@@ -10,6 +10,7 @@ class CacheSingleton {
     #studentName
     #studentGrade
     #studentClass
+    #studentGNumber
     #isAdmin
     #isPiDayAdmin
     #questions
@@ -85,6 +86,7 @@ class CacheSingleton {
       this.#studentName = checkUser.data[0].name;
       this.#studentGrade = checkUser.data[0].grade;
       this.#studentClass = checkUser.data[0].class;
+      this.#studentGNumber = checkUser.data[0].gNumber;
       this.#needRegistration = false;
       let checkAdmin = await wx.cloud.database().collection("admins").where({
         adminId: checkUser.data[0]._id,
@@ -92,7 +94,7 @@ class CacheSingleton {
       if (checkAdmin.data.length === 1){
         this.#isAdmin = true;
       } else this.#isAdmin = false;
-      let checkPiDayAdmin = await wx.cloud.database().collection("bitDayAdmins").where({
+      let checkPiDayAdmin = await wx.cloud.database().collection("piDay2026Admins").where({
         adminId: checkUser.data[0]._id,
       }).get();
       if (checkPiDayAdmin.data.length === 1){
@@ -109,9 +111,11 @@ class CacheSingleton {
         return this.#studentGrade;
       } else if (option === 'class') {
         return this.#studentClass;
+      } else if (option === 'gNumber') {
+        return this.#studentGNumber;
       } else if (option === 'isAdmin') {
         return this.#isAdmin;
-      } else if (option === 'isBitDayAdmin') {
+      } else if (option === 'isPiDayAdmin') {
         return this.#isPiDayAdmin;
       } else return undefined;
     }
@@ -124,11 +128,11 @@ class CacheSingleton {
       this.#questions = undefined;
   
       this.#questions = new Array()
-      let questions = await allCollectionsData(this.#db, "bitDayTrivia");
+      let questions = await allCollectionsData(this.#db, "piDayTrivia");
       for (let i=0;i<questions.data.length;i++) {
           if (questions.data[i].startTime <= (Date.now()/1000) && (Date.now()/1000) <= questions.data[i].endTime){
             let status = 'unanswered'
-            let checkQuestionStatus = await wx.cloud.database().collection("bitDayActivityLog").where({
+            let checkQuestionStatus = await wx.cloud.database().collection("piDay2026ActivityLog").where({
               userId: this.#userOpenId,
               questionId: questions.data[i].questionId
             }).get();
@@ -174,7 +178,7 @@ class CacheSingleton {
     let questions = await allCollectionsData(this.#db, "piDayScav");
     for (let i=0;i<questions.data.length;i++) {
           let status = 'unanswered'
-          let checkQuestionStatus = await wx.cloud.database().collection("bitDayActivityLog").where({
+          let checkQuestionStatus = await wx.cloud.database().collection("piDay2026ActivityLog").where({
             userId: this.#userOpenId,
             questionId: questions.data[i].questionId
           }).get();
@@ -205,7 +209,7 @@ class CacheSingleton {
       return this.#events;
     } else {
       this.#events = new Array()
-      let activity = await allCollectionsData(this.#db, "bitDayEvents");
+      let activity = await allCollectionsData(this.#db, "piDay2026Activities");
       for (let i=0;i<activity.data.length;i++) {
         this.#events.push(new Event(activity.data[i].eventId, activity.data[i].eventName, activity.data[i].eventHost, activity.data[i].points));
       }

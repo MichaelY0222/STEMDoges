@@ -11,7 +11,7 @@ exports.main = async (event, context) => {
   const currentUserId = wxContext.OPENID;
   try {
     const users = await fetchAllData("userData");
-    const logs = await fetchAllData("bitDayActivityLog");
+    const logs = await fetchAllData("piDay2026ActivityLog");
 
     let leaderboard = [];
     let currentUserPoints = 0;

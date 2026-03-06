@@ -338,13 +338,14 @@
 }
 
 #main-menu-scroll {
-  height: 85vh;
+  height: 84vh;
 }
 
 #main-menu-footer {
   display: flex;
   flex-direction: column;
   width: 100%;
+  margin-top: 10px;
   padding: 0 16px;
   box-sizing: border-box;
   align-items: center;

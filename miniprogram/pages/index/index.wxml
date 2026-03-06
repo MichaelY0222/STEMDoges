@@ -1,9 +1,9 @@
 <view id="main-menu-top-container">
   <text class="big-title-text">STEM Doges</text>
   <view id="main-menu-top-right-container">
-    <!-- <view class="admin-button" bindtap="redirect" data-link="../admin/index" wx:if="{{isAdmin}}">
+    <view class="admin-button" bindtap="redirect" data-link="../admin/index" wx:if="{{isAdmin}}">
       <image src="../../icons/bolt.svg" class="admin-image"></image>
-    </view> -->
+    </view>
     <view id="main-menu-top-scan-button-container" bindtap="scanButtonClick">
       <image src="../../icons/scan.svg" id="main-menu-top-scan-button-image"></image>
     </view>
@@ -11,7 +11,7 @@
 </view>
 
 <scroll-view scroll-y id="main-menu-scroll">
-<image  class="eventHeader" bindtap="redirectRestrictedAccessEvent"  data-link="../events/anyEvent/anyEvent" src="../../images/bitday.png"></image>
+<image  class="eventHeader" bindtap="redirectRestrictedAccessEvent"  data-link="../events/piday2026/piday2026" src="../../images/piday2026.jpg"></image>
 <image  class="eventHeader" bindtap="redirect" data-link="../databooklet/index" src="../../images/dataBooklet.jpg"></image>
 <image  class="eventHeader" bindtap="redirect" data-link="../challenges/challenges" src="../../images/challenges.jpg"></image>
 
@@ -24,14 +24,14 @@
 </scroll-view>
 
 <view id="main-menu-footer">
-    <text class="main-menu-registration-information" wx:if="{{!needRegistration}}">Registered as {{name}} {{grade}}-{{class}}</text>
+    <text class="main-menu-registration-information" wx:if="{{!needRegistration}}" bindtap="footerRegInfoTap">Registered as {{name}} {{grade}}-{{class}}</text>
     <view id="main-menu-registration-ask" wx:if="{{needRegistration}}">
       <text class="main-menu-registration-information">Not registered</text>
       <text id="main-menu-registration-button" bindtap="handleRegister">Register now...</text>
     </view>
   </view>
-  <view id="version-footer">
-    Version 4.10.1
+  <view id="version-footer" bindtap="footerCreditsTap">
+    Version 4.11.0
   </view>
 
 <!-- info input area -->

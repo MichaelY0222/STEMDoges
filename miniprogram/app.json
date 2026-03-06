@@ -16,8 +16,6 @@
     "pages/events/piday/trophywall/trophywall",
     "pages/events/piday/mathquizzes/mathquizzes",
     "pages/events/piday/mathquizzes_ques/mathquizzes_ques",
-    "pages/events/anyEvent/anyEvent",
-
     "pages/admin/index",
     "pages/me/index",
     "pages/challenges/challenges",
@@ -26,6 +24,8 @@
     "pages/events/bitday/index",
     "pages/events/bitday/leader board/index",
     "pages/events/bitday/scavenger hunt/index",
+
+    "pages/events/piday2026/piday2026",
 
     "pages/databooklet/index",
     "pages/reviewGuides/index",

@@ -1,0 +1,48 @@
+<!--pages/events/piday2026/piday2026.wxml-->
+<view id="pi-day-container">
+  <view id="pi-day-top-container">
+    <text id="pi-day-big-title" class="big-title-text">Pi Day 2026 Event Signup</text>
+    <view id="pi-day-top-right-container">
+      <view class="admin-button" bindtap="redirect" data-link="../piday/admin/admin" wx:if="{{isAdmin}}">
+        <image src="../../../icons/bolt.svg" class="admin-image"></image>
+      </view>
+      <view id="pi-day-top-scan-button-container" bindtap="scanButtonClick">
+        <image src="../../../icons/scan.svg" id="pi-day-top-scan-button-image"></image>
+      </view>
+    </view>
+  </view>
+
+  <view id="pi-day-info-container" wx:if="{{!maxReached}}">
+    <text id="pi-day-big-title-sub" class="big-title-sub-text">Please select ONE event to signup and participate. Each event has a limited capacity and are offered on a first-come, first-served basis.</text>
+
+    <!-- Event Selection -->
+    <view class="question">
+      <text class="question-label">Select Event</text>
+      <!-- Event Selection -->
+      <view class="question-input-with-selector" wx:for="{{events}}" wx:key="eventId" data-id="{{item.eventId}}" bindtap="eventTap">
+        <view class="question-select">
+          <text class="{{item.active ? '': 'question-disabled-text'}}">{{item.name}}
+            (Remaining Capacity: {{item.remaining}})
+          </text>
+          <image class="selectorIcon" src="/icons/selector{{selectedEventId == item.eventId ? '-selected' : ''}}.svg" wx:if="{{item.active}}"/>
+        </view>
+      </view>
+    </view>
+
+    <!-- Submit Button -->
+    <view id="button-container">
+      <view id="submit-button" bindtap="submitSignup">
+        <text id="submit-button-text">Submit</text>
+      </view>
+    </view>
+  </view>
+  <view id="pi-day-info-container" wx:else>
+    <text id="pi-day-big-title-sub" class="big-title-sub-text">Signups either have not started, have already ended, or you have already signed up for the maximum number of allowed events. If applicable, view your event signup records below.</text>
+    <view class="question">
+      <text class="question-label">Event Signup Records</text>
+      <view class="question-input">
+        <text>{{signedUpEvent}}</text>
+      </view>
+    </view>
+  </view>
+</view>

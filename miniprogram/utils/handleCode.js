@@ -91,8 +91,8 @@ export async function handleCode(openId, x) {
   
   // handle the code
   console.log('Handle Code')
-  if (keyToValueMap.get("event")==="PI25") {
-    console.log('Pi Day 2025')
+  if (keyToValueMap.get("event")==="PI26") {
+    console.log('Pi Day 2026')
     if (keyToValueMap.get("type")==="questionCode") {
       console.log('Scav Hunt Quest')
       // Scavenger Hunt Question Code
@@ -122,7 +122,7 @@ export async function handleCode(openId, x) {
     } else if (keyToValueMap.get("type")==="activityCode") {
       let scannedTicketId = String.fromCharCode(...keyToValueMap.get("dat"));
       console.log(scannedTicketId)
-      let getTicketData = await wx.cloud.database().collection("bitDayTemp").where({
+      let getTicketData = await wx.cloud.database().collection("piDay2026Temp").where({
         logId: scannedTicketId,
       }).get();
       console.log(getTicketData)
@@ -140,7 +140,7 @@ export async function handleCode(openId, x) {
           },
         });
 
-        let checkStatus = await wx.cloud.database().collection("bitDayActivityLog").where({
+        let checkStatus = await wx.cloud.database().collection("piDay2026ActivityLog").where({
           userId: openId,
           eventId: await getTicketData.data[0].eventId,
         }).get();
@@ -163,7 +163,8 @@ export async function handleCode(openId, x) {
           
           wx.showModal({
             title: 'Activity Log Added',
-            content: `Congratulations! You earned ${points} points from ${eventName}.`,
+            // content: `Congratulations! You earned ${points} points from ${eventName}.`,
+            content: 'Your activity has been successfully logged. Thank you for your participation!',
             showCancel: false,
             confirmText: 'Dismiss'
           })
@@ -171,7 +172,8 @@ export async function handleCode(openId, x) {
         } else {
           wx.showModal({
             title: 'Activity Already Logged',
-            content: `You already recceived Bits from ${eventName}. You may not receive points from this activity again.`,
+            // content: `You already recceived Pi Points from ${eventName}. You may not receive points from this activity again.`,
+            content: `You have already logged this activity. Thank you for your participation.`,
             showCancel: false,
             confirmText: 'Dismiss'
           })

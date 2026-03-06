@@ -34,7 +34,14 @@
     "minifyWXSS": true,
     "ignoreUploadUnusedFiles": true,
     "condition": false,
-    "ignoreDevUnusedFiles": false
+    "ignoreDevUnusedFiles": false,
+    "compileWorklet": false,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "swc": false,
+    "disableSWC": true
   },
   "cloudfunctionTemplateRoot": "cloudfunctionTemplate/",
   "condition": {
@@ -67,9 +74,10 @@
     "tabSize": 2
   },
   "appid": "wx75f99a2b335e85a9",
-  "libVersion": "2.14.1",
+  "libVersion": "3.14.2",
   "packOptions": {
     "ignore": [],
     "include": []
-  }
+  },
+  "simulatorPluginLibVersion": {}
 }
