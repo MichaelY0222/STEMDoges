@@ -16,7 +16,8 @@ exports.main = async (event, context) => {
     if (checkQuestionStatus.data.length !== 0) {
       return {
         status: "error",
-        reason: "User already logged for this activity"
+        reason: "User already logged for this activity",
+        userId: wxContext.OPENID
       };
     } else {
       await cloud.database().collection("piDay2026ActivityLog").add({
@@ -28,6 +29,11 @@ exports.main = async (event, context) => {
           timestamp: Date.now()
         }
       });
+      return {
+        status: "success",
+        reason: "Activity log added",
+        userId: wxContext.OPENID
+      };
     }
   } else if (event.type === "newActivityCode") {
     await cloud.database().collection("piDay2026Temp").add({
@@ -41,10 +47,20 @@ exports.main = async (event, context) => {
         timestamp: Date.now()
       }
     });
+    return {
+      status: "success",
+      reason: "Activity code generated",
+      userId: wxContext.OPENID
+    };
   } else if (event.type === "delActivityCode") {
     await cloud.database().collection("piDay2026Temp").where({
       logId: event.logId
-    }).remove()
+    }).remove();
+    return {
+      status: "success",
+      reason: "Activity code deleted",
+      userId: wxContext.OPENID
+    };
   } else if (event.type === "useActivityCode") {
     await cloud.database().collection("piDay2026Temp").where({
       logId: event.logId
@@ -52,7 +68,12 @@ exports.main = async (event, context) => {
       data: {
         used: true
       }
-    })
+    });
+    return {
+      status: "success",
+      reason: "Activity code marked as used",
+      userId: wxContext.OPENID
+    };
   } else if (event.type === "activity") {
     await cloud.database().collection("piDay2026ActivityLog").add({
       data: {
@@ -63,8 +84,14 @@ exports.main = async (event, context) => {
         eventId: event.eventId,
         eventName: event.eventName,
         points: event.points,
+        timestamp: Date.now()
       }
     });
+    return {
+      status: "success",
+      reason: "Activity log added",
+      userId: wxContext.OPENID
+    };
   } else if (event.type === "signup") {
     await cloud.database().collection("piDay2026EventsSignUp").add({
       data: {
@@ -74,7 +101,8 @@ exports.main = async (event, context) => {
         studentName: event.studentName,
         studentGrade: event.studentGrade,
         studentClass: event.studentClass,
-        studentGNumber: event.studentGNumber
+        studentGNumber: event.studentGNumber,
+        timestamp: Date.now()
       }
     });
     let eventRes = await cloud.database().collection("piDay2026Events").where({
@@ -99,10 +127,16 @@ exports.main = async (event, context) => {
         }
       })
     }
+    return {
+      status: "success",
+      reason: "Activity signup received",
+      userId: wxContext.OPENID
+    };
+  } else {
+    return {
+      status: "error",
+      reason: "Invalid action type",
+      userId: wxContext.OPENID
+    };
   }
-
-  return {
-    status: "error",
-    reason: "Invalid action type"
-  };
 }
