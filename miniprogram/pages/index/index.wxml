@@ -10,7 +10,14 @@
   </view>
 </view>
 
-<scroll-view scroll-y id="main-menu-scroll">
+<view id="main-menu-locked" wx:if="{{isBanned}}">
+  <image src="../../icons/lock.png" class="lockIcon"></image>
+  <text class="lockedText">Sorry, your account has been suspended because:
+    {{banRemarks}}
+  </text>
+</view>
+
+<scroll-view scroll-y id="main-menu-scroll" wx:else>
 <image  class="eventHeader" bindtap="redirectRestrictedAccessEvent"  data-link="../events/piday2026/piday2026" src="../../images/piday2026.jpg"></image>
 <image  class="eventHeader" bindtap="redirect" data-link="../databooklet/index" src="../../images/dataBooklet.jpg"></image>
 <image  class="eventHeader" bindtap="redirect" data-link="../challenges/challenges" src="../../images/challenges.jpg"></image>
@@ -31,7 +38,7 @@
     </view>
   </view>
   <view id="version-footer" bindtap="footerCreditsTap">
-    Version 4.11.0
+    Version 4.11.1
   </view>
 
 <!-- info input area -->

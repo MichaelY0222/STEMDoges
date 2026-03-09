@@ -68,7 +68,6 @@
 .question-input {
   background-color: var(--subcontainer-background);
   border-radius: 9px;
-  height: 45px;
   padding: 0 13px;
   font-size: 17px;
   padding: 12px;

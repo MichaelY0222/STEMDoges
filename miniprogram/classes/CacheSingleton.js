@@ -11,6 +11,8 @@ class CacheSingleton {
     #studentGrade
     #studentClass
     #studentGNumber
+    #isBanned
+    #banRemarks
     #isAdmin
     #isPiDayAdmin
     #questions
@@ -91,9 +93,19 @@ class CacheSingleton {
       let checkAdmin = await wx.cloud.database().collection("admins").where({
         adminId: checkUser.data[0]._id,
       }).get();
+      let checkBan = await wx.cloud.database().collection("userBan").where({
+        userId: this.#userOpenId,
+      }).get();
       if (checkAdmin.data.length === 1){
         this.#isAdmin = true;
       } else this.#isAdmin = false;
+      if (checkBan.data.length >= 1){
+        this.#isBanned = checkBan.data[0].startTime<=(Date.now()/1000) && (Date.now()/1000)<=checkBan.data[0].endTime;
+        this.#banRemarks = checkBan.data[0].remarks;
+      } else {
+        this.#isBanned = false;
+        this.#banRemarks = "";
+      }
       let checkPiDayAdmin = await wx.cloud.database().collection("piDay2026Admins").where({
         adminId: checkUser.data[0]._id,
       }).get();
@@ -117,6 +129,10 @@ class CacheSingleton {
         return this.#isAdmin;
       } else if (option === 'isPiDayAdmin') {
         return this.#isPiDayAdmin;
+      } else if (option === 'isBanned') {
+        return this.#isBanned;
+      } else if (option === 'banRemarks') {
+        return this.#banRemarks;
       } else return undefined;
     }
 

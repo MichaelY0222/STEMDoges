@@ -51,7 +51,7 @@ Page({
 
   onSubmitClick: async function() {
     const regex = /^G(201[0-9]|202[0-9])010\d{3}$/;
-    if (this.data.name.length !== 0 && this.data.grade !== "0" && this.data.class !== "0" && regex.test(this.data.gNumber)) {
+    if (this.data.name.length !== 0 && this.data.grade !== 0 && this.data.class !== 0 && regex.test(this.data.gNumber)) {
       wx.showModal({
         title: 'Confirm Registration',
         content: 'Confirm Registration? Once submitted, this cannot be changed.',

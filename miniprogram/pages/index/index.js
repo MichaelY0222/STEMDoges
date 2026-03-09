@@ -8,6 +8,8 @@ Page({
     isAdmin: false,
     userOpenId: 'undefined',
     needRegistration: false,
+    isBanned: false,
+    banRemarks: '',
 
     cacheSingleton: CacheSingleton,
 
@@ -51,8 +53,13 @@ Page({
         grade: await this.data.cacheSingleton.fetchUserInfo('grade'),
         class: await this.data.cacheSingleton.fetchUserInfo('class'),
         isAdmin: await this.data.cacheSingleton.fetchUserInfo('isAdmin'),
+        isBanned: await this.data.cacheSingleton.fetchUserInfo('isBanned')
       })
-      console.log(this.data.isAdmin)
+      if (this.data.isBanned) {
+        this.setData({
+          banRemarks: await this.data.cacheSingleton.fetchUserInfo('banRemarks')
+        })
+      }
     }
     // db.collection('userInfo').where({openid: app.globalData.openid}).count().then(res => {
     //   console.log(res.total);
