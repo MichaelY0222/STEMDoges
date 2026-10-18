@@ -8,10 +8,14 @@ exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext()
 
   if (event.type === "Trivia" || event.type === "Scav") {
-    let checkQuestionStatus = await cloud.database().collection("piDay2026ActivityLog").where({
+    let dedupeQuery = {
       userId: wxContext.OPENID,
       questionId: event.questionId
-    }).get();
+    };
+    if (event.eventTag) {
+      dedupeQuery.eventTag = event.eventTag;
+    }
+    let checkQuestionStatus = await cloud.database().collection("piDay2026ActivityLog").where(dedupeQuery).get();
   
     if (checkQuestionStatus.data.length !== 0) {
       return {
@@ -20,14 +24,18 @@ exports.main = async (event, context) => {
         userId: wxContext.OPENID
       };
     } else {
+      let logData = {
+        userId: wxContext.OPENID,
+        type: event.type,
+        questionId: event.questionId,
+        status: event.status,
+        timestamp: Date.now()
+      };
+      if (event.eventTag) {
+        logData.eventTag = event.eventTag;
+      }
       await cloud.database().collection("piDay2026ActivityLog").add({
-        data: {
-          userId: wxContext.OPENID,
-          type: event.type,
-          questionId: event.questionId,
-          status: event.status,
-          timestamp: Date.now()
-        }
+        data: logData
       });
       return {
         status: "success",
@@ -75,17 +83,21 @@ exports.main = async (event, context) => {
       userId: wxContext.OPENID
     };
   } else if (event.type === "activity") {
+    let activityLogData = {
+      userId: wxContext.OPENID,
+      type: event.type,
+      issuerId: event.issuerId,
+      logId: event.logId,
+      eventId: event.eventId,
+      eventName: event.eventName,
+      points: event.points,
+      timestamp: Date.now()
+    };
+    if (event.eventTag) {
+      activityLogData.eventTag = event.eventTag;
+    }
     await cloud.database().collection("piDay2026ActivityLog").add({
-      data: {
-        userId: wxContext.OPENID,
-        type: event.type,
-        issuerId: event.issuerId,
-        logId: event.logId,
-        eventId: event.eventId,
-        eventName: event.eventName,
-        points: event.points,
-        timestamp: Date.now()
-      }
+      data: activityLogData
     });
     return {
       status: "success",

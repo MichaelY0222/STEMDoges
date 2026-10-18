@@ -2,6 +2,7 @@ const app = getApp();
 const db = wx.cloud.database();
 import CacheSingleton from '../../classes/CacheSingleton';
 import { handleCode } from '../../utils/handleCode';
+import { getActiveEvent } from '../../utils/eventConfig';
 
 Page({
   data: {
@@ -10,6 +11,7 @@ Page({
     needRegistration: false,
     isBanned: false,
     banRemarks: '',
+    eventBanner: '',
 
     cacheSingleton: CacheSingleton,
 
@@ -32,6 +34,7 @@ Page({
     wx.cloud.init();
     this.data.cacheSingleton = CacheSingleton.initialize(wx.cloud.database());
     this.setData({
+      eventBanner: (await getActiveEvent()).banner,
       userOpenId: await this.data.cacheSingleton.fetchUserOpenId(),
       needRegistration: await this.data.cacheSingleton.determineNeedNewUser(),
     })

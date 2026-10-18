@@ -18,6 +18,7 @@
 </view>
 
 <scroll-view scroll-y id="main-menu-scroll" wx:else>
+<image  class="eventHeader" wx:if="{{eventBanner}}" bindtap="redirectRestrictedAccessEvent"  data-link="../events/eventHub/eventHub" src="{{eventBanner}}"></image>
 <image  class="eventHeader" bindtap="redirectRestrictedAccessEvent"  data-link="../events/piday2026/piday2026" src="../../images/piday2026.jpg"></image>
 <image  class="eventHeader" bindtap="redirect" data-link="../databooklet/index" src="../../images/dataBooklet.jpg"></image>
 <image  class="eventHeader" bindtap="redirect" data-link="../challenges/challenges" src="../../images/challenges.jpg"></image>

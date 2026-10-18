@@ -1,0 +1,33 @@
+<!--miniprogram/pages/events/eventHub/eventHub.wxml-->
+<view id="pi-day-top-container">
+  <text class="big-title-text">{{eventTitle}}</text>
+  <view id="pi-day-top-right-container">
+    <view class="admin-button" bindtap="redirect" data-link="../piday/admin/admin" wx:if="{{isAdmin}}">
+      <image src="../../../icons/bolt.svg" class="admin-image"></image>
+    </view>
+    <view id="pi-day-top-scan-button-container" bindtap="scanButtonClick">
+      <image src="../../../icons/scan.svg" id="pi-day-top-scan-button-image"></image>
+    </view>
+  </view>
+</view>
+
+<scroll-view scroll-y id="pi-day-scroll">
+
+  <view id="pi-day-info-container">
+    <text class="heading-text">Daily Trivia</text>
+    <view id="pi-day-trivia-container">
+      <block wx:if="{{questions.length!==0}}" wx:for="{{questions}}" wx:key="questionId">
+        <view id="pi-day-question-number" class="pi-day-question-{{item.status}}" bindtap="answerTrivia" data-link="{{item.questionId}}">{{index + 1}}</view>
+      </block>
+      <block wx:if="{{questions.length===0}}" id="comment-text-container">
+        <text id="comment-text">No Trivia Questions</text>
+        <text id="comment-text">Available Today...</text>
+        <text id="comment-text-small">Daily Trivia either hasn't started or has already ended. Please check back at a later time!</text>
+      </block>
+    </view>
+  </view>
+
+  <image src="../../../images/scan.jpg" class="eventHeaderSmall" bindtap="scanButtonClick"></image>
+  <image src="../../../images/Leaderboard.jpg" class="eventHeader" bindtap="redirect" data-link="../piday/leaderboard/leaderboard"></image>
+
+</scroll-view>

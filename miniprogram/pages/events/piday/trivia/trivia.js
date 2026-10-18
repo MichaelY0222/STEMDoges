@@ -1,5 +1,6 @@
 // pages/events/piday/trivia/trivia.js
 import CacheSingleton from '../../../../classes/CacheSingleton';
+import { getActiveEvent } from '../../../../utils/eventConfig';
 Page({
 
   /**
@@ -15,6 +16,8 @@ Page({
     questionStatus: 'unanswered',
     questionType: 'undefined',
     userOpenId: 'undefined',
+    eventTitle: '',
+    eventTag: null,
     remainingTime: 30,
     timerElapsed: false,
     opt0Class: 'pi-day-question-unanswered',
@@ -32,7 +35,10 @@ Page({
       mask: true
     });
     this.data.cacheSingleton = CacheSingleton.getInstance();
+    const event = await getActiveEvent();
     this.setData({
+      eventTitle: event.title,
+      eventTag: event.logTag,
       userOpenId: await this.data.cacheSingleton.fetchUserOpenId(),
       triviaQuestions: await this.data.cacheSingleton.fetchAnyEventTriviaQuestions(),
       scavQuestions: await this.data.cacheSingleton.fetchAnyEventScavQuestions(),
@@ -57,10 +63,14 @@ Page({
           remainingTime: 150
         })
       }
-      let checkQuestionStatus = await wx.cloud.database().collection("piDay2026ActivityLog").where({
+      let statusQuery = {
         userId: this.data.userOpenId,
         questionId: data
-      }).get();
+      };
+      if (this.data.eventTag) {
+        statusQuery.eventTag = this.data.eventTag;
+      }
+      let checkQuestionStatus = await wx.cloud.database().collection(event.activityLog).where(statusQuery).get();
       
       if (checkQuestionStatus.data.length !== 0) {
         this.setData({
@@ -127,7 +137,8 @@ Page({
               data: {
                 type: this.data.questionType,
                 questionId: this.data.selectedQuestion.questionId,
-                status: this.data.questionStatus
+                status: this.data.questionStatus,
+                eventTag: this.data.eventTag
               }
             })
             await this.data.cacheSingleton.forceGetAnyEventTriviaQuestions();
@@ -155,7 +166,8 @@ Page({
         data: {
           type: this.data.questionType,
           questionId: this.data.selectedQuestion.questionId,
-          status: this.data.questionStatus
+          status: this.data.questionStatus,
+          eventTag: this.data.eventTag
         }
       })
       await this.data.cacheSingleton.forceGetAnyEventTriviaQuestions();
@@ -193,7 +205,8 @@ Page({
           data: {
             type: this.data.questionType,
             questionId: this.data.selectedQuestion.questionId,
-            status: this.data.questionStatus
+            status: this.data.questionStatus,
+            eventTag: this.data.eventTag
           }
         })
         await this.data.cacheSingleton.forceGetAnyEventTriviaQuestions();

@@ -1,6 +1,7 @@
 import allCollectionsData from "../utils/allCollectionsData";
 import { Question } from "./question";
 import { Event } from "./event";
+import { getActiveEvent, isWindowOpen } from "../utils/eventConfig";
 let instance = null;
 
 class CacheSingleton {
@@ -106,7 +107,8 @@ class CacheSingleton {
         this.#isBanned = false;
         this.#banRemarks = "";
       }
-      let checkPiDayAdmin = await wx.cloud.database().collection("piDay2026Admins").where({
+      const event = await getActiveEvent();
+      let checkPiDayAdmin = await wx.cloud.database().collection(event.adminsCollection).where({
         adminId: checkUser.data[0]._id,
       }).get();
       if (checkPiDayAdmin.data.length === 1){
@@ -144,23 +146,38 @@ class CacheSingleton {
       this.#questions = undefined;
   
       this.#questions = new Array()
-      let questions = await allCollectionsData(this.#db, "piDayTrivia");
+      const event = await getActiveEvent();
+      let questions;
+      try {
+        questions = await allCollectionsData(this.#db, event.triviaCollection);
+      } catch (err) {
+        console.error(`Failed to read trivia collection "${event.triviaCollection}":`, err);
+        wx.hideLoading();
+        return this.#questions;
+      }
+      const now = Date.now()/1000;
       for (let i=0;i<questions.data.length;i++) {
-          if (questions.data[i].startTime <= (Date.now()/1000) && (Date.now()/1000) <= questions.data[i].endTime){
+          const q = questions.data[i];
+          if (isWindowOpen(q.startTime, q.endTime, event.windowMode, now)){
             let status = 'unanswered'
-            let checkQuestionStatus = await wx.cloud.database().collection("piDay2026ActivityLog").where({
+            let statusQuery = {
               userId: this.#userOpenId,
-              questionId: questions.data[i].questionId
-            }).get();
+              questionId: q.questionId
+            };
+            if (event.logTag) {
+              statusQuery.eventTag = event.logTag;
+            }
+            let checkQuestionStatus = await wx.cloud.database().collection(event.activityLog).where(statusQuery).get();
             
             if (checkQuestionStatus.data.length !== 0) {
               status = checkQuestionStatus.data[0].status
             }
             
-            this.#questions.push(new Question(questions.data[i].questionId, questions.data[i].questionContent, questions.data[i].optA, questions.data[i].optB, questions.data[i].optC, questions.data[i].optD, questions.data[i].correctOptIndex, questions.data[i].startTime, questions.data[i].endTime, status));
+            this.#questions.push(new Question(q.questionId, q.questionContent, q.optA, q.optB, q.optC, q.optD, q.correctOptIndex, q.startTime, q.endTime, status));
           }
       }
  
+      console.log(`Trivia: ${this.#questions.length} of ${questions.data.length} questions open (windowMode: ${event.windowMode})`);
       wx.hideLoading();
       return this.#questions;
   }
@@ -191,13 +208,25 @@ class CacheSingleton {
       return this.#scavQuestions;
     } else {
       this.#scavQuestions = new Array()
-    let questions = await allCollectionsData(this.#db, "piDayScav");
+    const event = await getActiveEvent();
+    let questions;
+    try {
+      questions = await allCollectionsData(this.#db, event.scavCollection);
+    } catch (err) {
+      console.error(`Failed to read scav collection "${event.scavCollection}":`, err);
+      wx.hideLoading();
+      return this.#scavQuestions;
+    }
     for (let i=0;i<questions.data.length;i++) {
           let status = 'unanswered'
-          let checkQuestionStatus = await wx.cloud.database().collection("piDay2026ActivityLog").where({
+          let statusQuery = {
             userId: this.#userOpenId,
             questionId: questions.data[i].questionId
-          }).get();
+          };
+          if (event.logTag) {
+            statusQuery.eventTag = event.logTag;
+          }
+          let checkQuestionStatus = await wx.cloud.database().collection(event.activityLog).where(statusQuery).get();
           
           if (checkQuestionStatus.data.length !== 0) {
             status = checkQuestionStatus.data[0].status
@@ -225,7 +254,8 @@ class CacheSingleton {
       return this.#events;
     } else {
       this.#events = new Array()
-      let activity = await allCollectionsData(this.#db, "piDay2026Activities");
+      const event = await getActiveEvent();
+      let activity = await allCollectionsData(this.#db, event.activitiesCollection);
       for (let i=0;i<activity.data.length;i++) {
         this.#events.push(new Event(activity.data[i].eventId, activity.data[i].eventName, activity.data[i].eventHost, activity.data[i].points));
       }

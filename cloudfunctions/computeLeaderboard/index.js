@@ -9,6 +9,7 @@ const db = cloud.database();
 exports.main = async (event, context) => {
   const wxContext = cloud.getWXContext();
   const currentUserId = wxContext.OPENID;
+  const eventTag = event ? event.eventTag : undefined;
   try {
     const users = await fetchAllData("userData");
     const logs = await fetchAllData("piDay2026ActivityLog");
@@ -20,7 +21,9 @@ exports.main = async (event, context) => {
 
     users.forEach(user => {
       let userId = user.userId;
-      let userLogs = logs.filter(log => log.userId === userId);
+      // When an event tag is supplied, only that event's logs count, so points earned
+      // on the same question bank during an earlier event cannot leak into this board.
+      let userLogs = logs.filter(log => log.userId === userId && (!eventTag || log.eventTag === eventTag));
 
       if (userLogs.length === 0) return;
 

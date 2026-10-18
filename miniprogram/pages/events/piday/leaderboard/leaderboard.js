@@ -2,6 +2,7 @@
 // const app = getApp();
 
 // miniprogram/pages/bitday/leader board/index.js
+import { getActiveEvent } from '../../../../utils/eventConfig';
 Page({
 
   /**
@@ -13,7 +14,8 @@ Page({
     // day: 0
     currentUserRank: 0,
     currentUserPoints: 0,
-    leaderboard: []
+    leaderboard: [],
+    eventTitle: ''
   },
 
   /**
@@ -31,8 +33,17 @@ Page({
     //   day: new Date().getDate()
     // });
     //console.log("hello", this.data.day);
+    const event = await getActiveEvent();
+    this.setData({
+      eventTitle: event.title
+    });
+    let leaderboardArgs = {};
+    if (event.logTag) {
+      leaderboardArgs.eventTag = event.logTag;
+    }
     await wx.cloud.callFunction({
       name: "computeLeaderboard",
+      data: leaderboardArgs,
     }).then(res => {
       this.setData({
         leaderboard: res.result.leaderboard,

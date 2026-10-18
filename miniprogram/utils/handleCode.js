@@ -1,4 +1,5 @@
 import { get64ToBinaryMap } from "./binaryMapType";
+import { getActiveEvent } from "./eventConfig";
 
 function reportCodeScanError(error) {
   wx.navigateTo({
@@ -91,19 +92,20 @@ export async function handleCode(openId, x) {
   
   // handle the code
   console.log('Handle Code')
-  if (keyToValueMap.get("event")==="PI26") {
-    console.log('Pi Day 2026')
+  const event = await getActiveEvent();
+  if (keyToValueMap.get("event")===event.tag) {
+    console.log('Active event code:', event.tag)
     if (keyToValueMap.get("type")==="questionCode") {
       console.log('Scav Hunt Quest')
       // Scavenger Hunt Question Code
       let scannedTicketId = String.fromCharCode(...keyToValueMap.get("dat"));
       console.log(scannedTicketId)
-      let getTicketData = await wx.cloud.database().collection("piDayScav").where({
+      let getTicketData = await wx.cloud.database().collection(event.scavCollection).where({
         questionId: scannedTicketId,
       }).get();
       console.log(getTicketData)
       if (getTicketData.data.length === 0) {
-        reportCodeScanError(`This Pi Day Scavenger Hunt Question Code is invalid.`);
+        reportCodeScanError(`This ${event.title} Scavenger Hunt Question Code is invalid.`);
         return;
       }
       else {
@@ -122,12 +124,12 @@ export async function handleCode(openId, x) {
     } else if (keyToValueMap.get("type")==="activityCode") {
       let scannedTicketId = String.fromCharCode(...keyToValueMap.get("dat"));
       console.log(scannedTicketId)
-      let getTicketData = await wx.cloud.database().collection("piDay2026Temp").where({
+      let getTicketData = await wx.cloud.database().collection(event.tempCollection).where({
         logId: scannedTicketId,
       }).get();
       console.log(getTicketData)
       if (getTicketData.data.length === 0 || getTicketData.data[0].used === true || Date.now() - getTicketData.data[0].timestamp > 7000) {
-        reportCodeScanError(`This Pi Day Activity Code is invalid.`);
+        reportCodeScanError(`This ${event.title} Activity Code is invalid.`);
         return;
       }
       else {
@@ -140,10 +142,14 @@ export async function handleCode(openId, x) {
           },
         });
 
-        let checkStatus = await wx.cloud.database().collection("piDay2026ActivityLog").where({
+        let statusQuery = {
           userId: openId,
           eventId: await getTicketData.data[0].eventId,
-        }).get();
+        };
+        if (event.logTag) {
+          statusQuery.eventTag = event.logTag;
+        }
+        let checkStatus = await wx.cloud.database().collection(event.activityLog).where(statusQuery).get();
 
         let points = await getTicketData.data[0].points;
         let eventName = await getTicketData.data[0].eventName;
@@ -158,6 +164,7 @@ export async function handleCode(openId, x) {
               eventId: await getTicketData.data[0].eventId,
               eventName: eventName,
               points: points,
+              eventTag: event.logTag,
             },
           });
           
