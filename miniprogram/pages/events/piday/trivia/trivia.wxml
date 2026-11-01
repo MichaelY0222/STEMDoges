@@ -7,6 +7,10 @@
     <view id="trivia-question-container">
       <text id="question-text">{{selectedQuestion.questionContent}}</text>
     </view>
+    <view id="trivia-context-container" wx:if="{{selectedQuestion.context}}">
+      <text id="context-label">Context</text>
+      <text id="context-text">{{selectedQuestion.context}}</text>
+    </view>
     <view id="trivia-option-container" class="{{opt0Class}}" bindtap="handleAnswer" data-link='0'>
       <text id="question-text">A) {{selectedQuestion.optA}}</text>
     </view>
@@ -18,6 +22,9 @@
     </view>
     <view id="trivia-option-container" class="{{opt3Class}}" bindtap="handleAnswer" data-link='3'>
       <text id="question-text">D) {{selectedQuestion.optD}}</text>
+    </view>
+    <view id="trivia-option-container" class="{{opt4Class}}" bindtap="handleAnswer" data-link='4' wx:if="{{selectedQuestion.optE}}">
+      <text id="question-text">E) {{selectedQuestion.optE}}</text>
     </view>
     <view id="question-id-container">
         <text id="question-id-text">Question ID: {{selectedQuestion.questionId}}</text>

@@ -6,7 +6,7 @@
 // (e.g. Mole Day -> Bit Day, one day apart) needs NO code release:
 //
 //   collection: "settings"
-//   doc:        { "type": "activeEvent", "event": "moleday", "windowMode": "currentYear" }
+//   doc:        { "type": "activeEvent", "event": "bitday", "windowMode": "currentYear" }
 //
 //   "event"      - "moleday" | "bitday" | "piday". Optional: when the doc is missing
 //                  or unreadable, ACTIVE_EVENT_DEFAULT is used, so the app still runs.
@@ -41,7 +41,7 @@
 //   line up with the event days and the event hub comes up empty, set windowMode to
 //   "ignore" on the settings doc above - no code release needed.
 
-export const ACTIVE_EVENT_DEFAULT = 'moleday';
+export const ACTIVE_EVENT_DEFAULT = 'bitday';
 
 export const WINDOW_MODES = ['strict', 'currentYear', 'ignore'];
 

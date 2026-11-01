@@ -156,24 +156,27 @@ class CacheSingleton {
         return this.#questions;
       }
       const now = Date.now()/1000;
-      for (let i=0;i<questions.data.length;i++) {
-          const q = questions.data[i];
+      const statusQuery = { userId: this.#userOpenId };
+      if (event.logTag) {
+        statusQuery.eventTag = event.logTag;
+      }
+      let activityLogs = { data: [] };
+      try {
+        activityLogs = await allCollectionsData(this.#db, event.activityLog, statusQuery);
+      } catch (err) {
+        console.error(`Failed to read activity log "${event.activityLog}":`, err);
+      }
+      const statusByQuestionId = new Map(
+        activityLogs.data
+          .filter(log => log.questionId !== undefined)
+          .map(log => [log.questionId, log.status])
+      );
+      const orderedQuestions = questions.data.slice().sort((a, b) => (a.order || 0) - (b.order || 0));
+      for (let i=0;i<orderedQuestions.length;i++) {
+          const q = orderedQuestions[i];
           if (isWindowOpen(q.startTime, q.endTime, event.windowMode, now)){
-            let status = 'unanswered'
-            let statusQuery = {
-              userId: this.#userOpenId,
-              questionId: q.questionId
-            };
-            if (event.logTag) {
-              statusQuery.eventTag = event.logTag;
-            }
-            let checkQuestionStatus = await wx.cloud.database().collection(event.activityLog).where(statusQuery).get();
-            
-            if (checkQuestionStatus.data.length !== 0) {
-              status = checkQuestionStatus.data[0].status
-            }
-            
-            this.#questions.push(new Question(q.questionId, q.questionContent, q.optA, q.optB, q.optC, q.optD, q.correctOptIndex, q.startTime, q.endTime, status));
+            const status = statusByQuestionId.get(q.questionId) || 'unanswered';
+            this.#questions.push(new Question(q.questionId, q.questionContent, q.optA, q.optB, q.optC, q.optD, q.correctOptIndex, q.startTime, q.endTime, status, q.optE, q.context));
           }
       }
  

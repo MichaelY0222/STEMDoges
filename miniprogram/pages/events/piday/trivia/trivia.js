@@ -24,6 +24,7 @@ Page({
     opt1Class: 'pi-day-question-unanswered',
     opt2Class: 'pi-day-question-unanswered',
     opt3Class: 'pi-day-question-unanswered',
+    opt4Class: 'pi-day-question-unanswered',
   },
 
   /**

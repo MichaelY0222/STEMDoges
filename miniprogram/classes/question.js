@@ -9,7 +9,9 @@ export class Question {
   startTime;
   endTime;
   status;
-  constructor(questionId, questionContent, optA, optB, optC, optD, correctOptIndex, startTime, endTime, status) {
+  optE;
+  context;
+  constructor(questionId, questionContent, optA, optB, optC, optD, correctOptIndex, startTime, endTime, status, optE = '', context = '') {
     this.questionId = questionId;
     this.questionContent = questionContent;
     this.optA = optA;
@@ -20,5 +22,7 @@ export class Question {
     this.startTime = startTime;
     this.endTime = endTime;
     this.status = status;
+    this.optE = optE;
+    this.context = context;
   }
 }
